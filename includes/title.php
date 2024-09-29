@@ -30,19 +30,19 @@
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom-none">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom-none">
 
         <!-- Page heading -->
-        <div class="text-center">
-            <h4 class="mt-2">FMS Dashboard</h4>
-            <ol class="breadcrumb mb-0">
+        <div class="text-center mt-3">
+            <h4 class="text-muted">FMS Dashboard</h4>
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item active">Dashboard / Main</li>
             </ol>
         </div>
 
         <!-- calender button  -->
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <button type="button" id="calender" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#calendarModal">
+        <div class="btn-toolbar mb-md-0">
+            <button type="button" id="calender" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#calendarModal">
                 <span data-feather="calendar"></span>
                 This week
             </button>

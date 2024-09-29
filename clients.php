@@ -41,7 +41,7 @@ include './includes/sidebar.php';
     <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
         <!-- Add Client Button -->
         <button type="button" class="btn btn-sm btn-primary me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <span data-feather="user-plus"></span>&nbsp;New client
+            <span data-feather="user-plus"></span>&nbsp;Add new
         </button>
 
         <!-- Search Bar -->
