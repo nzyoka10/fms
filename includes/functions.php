@@ -256,9 +256,11 @@ function getBookings() {
     global $conn; // Use the global database connection variable
 
     // Prepare and execute the SQL query to fetch bookings
-    $query = "SELECT s.id, c.full_name, s.service_type, s.schedule_date, s.location, s.status 
-              FROM schedules s
-              JOIN clients c ON s.client_id = c.id"; // Join with clients to get full name
+    // $query = "SELECT s.id, c.full_name, s.service_type, s.schedule_date, s.location, s.status 
+    //           FROM schedules s
+    //           JOIN clients c ON s.client_id = c.id"; 
+
+    $query = "SELECT * FROM schedules";
 
     $result = $conn->query($query); // Execute the query
 
@@ -379,3 +381,80 @@ function getClientIdByName($clientName) {
 
     return $clientId; // Return the client ID or null if not found
 }
+
+/**
+ * Get the total number of bookings made.
+ *
+ * @return int The total count of bookings.
+ */
+function countBookingsMade()
+{
+    global $conn; // Use the global database connection
+
+    // Prepare the SQL query to count bookings made
+    $sql = "SELECT COUNT(*) as total FROM schedules";
+    $result = $conn->query($sql);
+
+    // Check if the query execution was successful
+    if ($result && $result->num_rows > 0) {
+        // Fetch the row and return the total count as an integer
+        $row = $result->fetch_assoc();
+        return (int)$row['total']; // Return the total count as an integer
+    }
+
+    // Return 0 if the query fails or no bookings found
+    return 0;
+}
+
+/**
+ * Fetch a single booking by ID from the schedules table.
+ *
+ * @param int $bookingId The ID of the booking.
+ * @return array|null The booking details as an associative array, or null if not found.
+ */
+function getBookingById($bookingId)
+{
+    global $conn; // Use the global database connection
+
+    // Prepare the SQL query to fetch booking details from the schedules table
+    $stmt = $conn->prepare("SELECT * FROM schedules WHERE id = ?");
+    $stmt->bind_param("i", $bookingId); // Bind the booking ID as a parameter
+
+    // Execute the statement and check if the query was successful
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Return the booking data as an associative array
+        }
+    }
+
+    return null; // Return null if no booking is found
+}
+
+
+// /**
+//  * Fetch a single booking by ID from the database.
+//  *
+//  * @param int $bookingId The ID of the booking.
+//  * @return array|null The booking details as an associative array, or null if not found.
+//  */
+// function getBookingById($bookingId)
+// {
+//     global $conn; // Use the global database connection
+
+//     // Prepare the SQL query
+//     $stmt = $conn->prepare("SELECT schedules.*, clients.full_name as client_name FROM schedules 
+//                             JOIN clients ON schedules.client_id = clients.id 
+//                             WHERE schedules.id = ?");
+//     $stmt->bind_param("i", $bookingId); // Bind the booking ID as a parameter
+
+//     if ($stmt->execute()) {
+//         $result = $stmt->get_result();
+//         if ($result->num_rows > 0) {
+//             return $result->fetch_assoc(); // Return the booking data as an associative array
+//         }
+//     }
+
+//     return null; // Return null if no booking is found
+// }
+

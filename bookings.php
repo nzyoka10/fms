@@ -80,7 +80,7 @@ include './includes/sidebar.php';
                 <?php foreach ($bookings as $index => $booking): ?>
                     <tr>
                         <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($booking['client_name']); ?></td>
+                        <td><?php echo htmlspecialchars($booking['client_id']); ?></td>
                         <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
                         <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
                         <td><?php echo htmlspecialchars($booking['location']); ?></td>
@@ -90,9 +90,9 @@ include './includes/sidebar.php';
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="viewClientBooking.php?id=<?php echo $booking['client_id']; ?>">View</a></li>
-                                    <li><a class="dropdown-item" href="editClientBooking.php?id=<?php echo $booking['client_id']; ?>">Update</a></li>
-                                    <li><a class="dropdown-item" href="deleteClientBooking.php?id=<?php echo $booking['client_id']; ?>">Delete</a></li>
+                                    <li><a class="dropdown-item" href="viewBooking.php?id=<?php echo $booking['id']; ?>">View</a></li>
+                                    <li><a class="dropdown-item" href="editClientBooking.php?id=<?php echo $booking['id']; ?>">Update</a></li>
+                                    <li><a class="dropdown-item" href="deleteClientBooking.php?id=<?php echo $booking['id']; ?>">Delete</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -183,7 +183,7 @@ include './includes/sidebar.php';
         </div>
     </div>
 
-   
+
 
 </main>
 

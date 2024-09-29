@@ -13,7 +13,10 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Fetch total registered clients
-$totalClients = countRegisteredClients()
+$totalClients = countRegisteredClients();
+
+// Fetch total bookings made
+$totalBookings = countBookingsMade();
 ?>
 <!doctype html>
 <html lang="en">

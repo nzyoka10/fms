@@ -44,37 +44,55 @@ include './includes/sidebar.php';
                 <span data-feather="info" class="me-2"></span>Client Information
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Create at</th>
-                        <td><?php echo $client['created_at']; ?></td>
-                    </tr>                    
-                    <tr>
-                        <th>Full name</th>
-                        <td><?php echo $client['full_name']; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Email address</th>
-                        <td><?php echo $client['email']; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Mobile number</th>
-                        <td><?php echo $client['phone']; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Address</th>
-                        <td><?php echo $client['address']; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Updated date</th>
-                        <td><?php echo $client['updated_at']; ?></td>
-                    </tr>
-                </table>
+
+                <!-- first row -->
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Created At</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['created_at']); ?></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Client Names</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['full_name']); ?></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Email Address</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['email']); ?></p>
+                    </div>
+                </div>
+
+                <!-- second row -->
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Mobile Number</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['phone']); ?></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Address</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['address']); ?></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Last updated date</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['updated_at']); ?></p>
+                    </div>
+                </div>
+
             </div>
-            <div class="card-footer">
-                <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary">Edit record</a>
-                <!-- <a href="deleteClient.php?id=<?php echo $client['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this client?');">Delete Client</a> -->
-                <a href="clients.php" class="btn btn-sm btn-danger">Back home</a>
+            <div class="card-footer d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
+                <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
+                    Edit&nbsp;<span data-feather="edit-3"></span>
+                </a>
+                <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this client?');">
+                    Delete&nbsp;<span data-feather="trash-2"></span>
+                </a>
+                <a href="clients.php" class="btn btn-sm btn-danger me-2 d-flex align-items-center">
+                    Back&nbsp;<span data-feather="skip-back"></span>
+                </a>
+                
+                <!-- <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary">Edit record</a> -->
+                <!-- <a href="deleteClient.php?id=<?php echo $client['id']; ?>" 
+                 class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this client?');">Delete Client</a> -->
+                <!-- <a href="clients.php" class="btn btn-sm btn-danger">Back home</a> -->
             </div>
         </div>
     </div>

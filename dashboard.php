@@ -31,10 +31,10 @@ include './includes/title.php';
         <div class="card text-center p-3 shadow-sm">
             <div class="card-body">
                 <div class="card-icon mb-3">
-                    <span data-feather="book-open"></span>
+                    <span data-feather="bookmark"></span>
                 </div>
                 <h5 class="card-title text-muted">Bookings</h5>
-                <p class="card-text"><strong>0</strong></p>
+                <p class="card-text"><strong><?php echo $totalBookings; ?></strong></p>
             </div>
         </div>
     </div>
