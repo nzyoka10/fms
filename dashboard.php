@@ -12,7 +12,7 @@ include './includes/title.php';
 
 
 <!-- Dashboard cards -->
-<div class="row g-4 mt-2">
+<div class="row g-4 mt-0">
     <!-- Clients card -->
     <div class="col-md-3">
         <div class="card text-center p-3 shadow-sm">

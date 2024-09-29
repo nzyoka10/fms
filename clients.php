@@ -86,7 +86,7 @@ include './includes/sidebar.php';
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="viewClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-success btn-sm">View</a></li>
                                     <li><a class="dropdown-item" href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-warning btn-sm">Update</a></li>
-                                    <li><a class="dropdown-item" href="delete_client.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-danger btn-sm">Delete</a></li>
+                                    <!-- <li><a class="dropdown-item" href="delete_client.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-danger btn-sm">Delete</a></li> -->
                                 </ul>
                             </div>
                         </td>

@@ -82,7 +82,7 @@ include './includes/sidebar.php';
                 <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
                     Edit&nbsp;<span data-feather="edit-3"></span>
                 </a>
-                <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this client?');">
+                <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this clients record?');">
                     Delete&nbsp;<span data-feather="trash-2"></span>
                 </a>
                 <a href="clients.php" class="btn btn-sm btn-danger me-2 d-flex align-items-center">

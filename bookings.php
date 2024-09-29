@@ -91,8 +91,8 @@ include './includes/sidebar.php';
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="viewBooking.php?id=<?php echo $booking['id']; ?>">View</a></li>
-                                    <li><a class="dropdown-item" href="editClientBooking.php?id=<?php echo $booking['id']; ?>">Update</a></li>
-                                    <li><a class="dropdown-item" href="deleteClientBooking.php?id=<?php echo $booking['id']; ?>">Delete</a></li>
+                                    <li><a class="dropdown-item" href="editBooking.php?id=<?php echo $booking['id']; ?>">Update</a></li>
+                                    <!-- <li><a class="dropdown-item" href="deleteClientBooking.php?id=<?php echo $booking['id']; ?>">Delete</a></li> -->
                                 </ul>
                             </div>
                         </td>

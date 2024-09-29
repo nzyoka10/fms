@@ -32,9 +32,12 @@ include './includes/sidebar.php';
         </ol>
 
     <div class="card shadow-sm">
-        <div class="card-header">
-            <h3 class="card-title">Client: <?php echo htmlspecialchars($booking['client_id']); ?></h3>
+        <div class="card-header d-flex align-items-center">
+            <span data-feather="info" class="me-2"></span>Booking Information
         </div>
+        <!-- <div class="card-header">
+            <h3 class="card-title">Client: <?php echo htmlspecialchars($booking['client_id']); ?></h3>
+        </div> -->
         <div class="card-body">
             <div class="row">
                 <!-- Client Name -->
@@ -67,7 +70,7 @@ include './includes/sidebar.php';
                 <div class="col-md-6 mb-3">
                     <h5 class="fw-bold">Google Maps Link</h5>
                     <p class="text-muted">
-                        <a href="<?php echo htmlspecialchars($booking['google_map_link']); ?>" target="_blank" class="text-primary text-decoration-none font-600">
+                        <a href="<?php echo htmlspecialchars($booking['google_map_link']); ?>" target="_blank" class="text-primary ms-4 text-decoration-none font-600">
                             View route
                         </a>
                     </p>
@@ -85,11 +88,14 @@ include './includes/sidebar.php';
         <div class="card-footer d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
 
             <!-- edit button -->
-            <a href="editBooking.php?id=<?php echo $bookings['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
+            <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
                 Edit&nbsp;<span data-feather="edit-3"></span>
             </a>
             <a href="paybooking.php" class="btn btn-sm btn-success me-2 d-flex align-items-center">
                 Pay&nbsp;<span data-feather="send"></span>
+            </a>
+            <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this booking record?');">
+                Delete&nbsp;<span data-feather="trash-2"></span>
             </a>
             <a href="bookings.php" class="btn btn-sm btn-danger me-2 d-flex align-items-center">
                 Back&nbsp;<span data-feather="skip-back"></span>
