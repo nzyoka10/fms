@@ -57,14 +57,14 @@ include './includes/sidebar.php';
     }
     ?>
 
-    <!-- Clients Table -->
-    <table class="table table-striped" id="clientsTable">
+    <!-- Bookings Table -->
+    <table class="table table-striped" id="bookingsTable">
         <thead>
             <tr>
                 <th>Sn#</th>
-                <th>Clients name</th>
-                <th>Service type</th>
-                <th>Booking day</th>
+                <th>Client Name</th>
+                <th>Service Type</th>
+                <th>Booked Day</th>
                 <th>Location</th>
                 <th>Actions</th>
             </tr>
@@ -134,7 +134,7 @@ include './includes/sidebar.php';
                             <div class="col mb-3">
                                 <label for="service_type" class="form-label">Service Type</label>
                                 <select class="form-select" id="service_type" name="service_type" required>
-                                    <option value="" disabled selected>Choose service</option>
+                                    <option value="" disabled selected>Select service</option>
                                     <option value="burial">Burial</option>
                                     <option value="cremation">Cremation</option>
                                     <option value="other">Other</option>
