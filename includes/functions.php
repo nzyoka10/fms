@@ -646,3 +646,35 @@ function getPendingTasksCount($conn)
         return 0; // Return 0 if the query fails or no pending tasks exist
     }
 }
+
+/**
+ * Fetch all processed bookings from the payments table and client name from the clients table.
+ *
+ * @param mysqli $conn  The database connection object.
+ * @return array  Returns an array of processed bookings.
+ */
+function getProcessedBookings($conn)
+{
+    $processedBookings = [];
+
+    // SQL query to get booking data from the payments table and client name from clients table
+    $query = "SELECT p.booking_id, p.receipt_number, p.payment_method, p.amount, p.tax, p.discount, p.payment_date, 
+                     s.schedule_date, c.full_name AS client_name
+              FROM payments p
+              JOIN schedules s ON p.booking_id = s.id
+              JOIN clients c ON s.client_id = c.id
+              ORDER BY p.payment_date DESC";
+
+    $result = $conn->query($query);
+
+    // Check if the query returns rows
+    if ($result && $result->num_rows > 0) {
+        // Fetch each row as an associative array and store it in $processedBookings
+        while ($row = $result->fetch_assoc()) {
+            $processedBookings[] = $row;
+        }
+    }
+
+    return $processedBookings; // Return the processed bookings
+}
+
