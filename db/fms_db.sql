@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2024 at 10:30 AM
+-- Generation Time: Sep 30, 2024 at 12:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -124,13 +124,14 @@ CREATE TABLE `logistics` (
 
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
-  `client_id` int(11) NOT NULL,
+  `booking_id` int(11) NOT NULL,
+  `receipt_number` INT(8) NOT NULL UNIQUE, -- 8-digit unique receipt number
+  `payment_method` enum('cash','mpesa') NOT NULL DEFAULT 'cash',
   `amount` decimal(10,2) NOT NULL,
   `tax` decimal(10,2) DEFAULT NULL,
   `discount` decimal(10,2) DEFAULT NULL,
   `total` decimal(10,2) GENERATED ALWAYS AS (`amount` + `tax` - `discount`) VIRTUAL,
   `payment_date` date NOT NULL,
-  `receipt_number` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -152,6 +153,16 @@ CREATE TABLE `schedules` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `schedules`
+--
+
+INSERT INTO `schedules` (`id`, `client_id`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
+(11, '6', 'burial', '2024-10-04', 'van', 'Family requests photographer', 'scheduled', '2024-09-30 08:43:11', '2024-09-30 08:43:11'),
+(12, '7', 'burial', '2024-10-05', 'bus', 'The family requests the following:-\r\nDancers, catering team and boda boda escorts.\r\n Photographer and a DJ\r\n', 'scheduled', '2024-09-30 08:44:42', '2024-09-30 10:08:07'),
+(13, '3', 'cremation', '2024-10-08', 'bus', 'None', 'scheduled', '2024-09-30 08:45:55', '2024-09-30 08:45:55'),
+(14, '5', 'cremation', '2024-10-10', 'van', 'The family requests a photographer and additional security personnel for a two-day body viewing.', 'scheduled', '2024-09-30 08:55:35', '2024-09-30 08:55:35');
 
 -- --------------------------------------------------------
 
@@ -223,7 +234,7 @@ ALTER TABLE `logistics`
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `receipt_number` (`receipt_number`),
-  ADD KEY `client_id` (`client_id`);
+  ADD KEY `client_id` (`booking_id`);
 
 --
 -- Indexes for table `schedules`
@@ -284,7 +295,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`

@@ -145,7 +145,7 @@ include './includes/sidebar.php';
         rows.forEach(row => {
             const clientName = row.cells[2].textContent.toLowerCase();
             const clientEmail = row.cells[3].textContent.toLowerCase();
-            
+
             // Show the row if it matches the search query
             if (clientName.includes(query) || clientEmail.includes(query)) {
                 row.style.display = '';

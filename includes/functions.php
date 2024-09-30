@@ -440,6 +440,209 @@ function getBookingById($bookingId)
         }
     }
 
-    return null; // Return null if no booking is found
+    return null;
 }
 
+/**
+ * Updates an existing booking record in the database.
+ *
+ * @param int $bookingId The ID of the booking to update.
+ * @param int $client_id The ID of the client associated with the booking.
+ * @param string $service_type The type of service for the booking (e.g., burial, cremation).
+ * @param string $schedule_date The scheduled date for the booking.
+ * @param string $vehicle_type The type of vehicle for transportation.
+ * @param string $request Any special requests related to the booking.
+ * @param string $status The current status of the booking (e.g., scheduled, completed).
+ * @param mysqli $conn The database connection object.
+ * @return array An array indicating success or failure of the update operation.
+ */
+function updateBooking($bookingId, $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn)
+{
+    // Prepare the SQL query to update the booking details.
+    $query = "UPDATE schedules SET client_id = ?, service_type = ?, schedule_date = ?, vehicle_type = ?, request = ?, status = ? WHERE id = ?";
+
+    // Prepare the statement for execution.
+    $stmt = $conn->prepare($query);
+
+    // Bind the parameters to the prepared statement.
+    $stmt->bind_param("isssssi", $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $bookingId);
+
+    // Execute the prepared statement to perform the update.
+    $stmt->execute();
+
+    // Return an array indicating whether the update was successful.
+    return ['success' => $stmt->affected_rows > 0];
+}
+
+// Function to handle the booking update
+function handleUpdateBookingForm($data, $conn, $bookingId)
+{
+    $response = [];
+
+    // Get form data with htmlspecialchars to prevent XSS
+    $client_id = htmlspecialchars($data['client_id'] ?? '');
+    $service_type = htmlspecialchars($data['service_type'] ?? '');
+    $schedule_date = htmlspecialchars($data['schedule_date'] ?? '');
+    $vehicle_type = htmlspecialchars($data['vehicle_type'] ?? '');
+    $request = htmlspecialchars($data['request'] ?? '');
+    $status = htmlspecialchars($data['status'] ?? 'scheduled');
+
+    // Validate required fields
+    if (empty($client_id) || empty($service_type) || empty($schedule_date) || empty($vehicle_type) || empty($status)) {
+        $response['error'] = 'Please fill in all required fields!';
+    } else {
+        // Attempt to update the booking
+        $updateResponse = updateBooking($bookingId, $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn);
+        if ($updateResponse['success']) {
+            $response['success'] = 'Booking updated successfully!';
+        } else {
+            $response['error'] = 'Error: Could not update booking. Please try again!';
+        }
+    }
+
+    return $response;
+}
+
+/** 
+ * Payments function
+ * 
+ */
+
+/** 
+ * Function to handle the payment processing.
+ *
+ * This function processes the payment by retrieving the required details from the input,
+ * validating them, and inserting a new payment record into the database. 
+ * It generates an 8-digit receipt number and retrieves the corresponding booking ID 
+ * from the schedules table.
+ *
+ * @param array $data  An associative array containing payment details.
+ * @param mysqli $conn  The database connection object.
+ *
+ * @return array  An associative array containing the status of the payment processing.
+ */
+function handlePaymentForm($data, $conn, $bookingId)
+{
+    $response = []; // Initialize response array
+
+    // Get form data and sanitize input
+    $payment_method = htmlspecialchars($data['payment_method'] ?? ''); // Retrieve and sanitize payment method
+    $amount = htmlspecialchars($data['amount'] ?? ''); // Retrieve and sanitize amount
+    $tax = htmlspecialchars($data['tax'] ?? '0'); // Retrieve and sanitize tax, default to 0
+    $discount = htmlspecialchars($data['discount'] ?? '0'); // Retrieve and sanitize discount, default to 0
+
+    // Validate required fields
+    if (empty($payment_method) || empty($amount)) {
+        $response['error'] = 'Please fill in all required fields!'; // Set error message if required fields are empty
+        return $response; // Return early with error
+    }
+
+    // Check if the booking exists using the provided booking ID
+    $bookingDetails = getBookingById($bookingId); // Fetch booking details
+
+    // Check if the booking exists
+    if ($bookingDetails === null) {
+        $response['error'] = 'Invalid booking ID.'; // Set error message if booking is invalid
+        return $response; // Return early with error
+    }
+
+    // Generate the next receipt number
+    $query = "SELECT COALESCE(MAX(receipt_number), 137280) + 1 AS next_receipt FROM payments"; // Query to get the next receipt number
+    $result = $conn->query($query); // Execute the receipt number query
+    $row = $result->fetch_assoc(); // Fetch the result row
+    $receipt_number = str_pad($row['next_receipt'], 8, '0', STR_PAD_LEFT); // Generate 8-digit receipt number
+
+    // Prepare SQL query to insert payment record
+    $insertQuery = "INSERT INTO payments (booking_id, receipt_number, payment_method, amount, tax, discount, payment_date) VALUES (?, ?, ?, ?, ?, ?, CURDATE())";
+    $stmt = $conn->prepare($insertQuery); // Prepare the SQL statement
+    $stmt->bind_param("issddd", $bookingId, $receipt_number, $payment_method, $amount, $tax, $discount); // Bind parameters to the SQL query
+
+    // Execute the statement and check for success
+    if ($stmt->execute()) {
+        $response['success'] = 'Payment processed successfully! Your receipt number is: ' . $receipt_number; // Set success message if payment processed
+    } else {
+        $response['error'] = 'Error: Could not process payment. Please try again!'; // Set error message if payment fails
+    }
+    $stmt->close(); // Close the prepared statement
+
+    return $response; // Return response array
+}
+
+// Function to get Total revenue
+/**
+ * Function to fetch total revenue from payments table.
+ * 
+ * This function calculates the total revenue by summing up all the payment amounts in the database.
+ * 
+ * @param mysqli $conn  The database connection object.
+ * @return float  The total revenue. Returns 0 if no payments are found.
+ */
+function fetchTotalRevenue($conn)
+{
+    // Initialize total revenue as 0
+    $totalRevenue = 0;
+
+    // Query to sum up all payment amounts
+    $query = "SELECT SUM(amount) AS total_revenue FROM payments";
+
+    // Execute the query
+    $result = $conn->query($query);
+
+    // Check if the query was successful and fetch the result
+    if ($result) {
+        $row = $result->fetch_assoc();
+        $totalRevenue = $row['total_revenue'] ?? 0; // If null, return 0
+    }
+
+    return (float) $totalRevenue; // Return as float
+}
+
+/**
+ * Get the total number of completed services.
+ *
+ * This function retrieves the total number of services marked as "completed"
+ * in the bookings or services table.
+ *
+ * @param mysqli $conn The database connection object.
+ * @return int The number of completed services.
+ */
+function getCompletedServicesCount($conn)
+{
+    // Query to count the number of completed services
+    $query = "SELECT COUNT(*) AS completed_count FROM schedules WHERE status = 'completed'";
+
+    // Execute the query
+    $result = $conn->query($query);
+
+    // Check if the query was successful and fetch the result
+    if ($result && $row = $result->fetch_assoc()) {
+        return (int)$row['completed_count']; // Return the count of completed services
+    } else {
+        return 0; // Return 0 if the query fails or no completed services exist
+    }
+}
+
+/**
+ * Get the total number of pending tasks.
+ *
+ * This function retrieves the total number of tasks or services marked as "pending"
+ * in the bookings or tasks table.
+ *
+ * @param mysqli $conn The database connection object.
+ * @return int The number of pending tasks.
+ */
+function getPendingTasksCount($conn)
+{
+    // Query to count the number of pending tasks/services
+    $query = "SELECT COUNT(*) AS pending_count FROM schedules WHERE status = 'scheduled'";
+
+    // Execute the query
+    $result = $conn->query($query);
+
+    // Check if the query was successful and fetch the result
+    if ($result && $row = $result->fetch_assoc()) {
+        return (int)$row['pending_count']; // Return the count of pending tasks/services
+    } else {
+        return 0; // Return 0 if the query fails or no pending tasks exist
+    }
+}

@@ -17,6 +17,16 @@ $totalClients = countRegisteredClients();
 
 // Fetch total bookings made
 $totalBookings = countBookingsMade();
+
+// Fetch the total revenue
+$totalRevenue = fetchTotalRevenue($conn);
+
+// fetch completed 
+$completedServicesCount = getCompletedServicesCount($conn);
+
+// fetch peding tasks
+$pendingTasksCount = getPendingTasksCount($conn);
+
 ?>
 <!doctype html>
 <html lang="en">

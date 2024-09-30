@@ -25,11 +25,11 @@ include './includes/sidebar.php';
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-   <!-- Page heading -->
-        <h4 class="mt-4">View Bookings</h4>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard / Booking Information</li>
-        </ol>
+    <!-- Page heading -->
+    <h4 class="mt-4">View Bookings</h4>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Dashboard / Booking Information</li>
+    </ol>
 
     <div class="card shadow-sm">
         <div class="card-header d-flex align-items-center">
@@ -87,7 +87,7 @@ include './includes/sidebar.php';
             <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
                 Edit&nbsp;<span data-feather="edit-3"></span>
             </a>
-            <a href="paybooking.php" class="btn btn-sm btn-success me-2 d-flex align-items-center">
+            <a href="payment.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-success me-2 d-flex align-items-center">
                 Pay&nbsp;<span data-feather="send"></span>
             </a>
             <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this booking record?');">
