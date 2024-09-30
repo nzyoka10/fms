@@ -34,7 +34,7 @@ include './includes/sidebar.php';
 
     <h4 class="mt-4">Listing of clients</h4>
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / All Clients</li>
+        <li class="breadcrumb-item active">Dashboard / Clients</li>
     </ol>
 
     <!-- Header buttons -->

@@ -43,19 +43,19 @@ include './includes/sidebar.php';
                 <!-- Client Name -->
                 <div class="col-md-6 mb-3">
                     <h5 class="fw-bold">Client Name</h5>
-                    <p class="text-muted"><?php echo htmlspecialchars($booking['client_id']); ?></p>
+                    <p class="text-muted"><?php echo htmlspecialchars($booking['client_name']); ?></p>
                 </div>
                 <!-- Service Type -->
                 <div class="col-md-6 mb-3">
                     <h5 class="fw-bold">Service Type</h5>
-                    <p class="text-muted"><?php echo htmlspecialchars($booking['service_type']); ?></p>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></p>
                 </div>
             </div>
 
             <div class="row">
                 <!-- Booking Date -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Booking Date</h5>
+                    <h5 class="fw-bold">Booked Date</h5>
                     <p class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></p>
                 </div>
                 <!-- Location -->

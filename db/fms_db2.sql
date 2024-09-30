@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2024 at 10:30 AM
+-- Generation Time: Sep 30, 2024 at 09:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -144,7 +144,7 @@ CREATE TABLE `payments` (
 CREATE TABLE `schedules` (
   `id` int(11) NOT NULL,
   `client_id` varchar(100) NOT NULL,
-  `service_type` enum('burial','cremation','other') DEFAULT 'burial',
+  `service_type` varchar(100) DEFAULT NULL,
   `schedule_date` date NOT NULL,
   `vehicle_type` varchar(150) DEFAULT NULL,
   `request` varchar(255) DEFAULT NULL,
@@ -284,7 +284,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`

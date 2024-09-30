@@ -228,7 +228,8 @@ function updateClient($id, $name, $email, $phone, $address)
  * @param string $query The search query.
  * @return array The list of matching clients.
  */
-function searchClients($query) {
+function searchClients($query)
+{
     global $conn;
     $stmt = $conn->prepare("SELECT * FROM clients WHERE full_name LIKE ? OR email LIKE ? OR phone LIKE ?");
     $searchParam = '%' . $query . '%';
@@ -244,6 +245,113 @@ function searchClients($query) {
     return $clients;
 }
 
+/** 
+ * ********** Bookings Functions ****************
+ */
+
+/**
+ * Function to handle the booking form submission.
+ *
+ * @param array $data The form data from the POST request.
+ * @param mysqli $conn The database connection.
+ * @return array An associative array containing success or error messages.
+ */
+function handleBookingForm($data, $conn)
+{
+    $response = [];
+
+    // Get form data with htmlspecialchars to prevent XSS
+    $client_id = htmlspecialchars($data['client_id'] ?? '');
+    $service_type = htmlspecialchars($data['service_type'] ?? '');
+    $schedule_date = htmlspecialchars($data['schedule_date'] ?? '');
+    $vehicle_type = htmlspecialchars($data['vehicle_type'] ?? '');
+    $request = htmlspecialchars($data['request'] ?? '');
+    $status = htmlspecialchars($data['status'] ?? 'scheduled');
+
+    // Validate required fields
+    if (empty($client_id) || empty($service_type) || empty($schedule_date) || empty($vehicle_type) || empty($status)) {
+        $response['error'] = 'Please fill in all required fields!';
+    } else {
+        // Check if the booking already exists
+        if (bookingExists($client_id, $service_type, $schedule_date, $vehicle_type, $conn)) {
+            $response['error'] = 'Booking already exists for this client and date!';
+        } else {
+            // Attempt to insert the booking
+            $insertResponse = insertBooking($client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn);
+            if ($insertResponse['success']) {
+                $response['success'] = null;
+            } else {
+                $response['error'] = 'Error: Could not add booking. Please try again!';
+            }
+        }
+    }
+
+    return $response;
+}
+
+
+
+/**
+ * Function to check if a booking already exists.
+ *
+ * @param string $client_id The ID of the client.
+ * @param string $service_type The type of service (e.g., Burial/Cremation).
+ * @param string $schedule_date The date of the booking.
+ * @param string $vehicle_type The type of vehicle for the booking.
+ * @param mysqli $conn The database connection.
+ * @return bool True if the booking exists, false otherwise.
+ */
+function bookingExists($client_id, $service_type, $schedule_date, $vehicle_type, $conn)
+{
+    $sql = "SELECT COUNT(*) FROM schedules WHERE client_id = ? AND service_type = ? AND schedule_date = ? AND vehicle_type = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ssss', $client_id, $service_type, $schedule_date, $vehicle_type);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    return $count > 0; // Return true if count is greater than 0
+}
+
+/**
+ * Function to insert a new booking into the database.
+ *
+ * @param string $client_id The ID of the client.
+ * @param string $service_type The type of service (e.g., Burial/Cremation).
+ * @param string $schedule_date The date of the booking.
+ * @param string $vehicle_type The type of vehicle for the booking.
+ * @param string $request Any additional requests.
+ * @param string $status The status of the booking.
+ * @param mysqli $conn The database connection.
+ * @return array An associative array indicating success or failure.
+ */
+function insertBooking($client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn)
+{
+    $response = ['success' => false];
+
+    // Prepare the SQL statement
+    $sql = "INSERT INTO schedules (client_id, service_type, schedule_date, vehicle_type, request, status)
+            VALUES (?, ?, ?, ?, ?, ?)";
+
+    // Prepare the SQL statement
+    if ($stmt = $conn->prepare($sql)) {
+        // Bind the parameters
+        $stmt->bind_param('ssssss', $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status);
+
+        // Execute the SQL statement
+        if ($stmt->execute()) {
+            $response['success'] = true;
+        }
+
+        // Close the statement
+        $stmt->close();
+    }
+
+    return $response;
+}
+
+
 /**
  * Retrieves bookings from the schedules table.
  *
@@ -252,15 +360,16 @@ function searchClients($query) {
  *
  * @return array $bookings An array of booking records.
  */
-function getBookings() {
+function getBookings()
+{
     global $conn; // Use the global database connection variable
 
     // Prepare and execute the SQL query to fetch bookings
-    // $query = "SELECT s.id, c.full_name, s.service_type, s.schedule_date, s.location, s.status 
-    //           FROM schedules s
-    //           JOIN clients c ON s.client_id = c.id"; 
+    $query = "SELECT s.id, c.full_name, s.service_type, s.schedule_date, s.status 
+              FROM schedules s
+              JOIN clients c ON s.client_id = c.id";
 
-    $query = "SELECT * FROM schedules";
+    // $query = "SELECT * FROM schedules";
 
     $result = $conn->query($query); // Execute the query
 
@@ -279,108 +388,6 @@ function getBookings() {
     return $bookings; // Return the list of bookings
 }
 
-/**
- * Adds a new booking to the schedules table.
- *
- * This function inserts a new booking into the database with the specified details.
- *
- * @param string $clientName The name of the client.
- * @param string $serviceType The type of service for the booking.
- * @param string $bookingDate The date of the booking.
- * @param string $location The location of the booking.
- * @param string $locationLink The Google Maps link for the location.
- * @param string $status The status of the booking (e.g., scheduled, completed).
- *
- * @return bool True on success, False on failure.
- */
-function addBooking($clientName, $serviceType, $bookingDate, $location, $locationLink, $status) {
-    global $conn; // Use the global database connection variable
-
-    // Prepare an SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("INSERT INTO schedules (client_id, service_type, schedule_date, location, google_map_link, status) VALUES (?, ?, ?, ?, ?, ?)");
-
-    // Check if the statement preparation failed
-    if ($stmt === false) {
-        error_log("Error preparing statement: " . $conn->error); // Log error for debugging
-        return false;
-    }
-
-    // Get the client ID based on the client name
-    $clientId = getClientIdByName($clientName); // You need to implement this function
-
-    // Check if the client ID was retrieved successfully
-    if ($clientId === null) {
-        error_log("Client not found: $clientName"); // Log error for debugging
-        return false; // Return false if the client does not exist
-    }
-
-    // Bind parameters to the prepared statement
-    if (!$stmt->bind_param("isssss", $clientId, $serviceType, $bookingDate, $location, $locationLink, $status)) {
-        error_log("Error binding parameters: " . $stmt->error); // Log error for debugging
-        $stmt->close(); // Always close the statement
-        return false;
-    }
-
-    // Execute the statement
-    if (!$stmt->execute()) {
-        error_log("Error executing statement: " . $stmt->error); // Log error for debugging
-        $stmt->close(); // Close the statement to free up resources
-        return false;
-    }
-
-    // Close the statement
-    $stmt->close(); // Close the statement to free up resources
-
-    return true; // Return true on successful insertion
-}
-
-/**
- * Retrieves the client ID based on the client's name.
- *
- * @param string $clientName The name of the client.
- *
- * @return int|null The client ID if found, or null if not found.
- */
-function getClientIdByName($clientName) {
-    global $conn; // Use the global database connection variable
-
-    // Prepare the SQL statement to retrieve the client ID based on the client's name
-    $stmt = $conn->prepare("SELECT id FROM clients WHERE full_name = ?");
-    
-    // Check if the statement preparation failed
-    if ($stmt === false) {
-        error_log("Error preparing getClientIdByName statement: " . $conn->error); // Log error for debugging
-        return null;
-    }
-
-    // Bind the client's name to the prepared statement
-    $stmt->bind_param("s", $clientName);
-
-    // Execute the statement
-    if (!$stmt->execute()) {
-        error_log("Error executing getClientIdByName statement: " . $stmt->error); // Log error for debugging
-        $stmt->close(); // Always close the statement
-        return null;
-    }
-
-    // Get the result
-    $result = $stmt->get_result();
-
-    // Check if the client was found
-    if ($result->num_rows > 0) {
-        // Fetch the client ID
-        $row = $result->fetch_assoc();
-        $clientId = $row['id'];
-    } else {
-        // Client not found
-        $clientId = null;
-    }
-
-    // Close the statement
-    $stmt->close();
-
-    return $clientId; // Return the client ID or null if not found
-}
 
 /**
  * Get the total number of bookings made.
@@ -407,7 +414,7 @@ function countBookingsMade()
 }
 
 /**
- * Fetch a single booking by ID from the schedules table.
+ * Fetch a single booking by ID from the schedules table along with client details.
  *
  * @param int $bookingId The ID of the booking.
  * @return array|null The booking details as an associative array, or null if not found.
@@ -417,7 +424,12 @@ function getBookingById($bookingId)
     global $conn; // Use the global database connection
 
     // Prepare the SQL query to fetch booking details from the schedules table
-    $stmt = $conn->prepare("SELECT * FROM schedules WHERE id = ?");
+    $stmt = $conn->prepare("
+        SELECT s.*, c.full_name AS client_name
+        FROM schedules s
+        JOIN clients c ON s.client_id = c.id
+        WHERE s.id = ?
+    ");
     $stmt->bind_param("i", $bookingId); // Bind the booking ID as a parameter
 
     // Execute the statement and check if the query was successful
@@ -430,31 +442,4 @@ function getBookingById($bookingId)
 
     return null; // Return null if no booking is found
 }
-
-
-// /**
-//  * Fetch a single booking by ID from the database.
-//  *
-//  * @param int $bookingId The ID of the booking.
-//  * @return array|null The booking details as an associative array, or null if not found.
-//  */
-// function getBookingById($bookingId)
-// {
-//     global $conn; // Use the global database connection
-
-//     // Prepare the SQL query
-//     $stmt = $conn->prepare("SELECT schedules.*, clients.full_name as client_name FROM schedules 
-//                             JOIN clients ON schedules.client_id = clients.id 
-//                             WHERE schedules.id = ?");
-//     $stmt->bind_param("i", $bookingId); // Bind the booking ID as a parameter
-
-//     if ($stmt->execute()) {
-//         $result = $stmt->get_result();
-//         if ($result->num_rows > 0) {
-//             return $result->fetch_assoc(); // Return the booking data as an associative array
-//         }
-//     }
-
-//     return null; // Return null if no booking is found
-// }
 

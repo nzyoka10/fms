@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2024 at 01:28 PM
+-- Generation Time: Sep 29, 2024 at 10:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,19 @@ CREATE TABLE `clients` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `clients`
+--
+
+INSERT INTO `clients` (`id`, `full_name`, `email`, `phone`, `address`, `created_at`, `updated_at`) VALUES
+(1, 'Test User 1', 'test@app.com', '0789256714', '51 Street, Nairobi', '2024-09-28 13:09:02', '2024-09-29 03:43:17'),
+(2, 'Mike Aguero Jr', 'mike@app.fms', '0712671267', '208 Street, Syokimau', '2024-09-28 13:14:52', '2024-09-29 05:28:26'),
+(3, 'Lamar Test', 'exampl@info.com', '0736348911', '23 Street, Nairobi', '2024-09-28 13:22:31', '2024-09-29 05:28:03'),
+(4, 'Test User 2', 'test2@mail.com', '0789256714', '208, Kinoo, Nrb', '2024-09-28 13:29:59', '2024-09-28 13:29:59'),
+(5, 'Jayden Uhuru ', 'jayden@mail.fms', '0736348911', '100 Kijabe, Nairobi', '2024-09-28 15:10:30', '2024-09-28 15:15:50'),
+(6, 'Super Metro', 'super@app.com', '07911782123', '51 Street, Waiyaki', '2024-09-29 05:25:58', '2024-09-29 05:25:58'),
+(7, 'Griffin Kioko', 'kioko@app.com', '0789125826', '87 Street, Kinoo', '2024-09-29 06:24:15', '2024-09-29 06:24:15');
 
 -- --------------------------------------------------------
 
@@ -129,7 +142,7 @@ CREATE TABLE `payments` (
 
 CREATE TABLE `schedules` (
   `id` int(11) NOT NULL,
-  `client_id` int(11) NOT NULL,
+  `client_id` varchar(100) NOT NULL,
   `service_type` varchar(100) DEFAULT NULL,
   `schedule_date` date NOT NULL,
   `location` varchar(255) DEFAULT NULL,
@@ -146,28 +159,24 @@ CREATE TABLE `schedules` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT, -- Automatically incrementing ID for each user
-  `first_name` varchar(50) NOT NULL, -- First Name
-  `last_name` varchar(50) NOT NULL, -- Last Name
-  `username` varchar(50) NOT NULL UNIQUE, -- Username (must be unique)
-  `email` varchar(100) NOT NULL UNIQUE, -- Email (must be unique)
-  `password_hash` varchar(255) NOT NULL, -- Password Hash for security
-  `role` enum('admin', 'staff') NOT NULL DEFAULT 'staff', -- Role (default to 'staff')
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(), -- Timestamp for when the user is created
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(), -- Timestamp for when the user is updated
-  PRIMARY KEY (`id`) -- Setting the primary key
+  `id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `role` enum('admin','staff') NOT NULL DEFAULT 'staff',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `users`
+--
 
--- CREATE TABLE `users` (
---   `id` int(11) NOT NULL,
---   `username` varchar(50) NOT NULL,
---   `email` varchar(100) NOT NULL,
---   `password_hash` varchar(255) NOT NULL,
---   `role` enum('admin','staff') NOT NULL,
---   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
---   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password_hash`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'Tom', 'Ouko', 'admin', 'admin@app.com', '$2y$10$m4ZTmmGEXuiCeVcG0qdLZuZcUGyNlT56UMzo/Xtt5MYKndxrracsa', 'admin', '2024-09-28 12:18:53', '2024-09-28 12:18:53'),
+(2, 'Staff', 'User', 'staff', 'staff@mail.app', '$2y$10$FjO0N6zoQ5pZ5qmeVb8g5O3DP3F10CEr.PW0aCYiottbbExte1VBG', 'staff', '2024-09-28 15:17:45', '2024-09-28 15:17:45');
 
 --
 -- Indexes for dumped tables
@@ -226,7 +235,8 @@ ALTER TABLE `schedules`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -236,7 +246,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `client_interactions`
@@ -278,41 +288,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `client_interactions`
---
-ALTER TABLE `client_interactions`
-  ADD CONSTRAINT `client_interactions_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `deceased`
---
-ALTER TABLE `deceased`
-  ADD CONSTRAINT `deceased_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `logistics`
---
-ALTER TABLE `logistics`
-  ADD CONSTRAINT `logistics_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `payments`
---
-ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `schedules`
---
-ALTER TABLE `schedules`
-  ADD CONSTRAINT `schedules_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
