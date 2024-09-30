@@ -45,9 +45,11 @@ include './includes/sidebar.php';
     <!-- Header buttons -->
     <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
         <!-- Add Client Button -->
-        <button type="button" class="btn btn-sm btn-primary me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <span data-feather="user-plus"></span>&nbsp;New booking
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-sm btn-primary me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <span data-feather="user-plus"></span>&nbsp;Add booking
         </button>
+
     </div>
 
     <?php
@@ -65,7 +67,7 @@ include './includes/sidebar.php';
                 <th>Client Name</th>
                 <th>Service Type</th>
                 <th>Booked Day</th>
-                <th>Location</th>
+                <th>status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -83,7 +85,7 @@ include './includes/sidebar.php';
                         <td><?php echo htmlspecialchars($booking['client_id']); ?></td>
                         <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
                         <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                        <td><?php echo htmlspecialchars($booking['location']); ?></td>
+                        <td><?php echo htmlspecialchars($booking['status']); ?></td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -101,6 +103,78 @@ include './includes/sidebar.php';
             <?php endif; ?>
         </tbody>
     </table>
+
+    <!-- bookings modal form -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">New Booking</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <!-- user form -->
+                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="client_name" class="form-label">Client Name<span class="text-danger">*</span></label>
+                                <select class="form-select" id="client_name" name="client_name" required>
+                                    <option value="" disabled selected>Select client</option>
+                                    <?php
+                                    // Fetch clients from the database and populate options
+                                    $query = "SELECT id, full_name FROM clients";
+                                    $result = $conn->query($query);
+                                    if ($result) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<option value='{$row['id']}'>{$row['full_name']}</option>";
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <!-- <input type="text" class="form-control" placeholder="First name" aria-label="First name"> -->
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <legend class="col-form-label col-sm-10 pt-2">Service Type<span class="text-danger">*</span></legend>
+                                <div class="col">
+                                    <input class="form-check-input" type="radio" name="burial" id="burial" value="burial">
+                                    <label class="form-check-label me-2" for="burial">
+                                        Burial
+                                    </label>
+                                    <input class="form-check-input" type="radio" name="cremation" id="cremation" value="cremation">
+                                    <label class="form-check-label me-2" for="cremation">
+                                        Cremation
+                                    </label>                                    
+                                    <input class="form-check-input" type="radio" name="other" id="other" value="other">
+                                    <label class="form-check-label me-2" for="other">
+                                        Other
+                                    </label>                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="service_type" class="form-label">Vehicle Type<span class="text-danger">*</span></label>
+                                <select class="form-select" id="service_type" name="service_type" required>
+                                    <option value="" disabled selected>Select vehicle</option>
+                                    <option value="van">Van - Body + 6 people</option>
+                                    <option value="bus">Bus - Body + 30 people</option>
+                                    <option value="other">Other</option>
+                                </select>                                
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="bookingdate" class="form-label">Booking Date<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control custom-date" id="bookingdate" name="bookingdate" required>
+                            </div>                            
+                        </div>
+                    </form>
+
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
 
     <!-- Add Client Modal Form -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
