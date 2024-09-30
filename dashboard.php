@@ -96,7 +96,7 @@ include './includes/title.php';
 </div>
 
 <!-- Dashboard Statistics -->
-<div class="row g-4 mt-4">
+<!-- <div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card bg-primary text-white">
             <div class="card-body p-4">
@@ -124,7 +124,7 @@ include './includes/title.php';
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 

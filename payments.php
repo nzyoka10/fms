@@ -27,10 +27,10 @@ include './includes/sidebar.php';
                 <thead>
                     <tr>
                         <th>Sn#</th>                        
-                        <th>Receipt Number</th>
-                        <th>Client Name</th>
+                        <th>Receipt number</th>
+                        <th>Client name</th>
                         <th>Booked date</th> 
-                        <th>Payed date</th>                       
+                        <th>Payment date</th>                       
                         <th>Payment method</th>
                         <th>Total amount</th>
                         <!-- <th>Tax</th> -->

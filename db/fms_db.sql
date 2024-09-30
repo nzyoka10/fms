@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2024 at 12:19 PM
+-- Generation Time: Sep 30, 2024 at 02:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -125,7 +125,7 @@ CREATE TABLE `logistics` (
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
   `booking_id` int(11) NOT NULL,
-  `receipt_number` INT(8) NOT NULL UNIQUE, -- 8-digit unique receipt number
+  `receipt_number` int(8) DEFAULT NULL,
   `payment_method` enum('cash','mpesa') NOT NULL DEFAULT 'cash',
   `amount` decimal(10,2) NOT NULL,
   `tax` decimal(10,2) DEFAULT NULL,
@@ -135,6 +135,16 @@ CREATE TABLE `payments` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `booking_id`, `receipt_number`, `payment_method`, `amount`, `tax`, `discount`, `payment_date`, `created_at`, `updated_at`) VALUES
+(4, 11, 137281, 'cash', 6000.00, 150.00, 0.00, '2024-09-30', '2024-09-30 11:19:28', '2024-09-30 11:19:28'),
+(5, 13, 137282, 'mpesa', 17000.00, 1000.00, 500.00, '2024-09-30', '2024-09-30 11:21:21', '2024-09-30 11:21:21'),
+(6, 14, 137283, 'cash', 3000.00, 0.00, 0.00, '2024-09-30', '2024-09-30 12:46:17', '2024-09-30 12:46:17'),
+(7, 15, 137284, 'mpesa', 21000.00, 0.00, 0.00, '2024-09-30', '2024-09-30 12:49:41', '2024-09-30 12:49:41');
 
 -- --------------------------------------------------------
 
@@ -159,10 +169,11 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`id`, `client_id`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
-(11, '6', 'burial', '2024-10-04', 'van', 'Family requests photographer', 'scheduled', '2024-09-30 08:43:11', '2024-09-30 08:43:11'),
+(11, '6', 'burial', '2024-10-04', 'van', 'Family requests photographer and Boda boda escort ', 'scheduled', '2024-09-30 08:43:11', '2024-09-30 11:03:56'),
 (12, '7', 'burial', '2024-10-05', 'bus', 'The family requests the following:-\r\nDancers, catering team and boda boda escorts.\r\n Photographer and a DJ\r\n', 'scheduled', '2024-09-30 08:44:42', '2024-09-30 10:08:07'),
-(13, '3', 'cremation', '2024-10-08', 'bus', 'None', 'scheduled', '2024-09-30 08:45:55', '2024-09-30 08:45:55'),
-(14, '5', 'cremation', '2024-10-10', 'van', 'The family requests a photographer and additional security personnel for a two-day body viewing.', 'scheduled', '2024-09-30 08:55:35', '2024-09-30 08:55:35');
+(13, '3', 'cremation', '2024-10-08', 'bus', 'None', 'completed', '2024-09-30 08:45:55', '2024-09-30 11:43:40'),
+(14, '5', 'burial', '2024-10-10', 'van', 'The family requests a photographer and additional security personnel for a two-day body viewing.', 'scheduled', '2024-09-30 08:55:35', '2024-09-30 11:18:01'),
+(15, '8', 'burial', '2024-10-03', 'bus', 'Boda boda escort and catering team.', 'scheduled', '2024-09-30 12:49:07', '2024-09-30 12:49:07');
 
 -- --------------------------------------------------------
 
@@ -289,13 +300,13 @@ ALTER TABLE `logistics`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
