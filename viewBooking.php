@@ -42,12 +42,12 @@ include './includes/sidebar.php';
             <div class="row">
                 <!-- Client Name -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Client Name</h5>
+                    <h5 class="fw-bold">Client name</h5>
                     <p class="text-muted"><?php echo htmlspecialchars($booking['client_name']); ?></p>
                 </div>
                 <!-- Service Type -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Service Type</h5>
+                    <h5 class="fw-bold">Service type</h5>
                     <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></p>
                 </div>
             </div>
@@ -55,25 +55,21 @@ include './includes/sidebar.php';
             <div class="row">
                 <!-- Booking Date -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Booked Date</h5>
+                    <h5 class="fw-bold">Booked date</h5>
                     <p class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></p>
                 </div>
                 <!-- Location -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Location</h5>
-                    <p class="text-muted"><?php echo htmlspecialchars($booking['location']); ?></p>
+                    <h5 class="fw-bold">Vehicle type</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['vehicle_type']); ?></p>
                 </div>
             </div>
 
             <div class="row">
                 <!-- Google Maps Link -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Google Maps Link</h5>
-                    <p class="text-muted">
-                        <a href="<?php echo htmlspecialchars($booking['google_map_link']); ?>" target="_blank" class="text-primary ms-4 text-decoration-none font-600">
-                            View route
-                        </a>
-                    </p>
+                    <h5 class="fw-bold">Request</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($booking['request']); ?></p>
                 </div>
                 <!-- Status -->
                 <div class="col-md-6 mb-3">

@@ -53,9 +53,9 @@ include './includes/sidebar.php';
         <thead>
             <tr>
                 <th>Sn#</th>
-                <th>Client Name</th>
-                <th>Service Type</th>
-                <th>Booked Day</th>
+                <th>Booked date</th>
+                <th>Client name</th>
+                <th>Service type</th>                
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
@@ -71,9 +71,9 @@ include './includes/sidebar.php';
                 <?php foreach ($bookings as $index => $booking): ?>
                     <tr>
                         <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($booking['full_name']); ?></td>
-                        <td class="text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></td>
                         <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
+                        <td><?php echo htmlspecialchars($booking['full_name']); ?></td>
+                        <td class="text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></td>                        
                         <td><?php echo htmlspecialchars($booking['status']); ?></td>
                         <td>
                             <div class="dropdown">
