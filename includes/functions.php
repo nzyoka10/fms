@@ -678,3 +678,58 @@ function getProcessedBookings($conn)
     return $processedBookings; // Return the processed bookings
 }
 
+/**
+ * Fetch all users from the users table.
+ *
+ * @param mysqli $conn  The database connection object.
+ * @return array  Returns an array of users.
+ */
+function getUsers($conn)
+{
+    $users = [];
+
+    // SQL query to get data from the users table
+    $query = "SELECT id, username, email, role, created_at FROM users ORDER BY created_at Asc";
+
+    $result = $conn->query($query);
+
+    // Check if the query returns rows
+    if ($result && $result->num_rows > 0) {
+        // Fetch each row as an associative array and store in $users
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+    }
+
+    return $users; // Return the list of users
+}
+
+/**
+ * Delete a user by their ID.
+ *
+ * @param mysqli $conn  The database connection object.
+ * @param int $userId  The ID of the user to delete.
+ * @return bool  True if the user was deleted, false otherwise.
+ */
+function deleteUserById($conn, $userId)
+{
+    // Prepare the SQL delete query
+    $sql = "DELETE FROM users WHERE id = ?";
+
+    // Prepare a statement
+    if ($stmt = $conn->prepare($sql)) {
+        // Bind the user ID as an integer parameter
+        $stmt->bind_param("i", $userId);
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Return true if the deletion was successful
+            return true;
+        }
+        // Close the statement
+        $stmt->close();
+    }
+
+    // Return false if the deletion failed
+    return false;
+}

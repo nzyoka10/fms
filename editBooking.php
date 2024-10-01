@@ -46,6 +46,7 @@ include './includes/sidebar.php';
         }
         if (isset($responseMessage['error'])) {
             echo "<div class='alert alert-danger mt-2'>{$responseMessage['error']}</div>";
+            
         }
     }
     ?>
