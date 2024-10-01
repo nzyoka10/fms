@@ -47,7 +47,7 @@ include './includes/sidebar.php';
                             <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
                             <td><?php echo htmlspecialchars($booking['payment_date']); ?></td>
                             <td class="text-capitalize"><?php echo htmlspecialchars($booking['payment_method']); ?></td>
-                            <td>Kes. <?php echo number_format($booking['amount'], 2); ?></td>
+                            <td><strong class="text-success me-2">Kes.</strong><?php echo number_format($booking['amount'], 2); ?></td>
                             <!-- <td>Kes. <?php echo number_format($booking['discount'], 2); ?></td> -->
                             <!-- <td><?php echo htmlspecialchars($booking['payment_date']); ?></td> -->
                         </tr>

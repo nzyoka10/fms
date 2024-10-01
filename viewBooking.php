@@ -72,11 +72,16 @@ include './includes/sidebar.php';
                     <p class="text-muted"><?php echo htmlspecialchars($booking['request']); ?></p>
                 </div>
                 <!-- Status -->
-                <div class="col-md-6 mb-3">
+                <!-- <div class="col-md-3 mb-3">
                     <h5 class="fw-bold">Status</h5>
                     <p class="badge bg-<?php echo ($booking['status'] === 'completed') ? 'success' : 'danger'; ?> p-2">
                         <?php echo htmlspecialchars($booking['status']); ?>
                     </p>
+                </div> -->
+                <!-- Status -->
+                <div class="col-md-3 mb-3">
+                    <h5 class="fw-bold text-muted h6">Transcation <sup class="text-success">Msg</sup></h5>
+                    
                 </div>
             </div>
         </div>

@@ -27,13 +27,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="./logistics.php">
                             <span data-feather="truck"></span>
                             Logistics
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="./inventory.php">
                             <span data-feather="database"></span>
                             Inventory
                         </a>
@@ -52,13 +52,13 @@
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="./reports.php">
                             <span data-feather="file-text"></span>
                             Reports
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="./users.php">
                             <span data-feather="user"></span>
                             Users
                         </a>
