@@ -13,14 +13,23 @@ include './includes/sidebar.php';
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
     <h4 class="mt-4">Account Users</h4>
+
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Users / Admin</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="users.php">All Users</a>
+        </li>
     </ol>
+
+
+    <!-- <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard / Users / Admin</li>
+    </ol> -->
 
     <!-- Table to display account users -->
     <div class="table-responsive">
         <?php if (!empty($users)): ?>
-            <table class="table table-bordered table-hover mt-4">
+            <table class="table table-bordered table-hover mt-2">
                 <thead>
                     <tr>
                         <th>Sn#</th>

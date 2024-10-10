@@ -35,10 +35,19 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Process Payment</h4>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Dashboard / Payment</li>
+    <h4 class="mt-4">Make Payment</h4>
+
+    <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="payment.php?id=<?php echo $booking['id']; ?>">Payments</a>
+        </li>
     </ol>
+
+
+    <!-- <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Dashboard / Payment</li>
+    </ol> -->
 
     <!-- Display success or error messages if they exist -->
     <?php

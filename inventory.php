@@ -16,9 +16,18 @@ include './includes/sidebar.php';
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
     <h4 class="mt-4">Listings of inventory</h4>
+
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Inventory</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="inventory.php">Inventory</a>
+        </li>
     </ol>
+
+
+    <!-- <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard / </li>
+    </ol> -->
 
 
 

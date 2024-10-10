@@ -15,10 +15,15 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Processed bookings</h4>
+    <h4 class="mt-4">Processed Bookings</h4>
+
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Payments</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="payments.php">Payments</a>
+        </li>
     </ol>
+
 
     <!-- Table to display processed bookings -->
     <div class="table-responsive">
@@ -27,8 +32,8 @@ include './includes/sidebar.php';
                 <thead>
                     <tr>
                         <th>Sn#</th>                        
-                        <th>Receipt number</th>
-                        <th>Client name</th>
+                        <th>Receipt</th>
+                        <th>Client Name</th>
                         <th>Booked date</th> 
                         <th>Payment date</th>                       
                         <th>Payment method</th>
