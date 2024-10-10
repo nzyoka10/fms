@@ -2,16 +2,8 @@
 // Include functions file
 include 'includes/functions.php';
 
-<<<<<<< HEAD
-// Get the processed bookings
-$processedBookings = getProcessedBookings($conn);
-
-// get booking too
-$bookings = getBookings();
-=======
 // Fetch logistics data
 $logistics = getLogisticsData($conn);
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
 // Include HTML templates
 include './includes/header.php';
@@ -20,41 +12,31 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-<<<<<<< HEAD
-    <h4 class="mt-4">Listings of logistics</h4>
-=======
     <h4 class="mt-4">Listings of Logistics</h4>
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
+
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Logistics</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="./logistics.php">Logistics</a>
+        </li>
     </ol>
 
-<<<<<<< HEAD
 
+    <!-- <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard / Logistics</li>
+    </ol> -->
 
-
-
-
-
-
-
-
-</main>
-
-<!-- Footer -->
-<?php include './includes/footer.php'; ?>
-=======
     <!-- Schedule Logistics Button -->
-    <div class="mb-3">
-        <a href="scheduleLogistics.php" class="btn btn-sm btn-success">
-            <i class="fas fa-plus"></i> Schedule
+    <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2">
+        <a href="scheduleLogistics.php" class="btn btn-sm btn-outline-dark d-flex align-items-center">
+            <span data-feather="truck"></span>&nbsp;Schedule Trip
         </a>
     </div>
 
     <!-- Table to display logistics bookings -->
     <div class="table-responsive">
         <?php if (!empty($logistics)): ?>
-            <table class="table table-striped table-hover mt-4" id="logisticsTable">
+            <table class="table table-striped table-hover mt-3" id="logisticsTable">
                 <thead>
                     <tr>
                         <th>Sn#</th>
@@ -128,4 +110,3 @@ if (status === 'deleted') {
     });
 }
 </script>
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb

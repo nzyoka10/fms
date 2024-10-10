@@ -23,15 +23,24 @@ include './includes/sidebar.php';
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
 
-    <h4 class="mt-4">Listing of bookings</h4>
+    <h4 class="mt-3">Listing of bookings</h4>
+
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Bookings</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="./bookings.php">Bookings</a>
+        </li>
     </ol>
 
+
+    <!-- <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard / Bookings</li>
+    </ol> -->
+
     <!-- Header buttons -->
-    <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
+    <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom-none">
         <!-- Add Client Button -->
-        <button type="button" class="btn btn-sm btn-primary me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-sm btn-outline-dark me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <span data-feather="user-plus"></span>&nbsp;Add booking
         </button>
     </div>

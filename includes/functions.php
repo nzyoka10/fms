@@ -109,11 +109,7 @@ function getClients()
     global $conn;
 
     $clients = [];
-<<<<<<< HEAD
-    $sql = "SELECT * FROM clients"; // Replace 'clients' with your actual clients table name
-=======
     $sql = "SELECT * FROM clients";
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -164,13 +160,9 @@ function countRegisteredClients()
 
     if ($result) {
         $row = $result->fetch_assoc();
-<<<<<<< HEAD
-        return (int)$row['total']; // Return the total count as an integer
-=======
 
         // Return the total count as an integer
         return (int)$row['total'];
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 
     return 0;
@@ -380,10 +372,6 @@ function getBookings()
               JOIN clients c ON s.client_id = c.id";
 
     // $query = "SELECT * FROM schedules";
-<<<<<<< HEAD
-
-=======
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     $result = $conn->query($query); // Execute the query
 
     // Check if the query executed successfully
@@ -393,14 +381,6 @@ function getBookings()
     }
 
     // Fetch the bookings as an associative array
-<<<<<<< HEAD
-    $bookings = []; // Initialize an empty array for bookings
-    while ($row = $result->fetch_assoc()) {
-        $bookings[] = $row; // Append each row to the bookings array
-    }
-
-    return $bookings; // Return the list of bookings
-=======
     // Initialize an empty array for bookings
     $bookings = []; 
     while ($row = $result->fetch_assoc()) {
@@ -411,7 +391,6 @@ function getBookings()
 
     // Return the list of bookings
     return $bookings; 
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 
@@ -422,11 +401,7 @@ function getBookings()
  */
 function countBookingsMade()
 {
-<<<<<<< HEAD
-    global $conn; // Use the global database connection
-=======
     global $conn;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
     // Prepare the SQL query to count bookings made
     $sql = "SELECT COUNT(*) as total FROM schedules";
@@ -436,13 +411,9 @@ function countBookingsMade()
     if ($result && $result->num_rows > 0) {
         // Fetch the row and return the total count as an integer
         $row = $result->fetch_assoc();
-<<<<<<< HEAD
-        return (int)$row['total']; // Return the total count as an integer
-=======
 
         // Return the total count as an integer
         return (int)$row['total']; 
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 
     // Return 0 if the query fails or no bookings found
@@ -457,11 +428,7 @@ function countBookingsMade()
  */
 function getBookingById($bookingId)
 {
-<<<<<<< HEAD
-    global $conn; // Use the global database connection
-=======
     global $conn;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
     // Prepare the SQL query to fetch booking details from the schedules table
     $stmt = $conn->prepare("
@@ -470,24 +437,16 @@ function getBookingById($bookingId)
         JOIN clients c ON s.client_id = c.id
         WHERE s.id = ?
     ");
-<<<<<<< HEAD
-    $stmt->bind_param("i", $bookingId); // Bind the booking ID as a parameter
-=======
     // Bind the booking ID as a parameter
     $stmt->bind_param("i", $bookingId);
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
     // Execute the statement and check if the query was successful
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
-<<<<<<< HEAD
-            return $result->fetch_assoc(); // Return the booking data as an associative array
-=======
 
             // Return the booking data as an associative array
             return $result->fetch_assoc();
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
         }
     }
 
@@ -589,36 +548,6 @@ function handlePaymentForm($data, $conn, $bookingId)
     }
 
     // Check if the booking exists using the provided booking ID
-<<<<<<< HEAD
-    $bookingDetails = getBookingById($bookingId); // Fetch booking details
-
-    // Check if the booking exists
-    if ($bookingDetails === null) {
-        $response['error'] = 'Invalid booking ID.'; // Set error message if booking is invalid
-        return $response; // Return early with error
-    }
-
-    // Generate the next receipt number
-    $query = "SELECT COALESCE(MAX(receipt_number), 137280) + 1 AS next_receipt FROM payments"; // Query to get the next receipt number
-    $result = $conn->query($query); // Execute the receipt number query
-    $row = $result->fetch_assoc(); // Fetch the result row
-    $receipt_number = str_pad($row['next_receipt'], 8, '0', STR_PAD_LEFT); // Generate 8-digit receipt number
-
-    // Prepare SQL query to insert payment record
-    $insertQuery = "INSERT INTO payments (booking_id, receipt_number, payment_method, amount, tax, discount, payment_date) VALUES (?, ?, ?, ?, ?, ?, CURDATE())";
-    $stmt = $conn->prepare($insertQuery); // Prepare the SQL statement
-    $stmt->bind_param("issddd", $bookingId, $receipt_number, $payment_method, $amount, $tax, $discount); // Bind parameters to the SQL query
-
-    // Execute the statement and check for success
-    if ($stmt->execute()) {
-        $response['success'] = 'Payment processed successfully! Your receipt number is: ' . $receipt_number; // Set success message if payment processed
-    } else {
-        $response['error'] = 'Error: Could not process payment. Please try again!'; // Set error message if payment fails
-    }
-    $stmt->close(); // Close the prepared statement
-
-    return $response; // Return response array
-=======
     $bookingDetails = getBookingById($bookingId);
 
     // Check if the booking exists
@@ -647,7 +576,6 @@ function handlePaymentForm($data, $conn, $bookingId)
     $stmt->close(); 
 
     return $response;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 // Function to get Total revenue
@@ -673,17 +601,10 @@ function fetchTotalRevenue($conn)
     // Check if the query was successful and fetch the result
     if ($result) {
         $row = $result->fetch_assoc();
-<<<<<<< HEAD
-        $totalRevenue = $row['total_revenue'] ?? 0; // If null, return 0
-    }
-
-    return (float) $totalRevenue; // Return as float
-=======
         $totalRevenue = $row['total_revenue'] ?? 0; 
     }
 
     return (float) $totalRevenue;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 /**
@@ -705,15 +626,9 @@ function getCompletedServicesCount($conn)
 
     // Check if the query was successful and fetch the result
     if ($result && $row = $result->fetch_assoc()) {
-<<<<<<< HEAD
-        return (int)$row['completed_count']; // Return the count of completed services
-    } else {
-        return 0; // Return 0 if the query fails or no completed services exist
-=======
         return (int)$row['completed_count'];
     } else {
         return 0;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 }
 
@@ -736,15 +651,9 @@ function getPendingTasksCount($conn)
 
     // Check if the query was successful and fetch the result
     if ($result && $row = $result->fetch_assoc()) {
-<<<<<<< HEAD
-        return (int)$row['pending_count']; // Return the count of pending tasks/services
-    } else {
-        return 0; // Return 0 if the query fails or no pending tasks exist
-=======
         return (int)$row['pending_count'];
     } else {
         return 0;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 }
 
@@ -776,11 +685,7 @@ function getProcessedBookings($conn)
         }
     }
 
-<<<<<<< HEAD
-    return $processedBookings; // Return the processed bookings
-=======
     return $processedBookings; 
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 /**
@@ -806,11 +711,7 @@ function getUsers($conn)
         }
     }
 
-<<<<<<< HEAD
-    return $users; // Return the list of users
-=======
     return $users;
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 /**
@@ -842,8 +743,6 @@ function deleteUserById($conn, $userId)
     // Return false if the deletion failed
     return false;
 }
-<<<<<<< HEAD
-=======
 
 /**
  * Fetch logistics data from the database and return as an array.
@@ -991,4 +890,3 @@ function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_
 }
 
 
->>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb

@@ -52,6 +52,22 @@ $pendingTasksCount = getPendingTasksCount($conn);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600&display=swap" rel="stylesheet">
+    <style>
+        .active{
+            background-color: transparent !important;
+            /* color: #0000FF !important; */
+        }
+        .text-decoration-none {
+            letter-spacing: 0.1rem;
+            text-decoration: none !important;
+        }
+
+        .hover-underline:hover {
+            color: #666;
+            text-decoration: underline !important;
+            text-underline-offset: 6px;
+        }
+    </style>
 </head>
 
 <body>

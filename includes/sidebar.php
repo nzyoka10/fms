@@ -9,11 +9,11 @@
                 </h6>
                 <ul class="nav flex-column my-2">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./dashboard.php">
-                            <span data-feather="home"></span>
-                            Dashboard
+                        <a class="nav-link active d-flex align-items-center" aria-current="page" href="./dashboard.php">
+                            <span data-feather="home"></span>&nbsp;Dashboard
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="./clients.php">
                             <span data-feather="users"></span>

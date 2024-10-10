@@ -35,8 +35,12 @@
         <!-- Page heading -->
         <div class="text-center mt-3">
             <h4 class="text-muted">FMS Dashboard</h4>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active">Dashboard / Main</li>
+
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item">
+                    <a class="text-decoration-none hover-underline" href="./dashboard.php">Main</a>
+                </li>
             </ol>
         </div>
 
