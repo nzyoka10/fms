@@ -45,6 +45,11 @@
     });
 </script>
 
+<!-- Include Feather Icons script -->
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+    feather.replace(); // Replace placeholders with icons
+</script>
 
 </body>
 

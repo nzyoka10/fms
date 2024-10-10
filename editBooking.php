@@ -33,9 +33,13 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Update Booking</h4>
-    <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Update Booking</li>
+    <h4 class="mt-2">Edit Booking Record</h4>
+
+    <ol class="breadcrumb mb-4 pt-2">
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="./bookings.php">Bookings</a>
+        </li>
     </ol>
 
     <!-- Display success or error messages if they exist -->
@@ -105,7 +109,7 @@ include './includes/sidebar.php';
             </div>
 
             <div class="col-md-4 d-flex flex-column justify-content-between align-items-stretch">
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
                     <select class="form-select" id="status" name="status" required>
                         <option value="scheduled" <?php echo ($booking['status'] == 'scheduled') ? 'selected' : ''; ?>>Scheduled</option>
@@ -113,20 +117,23 @@ include './includes/sidebar.php';
                     </select>
                 </div>
 
-                <div class="mt-2">
-                    <button type="reset" class="btn btn-sm btn-dark w-100 mb-3">Reset form</button>
-                    <button type="submit" class="btn btn-sm btn-primary w-100">Update Booking</button>
+                <div class="d-flex flex-column justify-content-end pt-1">
+                    <button type="reset" class="btn btn-sm btn-outline-dark mb-3 w-50 d-flex align-items-center justify-content-center">
+                        <span class="me-2" data-feather="refresh-cw" style="width: 16px; height: 16px;"></span>
+                        Reset
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-outline-success mb-3 w-50 d-flex align-items-center justify-content-center">
+                        <span class="me-2" data-feather="pocket" style="width: 16px; height: 16px;"></span>
+                        Save
+                    </button>
+                    <a class="btn btn-sm btn-outline-danger w-50 d-flex align-items-center justify-content-center" href="viewBooking.php?id=<?php echo $booking['id']; ?>">
+                        <span class="me-2" data-feather="x-circle" style="width: 16px; height: 16px;"></span>
+                        Close
+                    </a>  
                 </div>
             </div>
         </div>
     </form>
-
-     <!-- Back Buttons -->
-     <div class="d-flex justify-content-start mt-3">
-        <a class="btn btn-sm btn-success" href="viewBooking.php?id=<?php echo $booking['id']; ?>">
-            Back&nbsp;<span data-feather="skip-back"></span>
-        </a>       
-    </div>
 </main>
 
 <!-- Footer -->

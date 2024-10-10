@@ -27,8 +27,12 @@ include './includes/sidebar.php';
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <!-- Page heading -->
     <h4 class="mt-4">View Booking</h4>
+
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Dashboard / Booking Information</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="./bookings.php">Bookings</a>
+        </li>
     </ol>
 
     <div class="card shadow-sm">

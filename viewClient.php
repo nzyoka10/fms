@@ -34,9 +34,18 @@ include './includes/sidebar.php';
     <div class="container-fluid px-4">
         <!-- Page heading -->
         <h4 class="mt-4">View client</h4>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard / View Client</li>
+
+        <ol class="breadcrumb mb-2">
+            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item mb-3">
+                <a class="text-decoration-none hover-underline" href="./clients.php">Clients</a>
+            </li>
         </ol>
+
+
+        <!-- <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Dashboard / View Client</li>
+        </ol> -->
 
         <!-- Client Details Card -->
         <div class="card mb-4">

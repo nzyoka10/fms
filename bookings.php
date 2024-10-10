@@ -31,12 +31,7 @@ include './includes/sidebar.php';
             <a class="text-decoration-none hover-underline" href="./bookings.php">Bookings</a>
         </li>
     </ol>
-
-
-    <!-- <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Bookings</li>
-    </ol> -->
-
+    
     <!-- Header buttons -->
     <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom-none">
         <!-- Add Client Button -->

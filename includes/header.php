@@ -58,6 +58,7 @@ $pendingTasksCount = getPendingTasksCount($conn);
             /* color: #0000FF !important; */
         }
         .text-decoration-none {
+            font-weight: 400;
             letter-spacing: 0.1rem;
             text-decoration: none !important;
         }
