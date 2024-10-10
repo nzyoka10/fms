@@ -63,12 +63,12 @@
                             Users
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="./logout.php">
                             <span data-feather="power"></span>
                             Logout
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </nav>

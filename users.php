@@ -35,8 +35,8 @@ include './includes/sidebar.php';
                         <th>Sn#</th>
                         <th>Date Created</th>
                         <th>Username</th>
-                        <th>Role</th>
                         <th>Email</th>
+                        <th>Role</th>                        
                         <th>Actions</th> <!-- Actions column -->
                     </tr>
                 </thead>
@@ -45,9 +45,9 @@ include './includes/sidebar.php';
                         <tr>
                             <td><?php echo $index + 1; ?></td>
                             <td><?php echo htmlspecialchars($user['created_at']); ?></td>
-                            <td><?php echo htmlspecialchars($user['username']); ?></td>
-                            <td><?php echo htmlspecialchars($user['role']); ?></td> 
+                            <td class="text-capitalize"><?php echo htmlspecialchars($user['username']); ?></td>
                             <td><?php echo htmlspecialchars($user['email']); ?></td>
+                            <td class="text-capitalize"><?php echo htmlspecialchars($user['role']); ?></td> 
                             <td>
                                 <!-- Actions for edit and delete -->
                                 <a href="editUser.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
