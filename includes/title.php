@@ -33,10 +33,10 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom-none">
 
         <!-- Page heading -->
-        <div class="text-center mt-3">
+        <div class="text-center mt-3 mb-2">
             <h4 class="text-muted">FMS Dashboard</h4>
 
-            <ol class="breadcrumb mb-2">
+            <ol class="breadcrumb p-2 mb-0">
                 <li class="breadcrumb-item active">Dashboard</li>
                 <li class="breadcrumb-item">
                     <a class="text-decoration-none hover-underline" href="./dashboard.php">Main</a>
