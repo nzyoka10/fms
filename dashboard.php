@@ -27,6 +27,10 @@ include './includes/title.php';
     </div>
 
     <!-- Bookings card -->
+<<<<<<< HEAD
+=======
+     
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     <div class="col-md-3">
         <div class="card text-center p-4 shadow-sm">
             <div class="card-body d-flex flex-column align-items-center">

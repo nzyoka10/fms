@@ -109,7 +109,11 @@ function getClients()
     global $conn;
 
     $clients = [];
+<<<<<<< HEAD
     $sql = "SELECT * FROM clients"; // Replace 'clients' with your actual clients table name
+=======
+    $sql = "SELECT * FROM clients";
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -160,7 +164,13 @@ function countRegisteredClients()
 
     if ($result) {
         $row = $result->fetch_assoc();
+<<<<<<< HEAD
         return (int)$row['total']; // Return the total count as an integer
+=======
+
+        // Return the total count as an integer
+        return (int)$row['total'];
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 
     return 0;
@@ -370,7 +380,10 @@ function getBookings()
               JOIN clients c ON s.client_id = c.id";
 
     // $query = "SELECT * FROM schedules";
+<<<<<<< HEAD
 
+=======
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     $result = $conn->query($query); // Execute the query
 
     // Check if the query executed successfully
@@ -380,12 +393,25 @@ function getBookings()
     }
 
     // Fetch the bookings as an associative array
+<<<<<<< HEAD
     $bookings = []; // Initialize an empty array for bookings
     while ($row = $result->fetch_assoc()) {
         $bookings[] = $row; // Append each row to the bookings array
     }
 
     return $bookings; // Return the list of bookings
+=======
+    // Initialize an empty array for bookings
+    $bookings = []; 
+    while ($row = $result->fetch_assoc()) {
+
+        // Append each row to the bookings array
+        $bookings[] = $row; 
+    }
+
+    // Return the list of bookings
+    return $bookings; 
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 
@@ -396,7 +422,11 @@ function getBookings()
  */
 function countBookingsMade()
 {
+<<<<<<< HEAD
     global $conn; // Use the global database connection
+=======
+    global $conn;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
     // Prepare the SQL query to count bookings made
     $sql = "SELECT COUNT(*) as total FROM schedules";
@@ -406,7 +436,13 @@ function countBookingsMade()
     if ($result && $result->num_rows > 0) {
         // Fetch the row and return the total count as an integer
         $row = $result->fetch_assoc();
+<<<<<<< HEAD
         return (int)$row['total']; // Return the total count as an integer
+=======
+
+        // Return the total count as an integer
+        return (int)$row['total']; 
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 
     // Return 0 if the query fails or no bookings found
@@ -421,7 +457,11 @@ function countBookingsMade()
  */
 function getBookingById($bookingId)
 {
+<<<<<<< HEAD
     global $conn; // Use the global database connection
+=======
+    global $conn;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
     // Prepare the SQL query to fetch booking details from the schedules table
     $stmt = $conn->prepare("
@@ -430,13 +470,24 @@ function getBookingById($bookingId)
         JOIN clients c ON s.client_id = c.id
         WHERE s.id = ?
     ");
+<<<<<<< HEAD
     $stmt->bind_param("i", $bookingId); // Bind the booking ID as a parameter
+=======
+    // Bind the booking ID as a parameter
+    $stmt->bind_param("i", $bookingId);
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 
     // Execute the statement and check if the query was successful
     if ($stmt->execute()) {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
+<<<<<<< HEAD
             return $result->fetch_assoc(); // Return the booking data as an associative array
+=======
+
+            // Return the booking data as an associative array
+            return $result->fetch_assoc();
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
         }
     }
 
@@ -538,6 +589,7 @@ function handlePaymentForm($data, $conn, $bookingId)
     }
 
     // Check if the booking exists using the provided booking ID
+<<<<<<< HEAD
     $bookingDetails = getBookingById($bookingId); // Fetch booking details
 
     // Check if the booking exists
@@ -566,6 +618,36 @@ function handlePaymentForm($data, $conn, $bookingId)
     $stmt->close(); // Close the prepared statement
 
     return $response; // Return response array
+=======
+    $bookingDetails = getBookingById($bookingId);
+
+    // Check if the booking exists
+    if ($bookingDetails === null) {
+        $response['error'] = 'Invalid booking ID.';
+        return $response;
+    }
+
+    // Generate the next receipt number
+    $query = "SELECT COALESCE(MAX(receipt_number), 137280) + 1 AS next_receipt FROM payments"; 
+    $result = $conn->query($query); 
+    $row = $result->fetch_assoc(); 
+    $receipt_number = str_pad($row['next_receipt'], 8, '0', STR_PAD_LEFT);
+
+    // Prepare SQL query to insert payment record
+    $insertQuery = "INSERT INTO payments (booking_id, receipt_number, payment_method, amount, tax, discount, payment_date) VALUES (?, ?, ?, ?, ?, ?, CURDATE())";
+    $stmt = $conn->prepare($insertQuery);
+    $stmt->bind_param("issddd", $bookingId, $receipt_number, $payment_method, $amount, $tax, $discount);
+
+    // Execute the statement and check for success
+    if ($stmt->execute()) {
+        $response['success'] = 'Payment processed successfully! Your receipt number is: ' . $receipt_number;
+    } else {
+        $response['error'] = 'Error: Could not process payment. Please try again!';
+    }
+    $stmt->close(); 
+
+    return $response;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 // Function to get Total revenue
@@ -591,10 +673,17 @@ function fetchTotalRevenue($conn)
     // Check if the query was successful and fetch the result
     if ($result) {
         $row = $result->fetch_assoc();
+<<<<<<< HEAD
         $totalRevenue = $row['total_revenue'] ?? 0; // If null, return 0
     }
 
     return (float) $totalRevenue; // Return as float
+=======
+        $totalRevenue = $row['total_revenue'] ?? 0; 
+    }
+
+    return (float) $totalRevenue;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 /**
@@ -616,9 +705,15 @@ function getCompletedServicesCount($conn)
 
     // Check if the query was successful and fetch the result
     if ($result && $row = $result->fetch_assoc()) {
+<<<<<<< HEAD
         return (int)$row['completed_count']; // Return the count of completed services
     } else {
         return 0; // Return 0 if the query fails or no completed services exist
+=======
+        return (int)$row['completed_count'];
+    } else {
+        return 0;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 }
 
@@ -641,9 +736,15 @@ function getPendingTasksCount($conn)
 
     // Check if the query was successful and fetch the result
     if ($result && $row = $result->fetch_assoc()) {
+<<<<<<< HEAD
         return (int)$row['pending_count']; // Return the count of pending tasks/services
     } else {
         return 0; // Return 0 if the query fails or no pending tasks exist
+=======
+        return (int)$row['pending_count'];
+    } else {
+        return 0;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
     }
 }
 
@@ -675,7 +776,11 @@ function getProcessedBookings($conn)
         }
     }
 
+<<<<<<< HEAD
     return $processedBookings; // Return the processed bookings
+=======
+    return $processedBookings; 
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 /**
@@ -701,7 +806,11 @@ function getUsers($conn)
         }
     }
 
+<<<<<<< HEAD
     return $users; // Return the list of users
+=======
+    return $users;
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
 }
 
 /**
@@ -733,3 +842,153 @@ function deleteUserById($conn, $userId)
     // Return false if the deletion failed
     return false;
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * Fetch logistics data from the database and return as an array.
+ *
+ * @param mysqli $conn The database connection object.
+ * @return array Returns an array of logistics data, including client name.
+ */
+function getLogisticsData($conn) {
+    $logisticsData = [];
+
+    // SQL query to get logistics data and client name, including pickup_location
+    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
+                     l.pickup_location, c.full_name AS client_name, l.created_at, l.updated_at
+              FROM logistics l
+              JOIN clients c ON l.client_id = c.id
+              ORDER BY l.created_at DESC";
+
+    // Execute the query
+    $result = $conn->query($query);
+
+    // Check if the query returns rows
+    if ($result && $result->num_rows > 0) {
+        // Fetch each row as an associative array and store in $logisticsData
+        while ($row = $result->fetch_assoc()) {
+            $logisticsData[] = $row;
+        }
+    }
+
+    // Return the logistics data
+    return $logisticsData;
+}
+
+
+
+// Function to get clients with valid bookings
+function getValidBookingsWithClients($conn) {
+    // SQL query to fetch client information for clients who have valid bookings.
+    // It selects the client ID and client name from the 'clients' table 
+    // and joins it with the 'bookings' table on the 'client_id'.
+    // The 'WHERE' clause ensures that only bookings with a status of 'confirmed' are selected.
+    $query = "
+        SELECT 
+            clients.id AS client_id, 
+            clients.full_name AS client_name
+        FROM schedules
+        JOIN clients ON schedules.client_id = clients.id
+        WHERE schedules.status = 'scheduled'";  // Adjust the status condition as needed for "valid" bookings
+    
+    // Prepare the SQL query for execution to prevent SQL injection
+    $stmt = $conn->prepare($query);
+    
+    // Execute the query to fetch results
+    $stmt->execute();
+    
+    // Store the results of the query in a variable
+    $result = $stmt->get_result();
+    
+    // Initialize an empty array to store valid clients
+    $validClients = [];
+    
+    // Fetch each row from the result set and add it to the array
+    while ($row = $result->fetch_assoc()) {
+        $validClients[] = $row; // Append the client data to the $validClients array
+    }
+
+    // Return the array of valid clients (clients with confirmed bookings)
+    return $validClients;
+}
+
+/**
+ * Schedules a logistics entry in the database.
+ * 
+ * @param mysqli $conn - The database connection object.
+ * @param int $client_id - The ID of the client.
+ * @param string $vehicle - The vehicle assigned for the logistics.
+ * @param string $driver_name - The name of the driver assigned for the logistics.
+ * @param string $pickup_date - The scheduled date for the logistics pickup.
+ * @param string $destination - The final destination for the logistics.
+ * @param string $pickup_location - The location where the client will be picked up.
+ * @param string $status - The status of the logistics entry, defaults to 'pending'.
+ * @return bool - Returns true if the logistics entry is successfully inserted, otherwise false.
+ */
+function scheduleLogistic($conn, $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status = 'pending') {
+    // SQL query to insert a new logistics record into the 'logistics' table
+    $query = "
+        INSERT INTO logistics 
+        (client_id, vehicle, driver_name, pickup_date, destination, pickup_location, status) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ";
+
+    // Prepare the SQL statement using the database connection
+    $stmt = $conn->prepare($query);
+
+    // Bind the variables to the SQL statement as parameters:
+    // 'i' refers to an integer (client_id), and 's' refers to strings (vehicle, driver_name, pickup_date, destination, pickup_location, status)
+    $stmt->bind_param('issssss', $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status);
+
+    // Execute the statement and check for success
+    if ($stmt->execute()) {
+        // Return true if the logistics entry was inserted successfully into the database
+        return true;
+    } else {
+        // Return false if there was an error executing the query
+        return false;
+    }
+}
+
+/**
+ * Fetch a logistics entry by ID from the database.
+ *
+ * @param mysqli $conn The database connection object.
+ * @param int $id The ID of the logistics entry.
+ * @return array|null Returns an associative array of logistics data or null if not found.
+ */
+function getLogisticById($conn, $id) {
+    $query = "SELECT * FROM logistics WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    return $result->fetch_assoc();
+}
+
+/**
+ * Update a logistics entry in the database.
+ *
+ * @param mysqli $conn The database connection object.
+ * @param int $id The ID of the logistics entry.
+ * @param int $client_id The ID of the client.
+ * @param string $vehicle The vehicle assigned for the logistics.
+ * @param string $driver_name The name of the driver assigned for the logistics.
+ * @param string $pickup_date The scheduled date for the logistics pickup.
+ * @param string $destination The final destination for the logistics.
+ * @param string $pickup_location The location where the client will be picked up.
+ * @param string $status The status of the logistics.
+ * @return bool Returns true if the update was successful, otherwise false.
+ */
+function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status) {
+    $query = "UPDATE logistics SET client_id = ?, vehicle = ?, driver_name = ?, pickup_date = ?, destination = ?, pickup_location = ?, status = ? WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('issssssi', $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status, $id);
+    
+    return $stmt->execute();
+}
+
+
+>>>>>>> c142f35fcb4c918cd393a25aa8ed12dd618caddb
