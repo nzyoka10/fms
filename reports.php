@@ -48,8 +48,6 @@ if (isset($_GET['export'])) {
 
 // PDF Export Function
 function exportToPDF($logisticsData) {
-    // Import the Dompdf class
-    // use Dompdf\Dompdf; 
 
     // Create an instance of Dompdf
     $dompdf = new Dompdf();
