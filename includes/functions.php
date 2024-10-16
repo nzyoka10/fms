@@ -817,22 +817,6 @@ function scheduleLogistic($conn, $client_id, $vehicle, $driver_name, $pickup_dat
     }
 }
 
-/**
- * Fetch a logistics entry by ID from the database.
- *
- * @param mysqli $conn The database connection object.
- * @param int $id The ID of the logistics entry.
- * @return array|null Returns an associative array of logistics data or null if not found.
- */
-function getLogisticById($conn, $id) {
-    $query = "SELECT * FROM logistics WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    return $result->fetch_assoc();
-}
 
 /**
  * Update a logistics entry in the database.
@@ -885,6 +869,35 @@ function getLogisticsData($conn) {
 
     // Return the logistics data
     return $logisticsData;
+}
+
+/**
+ * Fetch the logistics record by ID from the database.
+ *
+ * @param mysqli $conn The database connection object.
+ * @param int $logistic_id The ID of the logistic record.
+ * @return array|bool Returns the logistic record as an associative array, or false if not found.
+ */
+function getLogisticById($conn, $logistic_id) {
+    // SQL query to get logistics data by ID
+    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
+                     c.full_name AS client_name, l.pickup_location, l.created_at, l.updated_at
+              FROM logistics l
+              JOIN clients c ON l.client_id = c.id
+              WHERE l.id = ?";
+
+    // Prepare the statement
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $logistic_id);
+    $stmt->execute();
+
+    // Get the result and fetch the data
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    } else {
+        return false;
+    }
 }
 
 

@@ -60,16 +60,8 @@ include './includes/sidebar.php';
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>                            
                             <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item text-success" href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>">View</a></li>
-                                        <li><a class="dropdown-item text-muted" href="editLogRecord.php?id=<?php echo $logistic['id']; ?>">Edit</a></li>
-                                        <li><a class="dropdown-item text-danger" href="deleteLog.php?id=<?php echo $logistic['id']; ?>" onclick="return confirm('Are you sure you want to delete this logistic record?');">Delete</a></li>
-                                    </ul>
-                                </div>                                
+                                <a class="btn btn-sm btn-outline-success" href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>">View</a>
+                                                               
                             </td>
                         </tr>
                     <?php endforeach; ?>
