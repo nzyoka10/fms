@@ -900,5 +900,109 @@ function getLogisticById($conn, $logistic_id) {
     }
 }
 
+/**
+ * Update the logistics record in the database.
+ *
+ * @param mysqli $conn The database connection object.
+ * @param int $logistic_id The ID of the logistic record.
+ * @param string $vehicle The updated vehicle name.
+ * @param string $driver_name The updated driver name.
+ * @param string $pickup_date The updated pickup date.
+ * @param string $destination The updated destination.
+ * @param string $status The updated status.
+ * @return bool Returns true if the update is successful, otherwise false.
+ */
+function updateLogisticRecord($conn, $logistic_id, $vehicle, $driver_name, $pickup_location, $pickup_date, $destination, $status) {
+    $query = "UPDATE logistics 
+              SET vehicle = ?, driver_name = ?, pickup_location = ?, pickup_date = ?, destination = ?, status = ?, updated_at = NOW() 
+              WHERE id = ?";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('ssssssi', $vehicle, $driver_name, $pickup_location, $pickup_date, $destination, $status, $logistic_id);
+    return $stmt->execute();
+}
+
+/**
+ * Fetch logistics data for the current week.
+ * 
+ * @param mysqli $conn The database connection object.
+ * @return array Returns an array of logistics data.
+ */
+function getLogisticsDataByWeek($conn) {
+    $logisticsData = [];
+    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
+                     c.full_name AS client_name
+              FROM logistics l
+              JOIN clients c ON l.client_id = c.id
+              WHERE WEEK(l.pickup_date) = WEEK(CURDATE())
+              ORDER BY l.pickup_date DESC";
+
+    $result = $conn->query($query);
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $logisticsData[] = $row;
+        }
+    }
+
+    return $logisticsData;
+}
+
+/**
+ * Fetch logistics data for the current month.
+ * 
+ * @param mysqli $conn The database connection object.
+ * @return array Returns an array of logistics data.
+ */
+function getLogisticsDataByMonth($conn) {
+    $logisticsData = [];
+    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
+                     c.full_name AS client_name
+              FROM logistics l
+              JOIN clients c ON l.client_id = c.id
+              WHERE MONTH(l.pickup_date) = MONTH(CURDATE())
+              ORDER BY l.pickup_date DESC";
+
+    $result = $conn->query($query);
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $logisticsData[] = $row;
+        }
+    }
+
+    return $logisticsData;
+}
+
+/**
+ * Fetch logistics data based on a custom date range.
+ * 
+ * @param mysqli $conn The database connection object.
+ * @param string $startDate The start date of the range.
+ * @param string $endDate The end date of the range.
+ * @return array Returns an array of logistics data.
+ */
+function getLogisticsDataByRange($conn, $startDate, $endDate) {
+    $logisticsData = [];
+    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.destination, l.status, 
+                     c.full_name AS client_name
+              FROM logistics l
+              JOIN clients c ON l.client_id = c.id
+              WHERE l.pickup_date BETWEEN ? AND ?
+              ORDER BY l.pickup_date DESC";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('ss', $startDate, $endDate);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $logisticsData[] = $row;
+        }
+    }
+
+    return $logisticsData;
+}
+
+
 
 

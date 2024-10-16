@@ -31,16 +31,17 @@ include './includes/sidebar.php';
 
     <!-- Breadcrumb -->
     <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard</li>
         <li class="breadcrumb-item">
-            <a class="text-decoration-none hover-underline" href="./logistics.php">Logistics</a>
+            <a class="text-decoration-none hover-underline" href="./logistics.php">View</a>
         </li>
-        <li class="breadcrumb-item active">View Logistic Record</li>
+        
     </ol>
 
     <!-- Logistic Record Details -->
     <div class="card">
         <div class="card-header">
-            <h5>Details for Logistic #<?php echo htmlspecialchars($logistic['id']); ?></h5>
+            <h5 class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></h5>
         </div>
         <div class="card-body">
             <table class="table table-borderless">
