@@ -982,7 +982,7 @@ function getLogisticsDataByMonth($conn) {
  */
 function getLogisticsDataByRange($conn, $startDate, $endDate) {
     $logisticsData = [];
-    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.destination, l.status, 
+    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
                      c.full_name AS client_name
               FROM logistics l
               JOIN clients c ON l.client_id = c.id

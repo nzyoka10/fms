@@ -124,45 +124,57 @@ function exportToExcel($logisticsData) {
 
 <!-- Main Section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Generate Logistics Reports</h4>
+    <h4 class="text-muted mt-2">Generate Reports</h4>
+
+    <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">
+            <a class="text-decoration-none hover-underline" href="./reports.php">Reports</a>
+        </li>
+    </ol>
+
+
+
+<!-- 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>
         <li class="breadcrumb-item">Reports</li>
-    </ol>
+    </ol> -->
 
     <!-- Filter Form -->
     <form method="GET" action="reports.php">
         <div class="row mb-3">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-2">
                 <label for="filter">Filter By:</label>
-                <select name="filter" id="filter" class="form-control" onchange="toggleDateFields()">
+                <select name="filter" id="filter" class="form-select sm-select" onchange="toggleDateFields()">
+                    <option value="#!" selected>Filter report by:- </option>
                     <option value="week" <?php echo ($filter == 'week') ? 'selected' : ''; ?>>This Week</option>
                     <option value="month" <?php echo ($filter == 'month') ? 'selected' : ''; ?>>This Month</option>
                     <option value="range" <?php echo ($filter == 'range') ? 'selected' : ''; ?>>Custom Range</option>
                 </select>
             </div>
 
-            <div class="col-md-4" id="start_date_div" style="display: <?php echo ($filter == 'range') ? 'block' : 'none'; ?>;">
+            <div class="col-md-2" id="start_date_div" style="display: <?php echo ($filter == 'range') ? 'block' : 'none'; ?>;">
                 <label for="start_date">Start Date:</label>
                 <input type="date" name="start_date" class="form-control" value="<?php echo $_GET['start_date'] ?? ''; ?>">
             </div>
-            <div class="col-md-4" id="end_date_div" style="display: <?php echo ($filter == 'range') ? 'block' : 'none'; ?>;">
+            <div class="col-md-2" id="end_date_div" style="display: <?php echo ($filter == 'range') ? 'block' : 'none'; ?>;">
                 <label for="end_date">End Date:</label>
                 <input type="date" name="end_date" class="form-control" value="<?php echo $_GET['end_date'] ?? ''; ?>">
             </div>
 
             <div class="col-md-2">
                 <label>&nbsp;</label>
-                <button type="submit" class="btn btn-primary d-block">Generate Report</button>
+                <button type="submit" class="btn btn-sm btn-dark d-block">Generate Report</button>
             </div>
         </div>
     </form>
 
     <!-- Export Buttons -->
     <div class="d-flex justify-content-start mb-3">
-        <a href="#" class="btn btn-secondary me-2" onclick="window.print();">Print Report</a>
-        <a href="?filter=<?php echo $filter; ?>&export=pdf" class="btn btn-outline-danger me-2">Download PDF</a>
-        <a href="?filter=<?php echo $filter; ?>&export=excel" class="btn btn-outline-success">Download Excel</a>
+        <a href="#" class="btn btn-sm btn-success me-2" onclick="window.print();">Print</a>
+        <a href="?filter=<?php echo $filter; ?>&export=pdf" class="btn btn-sm btn-outline-dark me-2">PDF</a>
+        <a href="?filter=<?php echo $filter; ?>&export=excel" class="btn btn-sm btn-outline-secondary">Excel</a>
     </div>
 
     <!-- Display error message if any -->
@@ -189,13 +201,13 @@ function exportToExcel($logisticsData) {
             <tbody>
                 <?php foreach ($logisticsData as $index => $logistic): ?>
                     <tr>
-                        <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['destination']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['status']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
+                        <td class="text-muted"><?php echo $index + 1; ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($logistic['status']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
