@@ -47,11 +47,11 @@ include './includes/sidebar.php';
                 <!-- Client Name -->
                 <div class="col-md-6 mb-3">
                     <h5 class="fw-bold">Client name</h5>
-                    <p class="text-muted"><?php echo htmlspecialchars($booking['client_name']); ?></p>
+                    <p class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['client_name']); ?></p>
                 </div>
                 <!-- Service Type -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Service type</h5>
+                    <h5 class="fw-bold">Service</h5>
                     <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></p>
                 </div>
             </div>
@@ -64,7 +64,7 @@ include './includes/sidebar.php';
                 </div>
                 <!-- Location -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Vehicle type</h5>
+                    <h5 class="fw-bold">Vehicle</h5>
                     <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['vehicle_type']); ?></p>
                 </div>
             </div>
@@ -76,34 +76,34 @@ include './includes/sidebar.php';
                     <p class="text-muted"><?php echo htmlspecialchars($booking['request']); ?></p>
                 </div>
                 <!-- Status -->
-                <!-- <div class="col-md-3 mb-3">
+                <div class="col-md-3 mb-3">
                     <h5 class="fw-bold">Status</h5>
                     <p class="badge bg-<?php echo ($booking['status'] === 'completed') ? 'success' : 'danger'; ?> p-2">
                         <?php echo htmlspecialchars($booking['status']); ?>
                     </p>
-                </div> -->
+                </div>
                 <!-- Status -->
-                <div class="col-md-3 mb-3">
+                <!-- <div class="col-md-3 mb-3">
                     <h5 class="fw-bold text-muted h6">Transcation <sup class="text-success">Msg</sup></h5>
                     
-                </div>
+                </div> -->
             </div>
         </div>
 
         <div class="card-footer d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
 
             <!-- edit button -->
-            <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
-                Edit&nbsp;<span data-feather="edit-3"></span>
+            <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-primary me-2 d-flex align-items-center">
+                Edit Record&nbsp;<span data-feather="edit-3"></span>
             </a>
-            <a href="payment.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-success me-2 d-flex align-items-center">
-                Pay&nbsp;<span data-feather="send"></span>
+            <a href="payment.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
+                Pay Service&nbsp;<span data-feather="send"></span>
+            </a>            
+            <a href="bookings.php" class="btn btn-sm btn-outline-secondary me-2 d-flex align-items-center">
+                Back to Bookings&nbsp;<span data-feather="x-circle"></span>
             </a>
-            <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this booking record?');">
-                Delete&nbsp;<span data-feather="trash-2"></span>
-            </a>
-            <a href="bookings.php" class="btn btn-sm btn-danger me-2 d-flex align-items-center">
-                Back&nbsp;<span data-feather="skip-back"></span>
+            <a href="#!" class="btn btn-sm btn-outline-danger me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this booking record?');">
+                Delete Record&nbsp;<span data-feather="trash-2"></span>
             </a>
             <!-- <a  class="btn btn-sm btn-success">Payments</a> -->
             <!-- <a href="bookings.php" class="btn btn-sm btn-danger">Back home</a> -->

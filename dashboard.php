@@ -20,7 +20,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="users" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Clients</h5>
+                <h5 class="card-title text-muted">Total Clients</h5>
                 <p class="card-text"><strong><?php echo $totalClients; ?></strong></p>
             </div>
         </div>
@@ -34,7 +34,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="bookmark" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Bookings</h5>
+                <h5 class="card-title text-muted">Total Bookings</h5>
                 <p class="card-text"><strong><?php echo $totalBookings; ?></strong></p>
             </div>
         </div>
@@ -45,9 +45,9 @@ include './includes/title.php';
         <div class="card text-center p-4 shadow-sm">
             <div class="card-body d-flex flex-column align-items-center">
                 <div class="card-icon mb-3">
-                    <span data-feather="briefcase" style="width: 20px; height: 20px;"></span>
+                    <span data-feather="truck" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Pending Tasks</h5>
+                <h5 class="card-title text-muted">Pending Bookings</h5>
                 <p class="card-text">
                     <strong><?php echo $pendingTasksCount; ?></strong>
                 </p>
@@ -62,7 +62,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="dollar-sign" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Revenue</h5>
+                <h5 class="card-title text-muted">Total Revenue</h5>
                 <p class="card-text">
                     <strong>Kes.&nbsp;</strong><?php echo number_format($totalRevenue, 2); ?>
                 </p>

@@ -88,14 +88,14 @@ include './includes/sidebar.php';
 
             </div>
             <div class="card-footer d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
-                <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary me-2 d-flex align-items-center">
+                <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
                     Edit&nbsp;<span data-feather="edit-3"></span>
                 </a>
-                <a href="#!" class="btn btn-sm btn-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this clients record?');">
+                <a href="#!" class="btn btn-sm btn-outline-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this clients record?');">
                     Delete&nbsp;<span data-feather="trash-2"></span>
                 </a>
-                <a href="clients.php" class="btn btn-sm btn-danger me-2 d-flex align-items-center">
-                    Back&nbsp;<span data-feather="skip-back"></span>
+                <a href="clients.php" class="btn btn-sm btn-outline-danger me-2 d-flex align-items-center">
+                    Go Back&nbsp;<span data-feather="x-circle"></span>
                 </a>
                 
                 <!-- <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary">Edit record</a> -->

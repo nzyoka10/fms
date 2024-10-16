@@ -34,19 +34,17 @@ include './includes/sidebar.php';
     </div>
 
     <!-- Table to display logistics bookings -->
-    <div class="table-responsive">
+    <div class="table">
         <?php if (!empty($logistics)): ?>
             <table class="table table-striped table-hover mt-3" id="logisticsTable">
                 <thead>
                     <tr>
                         <th>Sn#</th>
-                        <!-- <th>Date</th> -->
-                        <th>Client Name</th>
-                        <!-- <th>Pickup Location</th> -->
-                        <th>Destination</th>
-                        <th>Vehicle type</th>
-                        <th>Status</th>
-                        <th>Schedule Date</th>
+                        <th>Booked Vehicle</th>
+                        <th>Driver Name</th>
+                        <th>Client's Name</th>
+                        <th>Booked Date</th>
+                        <th>Destination</th>                        
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -54,15 +52,24 @@ include './includes/sidebar.php';
                     <?php foreach ($logistics as $index => $logistic): ?>
                         <tr>
                             <td><?php echo $index + 1; ?></td>
-                            <td><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                            <!-- <td><?php echo htmlspecialchars($logistic['pickup_location']); ?></td> -->
-                            <td><?php echo htmlspecialchars($logistic['destination']); ?></td>
-                            <td><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
-                            <td><?php echo htmlspecialchars($logistic['status']); ?></td>
-                            <td><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
-                            <td>
-                                <a href="editLogistic.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
-                                <a href="deleteLogistic.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this logistic record?');">Delete</a>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
+                            <td class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['driver_name']); ?></td>
+                            <td class=" text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>                            
+                            <td class="d-flex">
+                                <a href="editLogRecord.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-dark me-2">
+                                    <span data-feather="edit-3" style="width: 16px; height: 16px; border-radius: 50%;"></span>
+                                    <!-- Edit -->
+                                </a>
+                                <a href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-success me-2">
+                                    <span class="me-2" data-feather="eye" style="width: 16px; height: 16px;"></span>   
+                                    <!-- view -->
+                                </a>                                
+                                <a href="deleteLog.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this logistic record?');">
+                                    <span data-feather="x-circle" style="width: 16px; height: 16px; border-radius: 50%;"></span>
+                                    <!-- Delete -->
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

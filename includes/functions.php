@@ -744,39 +744,6 @@ function deleteUserById($conn, $userId)
     return false;
 }
 
-/**
- * Fetch logistics data from the database and return as an array.
- *
- * @param mysqli $conn The database connection object.
- * @return array Returns an array of logistics data, including client name.
- */
-function getLogisticsData($conn) {
-    $logisticsData = [];
-
-    // SQL query to get logistics data and client name, including pickup_location
-    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
-                     l.pickup_location, c.full_name AS client_name, l.created_at, l.updated_at
-              FROM logistics l
-              JOIN clients c ON l.client_id = c.id
-              ORDER BY l.created_at DESC";
-
-    // Execute the query
-    $result = $conn->query($query);
-
-    // Check if the query returns rows
-    if ($result && $result->num_rows > 0) {
-        // Fetch each row as an associative array and store in $logisticsData
-        while ($row = $result->fetch_assoc()) {
-            $logisticsData[] = $row;
-        }
-    }
-
-    // Return the logistics data
-    return $logisticsData;
-}
-
-
-
 // Function to get clients with valid bookings
 function getValidBookingsWithClients($conn) {
     // SQL query to fetch client information for clients who have valid bookings.
@@ -888,5 +855,37 @@ function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_
     
     return $stmt->execute();
 }
+
+/**
+ * Fetch logistics data from the database and return as an array.
+ *
+ * @param mysqli $conn The database connection object.
+ * @return array Returns an array of logistics data, including client name.
+ */
+function getLogisticsData($conn) {
+    $logisticsData = [];
+
+    // SQL query to get logistics data and client name, including pickup_location
+    $query = "SELECT l.id, l.client_id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
+                     l.pickup_location, c.full_name AS client_name, l.created_at, l.updated_at
+              FROM logistics l
+              JOIN clients c ON l.client_id = c.id
+              ORDER BY l.created_at DESC";
+
+    // Execute the query
+    $result = $conn->query($query);
+
+    // Check if the query returns rows
+    if ($result && $result->num_rows > 0) {
+        // Fetch each row as an associative array and store in $logisticsData
+        while ($row = $result->fetch_assoc()) {
+            $logisticsData[] = $row;
+        }
+    }
+
+    // Return the logistics data
+    return $logisticsData;
+}
+
 
 

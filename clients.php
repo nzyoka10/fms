@@ -84,7 +84,7 @@ include './includes/sidebar.php';
                         <td><?php echo htmlspecialchars($client['email']); ?></td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">

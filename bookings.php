@@ -31,7 +31,7 @@ include './includes/sidebar.php';
             <a class="text-decoration-none hover-underline" href="./bookings.php">Bookings</a>
         </li>
     </ol>
-    
+
     <!-- Header buttons -->
     <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom-none">
         <!-- Add Client Button -->
@@ -57,9 +57,9 @@ include './includes/sidebar.php';
         <thead>
             <tr>
                 <th>Sn#</th>
-                <th>Booked date</th>
-                <th>Client name</th>
-                <th>Service type</th>
+                <th>Booked Date</th>
+                <th>Client Name</th>
+                <th>Service</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
@@ -74,14 +74,14 @@ include './includes/sidebar.php';
             <?php else: ?>
                 <?php foreach ($bookings as $index => $booking): ?>
                     <tr>
-                        <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                        <td><?php echo htmlspecialchars($booking['full_name']); ?></td>
-                        <td class="text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></td>
-                        <td><?php echo htmlspecialchars($booking['status']); ?></td>
+                        <td class="text-muted"><?php echo $index + 1; ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
+                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['full_name']); ?></td>
+                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['service_type']); ?></td>
+                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['status']); ?></td>
                         <td>
                             <div class="dropdown">
-                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">
@@ -157,7 +157,7 @@ include './includes/sidebar.php';
                                 <textarea class="form-control" placeholder="Leave a comment here" id="request" name="request" style="height: 180px"></textarea>
                             </div>
 
-                            <div class="col-md-4 d-flex flex-column justify-content-between align-items-stretch">
+                            <div class="col-md-4 d-flex flex-column justify-content-between align-items-center">
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
                                     <select class="form-select" id="status" name="status" required>
@@ -166,9 +166,15 @@ include './includes/sidebar.php';
                                     </select>
                                 </div>
 
-                                <div class="mt-2">
-                                    <button type="reset" class="btn btn-sm btn-dark w-100 mb-3">Reset form</button>
-                                    <button type="submit" class="btn btn-sm btn-primary w-100">Add booking</button>
+                                <div class="mt-0">
+                                    <button type="reset" class="btn btn-sm btn-outline-dark w-100 mb-3 d-flex align-items-center">
+                                        <span class="me-2" data-feather="refresh-cw" style="width: 16px; height: 16px;"></span>
+                                        Refresh form
+                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-outline-success w-100 d-flex align-items-center">
+                                        <span class="me-2" data-feather="pocket" style="width: 16px; height: 16px;"></span>
+                                        Save record
+                                    </button>
                                 </div>
                             </div>
                         </div>
