@@ -15,7 +15,7 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Listings of inventory</h4>
+    <h4 class="text-muted text-uppercase mt-4">Inventory</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>

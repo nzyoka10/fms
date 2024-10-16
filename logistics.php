@@ -12,12 +12,12 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Listings of Logistics</h4>
+    <h4 class="text-uppercase mt-4">Transport</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>
         <li class="breadcrumb-item">
-            <a class="text-decoration-none hover-underline" href="./logistics.php">Logistics</a>
+            <a class="text-decoration-none hover-underline" href="./logistics.php">Transport</a>
         </li>
     </ol>
 
@@ -44,6 +44,7 @@ include './includes/sidebar.php';
                         <th>Driver Name</th>
                         <th>Client's Name</th>
                         <th>Booked Date</th>
+                        <th>Pickup</th>
                         <th>Destination</th>                        
                         <th>Actions</th>
                     </tr>
@@ -56,20 +57,19 @@ include './includes/sidebar.php';
                             <td class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['driver_name']); ?></td>
                             <td class=" text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>                            
-                            <td class="d-flex">
-                                <a href="editLogRecord.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-dark me-2">
-                                    <span data-feather="edit-3" style="width: 16px; height: 16px; border-radius: 50%;"></span>
-                                    <!-- Edit -->
-                                </a>
-                                <a href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-success me-2">
-                                    <span class="me-2" data-feather="eye" style="width: 16px; height: 16px;"></span>   
-                                    <!-- view -->
-                                </a>                                
-                                <a href="deleteLog.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this logistic record?');">
-                                    <span data-feather="x-circle" style="width: 16px; height: 16px; border-radius: 50%;"></span>
-                                    <!-- Delete -->
-                                </a>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item text-success" href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>">View</a></li>
+                                        <li><a class="dropdown-item text-muted" href="editLogRecord.php?id=<?php echo $logistic['id']; ?>">Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="deleteLog.php?id=<?php echo $logistic['id']; ?>" onclick="return confirm('Are you sure you want to delete this logistic record?');">Delete</a></li>
+                                    </ul>
+                                </div>                                
                             </td>
                         </tr>
                     <?php endforeach; ?>

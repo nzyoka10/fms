@@ -15,7 +15,7 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="pt-2">All Reports</h4>
+    <h4 class="text-muted text-uppercase pt-2">All Reports</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>

@@ -47,7 +47,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="truck" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Pending Bookings</h5>
+                <h5 class="card-title text-muted">Scheduled Bookings</h5>
                 <p class="card-text">
                     <strong><?php echo $pendingTasksCount; ?></strong>
                 </p>

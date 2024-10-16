@@ -23,7 +23,7 @@ include './includes/sidebar.php';
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
 
-    <h4 class="mt-3">Listing of bookings</h4>
+    <h4 class="text-muted text-uppercase mt-3">Bookings</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>

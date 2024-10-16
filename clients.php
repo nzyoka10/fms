@@ -32,7 +32,7 @@ include './includes/sidebar.php';
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
 
-    <h4 class="mt-3">Listing of clients</h4>
+    <h4 class="text-muted text-uppercase mt-3">clients</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>
@@ -78,10 +78,10 @@ include './includes/sidebar.php';
             <?php else: ?>
                 <?php foreach ($clients as $index => $client): ?>
                     <tr>
-                        <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($client['created_at']); ?></td>
-                        <td><?php echo htmlspecialchars($client['full_name']); ?></td>
-                        <td><?php echo htmlspecialchars($client['email']); ?></td>
+                        <td class="text-muted"><?php echo $index + 1; ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($client['created_at']); ?></td>
+                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($client['full_name']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($client['email']); ?></td>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -114,21 +114,21 @@ include './includes/sidebar.php';
                     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="needs-validation">
                         <div class="mb-3">
                             <label for="client_name" class="form-label">Client Name</label>
-                            <input type="text" class="form-control" id="client_name" name="client_name" required>
+                            <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Full Name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="client_email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="client_email" name="client_email">
+                            <label for="client_email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="client_email" name="client_email" placeholder="Email Address" required>
                         </div>
                         <div class="mb-3">
                             <label for="client_phone" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="client_phone" name="client_phone">
+                            <input type="text" class="form-control" id="client_phone" name="client_phone" placeholder="Phone Number" required>
                         </div>
                         <div class="mb-3">
                             <label for="client_address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="client_address" name="client_address">
+                            <input type="text" class="form-control" id="client_address" name="client_address" placeholder="Address, City, Town" required>
                         </div>
-                        <button type="submit" class="btn btn-sm btn-primary px-3">Save Record</button>
+                        <button type="submit" class="btn btn-sm btn-outline-success px-3">Save Record</button>
                     </form>
                 </div>
             </div>

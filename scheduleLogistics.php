@@ -35,7 +35,7 @@ include './includes/sidebar.php';
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="mt-4">Schedule Logistics</h4>
+    <h4 class="mt-4">Schedule Transport</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>
@@ -72,24 +72,24 @@ include './includes/sidebar.php';
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label for="pickup_location" class="form-label">Pickup Location</label>
-                <input type="text" name="pickup_location" id="pickup_location" class="form-control" placeholder="Enter Pickup Location" required>
-            </div>
+                <label for="driver_name" class="form-label">Driver Name</label>
+                <input type="text" name="driver_name" id="driver_name" class="form-control" placeholder="Enter Driver's Name" required>
+            </div> 
             <div class="col-md-6">
-                <label for="destination" class="form-label">Destination</label>
-                <input type="text" name="destination" id="destination" class="form-control" placeholder="Enter Destination" required>
-            </div>
+                <label for="pickup_date" class="form-label">Pickup Date</label>
+                <input type="date" name="pickup_date" id="pickup_date" class="form-control" required>
+            </div>                      
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label for="driver_name" class="form-label">Driver Name</label>
-                <input type="text" name="driver_name" id="driver_name" class="form-control" placeholder="Enter Driver's Name" required>
+                <label for="destination" class="form-label">Destination</label>
+                <input type="text" name="destination" id="destination" class="form-control" placeholder="Enter Destination" required>
             </div>
             <div class="col-md-6">
-                <label for="pickup_date" class="form-label">Pickup Date</label>
-                <input type="date" name="pickup_date" id="pickup_date" class="form-control" required>
-            </div>
+                <label for="pickup_location" class="form-label">Pickup Location</label>
+                <input type="text" name="pickup_location" id="pickup_location" class="form-control" placeholder="Enter Pickup Location" required>
+            </div>            
         </div>
 
         <div class="text-end">

@@ -29,7 +29,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="./logistics.php">
                             <span data-feather="truck"></span>
-                            Logistics
+                            Transport
                         </a>
                     </li>
                     <li class="nav-item">
