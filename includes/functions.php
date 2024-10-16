@@ -1004,5 +1004,29 @@ function getLogisticsDataByRange($conn, $startDate, $endDate) {
 }
 
 
+/**
+ * Fetch logistics data from the database.
+ * 
+ * @param mysqli $conn The database connection object.
+ * @return array Returns an array of logistics data.
+ */
+function fetchLogisticsData($conn) {
+    $logisticsData = []; // Initialize the array
 
+    // SQL query to fetch data
+    $sql = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
+                   c.full_name AS client_name
+            FROM logistics l
+            JOIN clients c ON l.client_id = c.id";
 
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        // Fetch data into the array
+        while ($row = $result->fetch_assoc()) {
+            $logisticsData[] = $row;
+        }
+    }
+
+    return $logisticsData; // Return the fetched data
+}

@@ -1,11 +1,16 @@
 <?php
+
 // Include necessary files
 include 'includes/functions.php';
 include './includes/header.php';
 include './includes/sidebar.php';
+require './vendor/autoload.php'; // Fixed missing semicolon
+
+// Import the Dompdf class here, at the top of the file
+use Dompdf\Dompdf;
 
 // Initialize variables
-$logisticsData = [];
+$logisticsData = fetchLogisticsData($conn); 
 $error = '';
 $filter = '';
 
@@ -15,15 +20,15 @@ if (isset($_GET['filter'])) {
 
     // Fetch filtered logistics data based on the selected filter
     if ($filter == 'week') {
-        $logisticsData = getLogisticsDataByWeek($conn);
+        $logisticsData = getLogisticsDataByWeek($conn); // Pass the connection
     } elseif ($filter == 'month') {
-        $logisticsData = getLogisticsDataByMonth($conn);
+        $logisticsData = getLogisticsDataByMonth($conn); // Pass the connection
     } elseif ($filter == 'range') {
         $startDate = $_GET['start_date'] ?? '';
         $endDate = $_GET['end_date'] ?? '';
 
         if (!empty($startDate) && !empty($endDate)) {
-            $logisticsData = getLogisticsDataByRange($conn, $startDate, $endDate);
+            $logisticsData = getLogisticsDataByRange($conn, $startDate, $endDate); // Pass the connection
         } else {
             $error = 'Please select a valid date range.';
         }
@@ -43,15 +48,19 @@ if (isset($_GET['export'])) {
 
 // PDF Export Function
 function exportToPDF($logisticsData) {
-    require 'vendor/autoload.php';
-    use Dompdf\Dompdf;
+    // Import the Dompdf class
+    // use Dompdf\Dompdf; 
 
+    // Create an instance of Dompdf
     $dompdf = new Dompdf();
+
+    // Generate the HTML content
     $html = '<h1>Logistics Report</h1>';
     $html .= '<table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">';
     $html .= '<thead><tr><th>Sn#</th><th>Client Name</th><th>Pickup Location</th><th>Destination</th><th>Vehicle</th><th>Status</th><th>Pickup Date</th></tr></thead>';
     $html .= '<tbody>';
 
+    // Populate the table with data
     foreach ($logisticsData as $index => $logistic) {
         $html .= '<tr>';
         $html .= '<td>' . ($index + 1) . '</td>';
@@ -65,38 +74,55 @@ function exportToPDF($logisticsData) {
     }
 
     $html .= '</tbody></table>';
+
+    // Load the HTML content into Dompdf
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'landscape');
-    $dompdf->render();
-    $dompdf->stream("logistics_report.pdf", array("Attachment" => true));
+
+    // Render the PDF
+    try {
+        $dompdf->render();
+        // Output the generated PDF
+        $dompdf->stream("logistics_report.pdf", array("Attachment" => true));
+    } catch (Exception $e) {
+        // Handle error during PDF generation
+        echo 'Error generating PDF: ' . $e->getMessage();
+    }
+
     exit();
 }
 
 // Excel Export Function
 function exportToExcel($logisticsData) {
     header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="logistics_report.csv";');
+    header('Content-Disposition: attachment; filename="FMS_Report.csv";');
 
-    // Open output stream
+    // Open output stream for CSV
     $output = fopen('php://output', 'w');
+
+    // Add header row to CSV
     fputcsv($output, ['Sn#', 'Client Name', 'Pickup Location', 'Destination', 'Vehicle', 'Status', 'Pickup Date']);
 
+    // Populate the CSV with logistics data
     foreach ($logisticsData as $index => $logistic) {
         fputcsv($output, [
             $index + 1,
-            $logistic['client_name'],
-            $logistic['pickup_location'],
-            $logistic['destination'],
-            $logistic['vehicle'],
-            $logistic['status'],
-            $logistic['pickup_date']
+            htmlspecialchars($logistic['client_name']),
+            htmlspecialchars($logistic['pickup_location']),
+            htmlspecialchars($logistic['destination']),
+            htmlspecialchars($logistic['vehicle']),
+            htmlspecialchars($logistic['status']),
+            htmlspecialchars($logistic['pickup_date'])
         ]);
     }
 
+    // Close output stream
     fclose($output);
     exit();
 }
+
 ?>
+
 
 <!-- Main Section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
@@ -178,22 +204,18 @@ function exportToExcel($logisticsData) {
         </table>
     <?php else: ?>
         <p class="text-center text-danger">
-            <strong>No logistics data found for the selected filter.</strong>
+            No records found for the selected filter.
         </p>
     <?php endif; ?>
 </main>
 
-<!-- Footer -->
-<?php include './includes/footer.php'; ?>
-
+<!-- JavaScript to toggle date fields -->
 <script>
-// Show/Hide custom range date fields
 function toggleDateFields() {
-    const filter = document.getElementById('filter').value;
+    const filterSelect = document.getElementById('filter');
     const startDateDiv = document.getElementById('start_date_div');
     const endDateDiv = document.getElementById('end_date_div');
-
-    if (filter === 'range') {
+    if (filterSelect.value === 'range') {
         startDateDiv.style.display = 'block';
         endDateDiv.style.display = 'block';
     } else {
@@ -202,3 +224,5 @@ function toggleDateFields() {
     }
 }
 </script>
+
+<?php include './includes/footer.php'; ?>
