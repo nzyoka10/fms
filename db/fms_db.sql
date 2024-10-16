@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2024 at 03:27 PM
+-- Generation Time: Oct 16, 2024 at 04:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,15 +42,16 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `full_name`, `email`, `phone`, `address`, `created_at`, `updated_at`) VALUES
-(1, 'Test User 01', 'test@app.com', '0789256714', '51 Street, Miano', '2024-09-28 13:09:02', '2024-09-29 10:32:26'),
-(2, 'Mike Aguero Jr', 'mike@app.fms', '0712671267', '208 Street, Syokimau', '2024-09-28 13:14:52', '2024-09-29 05:28:26'),
+(1, 'Juma Hunderson', 'hunter@app.com', '0789256714', '51 Street, Limuru', '2024-09-28 13:09:02', '2024-10-10 15:47:05'),
+(2, 'Mike Aguero Jr', 'mike@app.fms', '0712671267', '20th, Malawi sub county', '2024-09-28 13:14:52', '2024-10-16 09:59:32'),
 (3, 'Lamar Test', 'exampl@info.com', '0736348911', '23 Street, Nairobi', '2024-09-28 13:22:31', '2024-09-29 05:28:03'),
-(4, 'Test User 2', 'test2@mail.com', '0789256714', '208, Kinoo, Nrb', '2024-09-28 13:29:59', '2024-09-28 13:29:59'),
+(4, 'Limuru Loresho', 'loresho@mail.com', '0789256714', '20 Street, Juja', '2024-09-28 13:29:59', '2024-10-10 15:47:42'),
 (5, 'Jayden Uhuru ', 'jayden@mail.fms', '0736348911', '100 Kijabe, Nairobi', '2024-09-28 15:10:30', '2024-09-28 15:15:50'),
 (6, 'Super Metro', 'super@app.com', '07911782123', '51 Street, Waiyaki', '2024-09-29 05:25:58', '2024-09-29 05:25:58'),
 (7, 'Griffin Kioko', 'kioko@app.com', '0789125826', '87 Street, Kinoo', '2024-09-29 06:24:15', '2024-09-29 06:24:15'),
-(8, 'Kenya Mpya', 'kenya@app.com', '0736348911', '20 Street, Katani', '2024-09-29 11:46:20', '2024-09-29 11:46:58'),
-(9, 'Constance Salazar', 'zuxugyna@mailinator.com', '+1 (496) 299-41', 'Kalawa', '2024-10-05 17:02:09', '2024-10-05 17:02:09');
+(8, 'Juma Ali Noor', 'noor@app.com', '0736348911', '20 Street, Katani', '2024-09-29 11:46:20', '2024-10-10 15:24:46'),
+(9, 'Constance Minoo', 'minoo@app.com', '254789452731', '14 Street, Kalawa', '2024-10-05 17:02:09', '2024-10-10 15:48:48'),
+(10, 'Gage Kamau', 'kamaa@app.com', '254756127812', '20 Street, Limuru', '2024-10-10 15:52:51', '2024-10-10 15:52:51');
 
 -- --------------------------------------------------------
 
@@ -107,8 +108,8 @@ CREATE TABLE `inventory` (
 CREATE TABLE `logistics` (
   `id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
-  `vehicle` varchar(50) DEFAULT NULL,
-  `driver_name` varchar(50) DEFAULT NULL,
+  `vehicle` varchar(255) DEFAULT NULL,
+  `driver_name` varchar(100) DEFAULT NULL,
   `pickup_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `destination` varchar(255) DEFAULT NULL,
   `pickup_location` varchar(100) NOT NULL,
@@ -122,8 +123,10 @@ CREATE TABLE `logistics` (
 --
 
 INSERT INTO `logistics` (`id`, `client_id`, `vehicle`, `driver_name`, `pickup_date`, `destination`, `pickup_location`, `status`, `created_at`, `updated_at`) VALUES
-(1, 7, 'Magnam', 'Muthee Juma', '2024-10-14 21:00:00', 'Steel kadere', 'Kiambaa village', 'pending', '2024-10-05 16:03:53', '2024-10-05 16:19:44'),
-(2, 8, 'Lee Kinoo', 'Kiambu', '2024-10-17 21:00:00', 'Darnson Muthee', '2024-10-17', 'pending', '2024-10-05 16:16:47', '2024-10-05 16:18:19');
+(1, 7, 'Van KBN 234-J', 'Kadere WaShiku', '2024-10-16 10:26:50', '20th Kenya location', 'EternalCare Gold', 'pending', '2024-10-05 16:03:53', '2024-10-16 10:26:50'),
+(2, 8, 'Bus KDA 222-F', 'Hassan Omar', '2024-10-16 10:29:02', '30th Kisumu town', 'Jiji, EternalCare Silver', 'pending', '2024-10-05 16:16:47', '2024-10-16 10:29:02'),
+(3, 9, 'Van  KDC 826-j', 'Muthee J. Khibaso', '2024-10-16 13:07:23', '12th Kiambu, up town', 'Lee, EternalCare Silver', 'pending', '2024-10-16 10:19:58', '2024-10-16 13:07:23'),
+(4, 10, 'Bus  KDA 222-F', 'Muthee J. Khibaso', '2024-10-16 13:07:52', '10th Kiambaa Village', 'EternalCare Gold', 'pending', '2024-10-16 10:25:03', '2024-10-16 13:07:52');
 
 -- --------------------------------------------------------
 
@@ -180,13 +183,12 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`id`, `client_id`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
-(11, '6', 'burial', '2024-10-04', 'van', 'Family requests photographer and Boda boda escort ', 'scheduled', '2024-09-30 08:43:11', '2024-09-30 11:03:56'),
-(12, '7', 'burial', '2024-10-05', 'bus', 'The family requests the following:-\r\nDancers, catering team and boda boda escorts.\r\n Photographer and a DJ\r\n', 'scheduled', '2024-09-30 08:44:42', '2024-09-30 10:08:07'),
-(13, '3', 'cremation', '2024-10-08', 'bus', 'None', 'completed', '2024-09-30 08:45:55', '2024-09-30 11:43:40'),
-(14, '5', 'burial', '2024-10-10', 'van', 'The family requests a photographer and additional security personnel for a two-day body viewing.', 'scheduled', '2024-09-30 08:55:35', '2024-09-30 11:18:01'),
-(15, '8', 'burial', '2024-10-03', 'bus', 'Boda boda escort and catering team.', 'scheduled', '2024-09-30 12:49:07', '2024-09-30 12:49:07'),
-(16, '5', 'burial', '2024-10-05', 'van', 'none', 'scheduled', '2024-10-01 17:03:15', '2024-10-01 17:03:15'),
-(17, '9', 'cremation', '2024-10-10', 'bus', 'Simple send off', 'scheduled', '2024-10-05 17:02:47', '2024-10-05 17:02:47');
+(11, '6', 'burial', '2024-10-04', 'van', 'Family requests photographer and Boda boda escort ', 'completed', '2024-09-30 08:43:11', '2024-10-16 09:31:53'),
+(12, '7', 'cremation', '2024-10-05', 'bus', 'The family requests the following:-\r\nDancers, catering team and boda boda escorts.\r\n Photographer and a DJ\r\n', 'completed', '2024-09-30 08:44:42', '2024-10-16 09:42:56'),
+(14, '5', 'burial', '2024-10-16', 'van', 'The family requests a photographer and additional security personnel for a two-day body viewing.', 'completed', '2024-09-30 08:55:35', '2024-10-16 09:37:59'),
+(15, '8', 'cremation', '2024-10-24', 'bus', 'Boda boda escort and catering team.', 'scheduled', '2024-09-30 12:49:07', '2024-10-16 09:43:14'),
+(18, '9', 'cremation', '2024-10-24', 'bus', 'Request mourners for hire, and boda boda escort riders.', 'scheduled', '2024-10-10 15:50:38', '2024-10-10 15:50:38'),
+(19, '10', 'burial', '2024-11-02', 'bus', 'The client requests 1 additional driver, a media team including a DJ and mourners for hire, and a Bodaboda riders escort. ', 'scheduled', '2024-10-16 09:45:58', '2024-10-16 09:45:58');
 
 -- --------------------------------------------------------
 
@@ -212,7 +214,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password_hash`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Tom', 'Ouko', 'admin', 'admin@app.com', '$2y$10$m4ZTmmGEXuiCeVcG0qdLZuZcUGyNlT56UMzo/Xtt5MYKndxrracsa', 'admin', '2024-09-28 12:18:53', '2024-09-28 12:18:53'),
-(2, 'Staff', 'User', 'staff', 'staff@mail.app', '$2y$10$FjO0N6zoQ5pZ5qmeVb8g5O3DP3F10CEr.PW0aCYiottbbExte1VBG', 'staff', '2024-09-28 15:17:45', '2024-09-28 15:17:45');
+(5, 'Eric', 'Nzyoka', 'Nzyoka', 'super@app.com', '$2y$10$lRrK1Jqbvks42zOGElGpZOXZ8T4ireE38U5DTNXmlYUl2eQF1TGxm', 'staff', '2024-10-10 13:43:18', '2024-10-10 13:43:18');
 
 --
 -- Indexes for dumped tables
@@ -282,7 +284,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `client_interactions`
@@ -306,7 +308,7 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `logistics`
 --
 ALTER TABLE `logistics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -318,13 +320,13 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

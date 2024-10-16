@@ -165,7 +165,7 @@ function exportToExcel($logisticsData) {
 
             <div class="col-md-2">
                 <label>&nbsp;</label>
-                <button type="submit" class="btn btn-sm btn-dark d-block">Generate Report</button>
+                <button type="submit" class="btn btn-sm btn-dark d-block">Filter</button>
             </div>
         </div>
     </form>
