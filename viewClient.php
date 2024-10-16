@@ -87,22 +87,26 @@ include './includes/sidebar.php';
                 </div>
 
             </div>
-            <div class="card-footer d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
-                <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
-                    Edit&nbsp;<span data-feather="edit-3"></span>
+
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <!-- Back button -->
+                <a href="clients.php" class="btn btn-sm btn-outline-dark d-flex align-items-center">
+                    <span data-feather="arrow-left" class="me-1"></span> Back to List
                 </a>
-                <a href="#!" class="btn btn-sm btn-outline-dark me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this clients record?');">
-                    Delete&nbsp;<span data-feather="trash-2"></span>
-                </a>
-                <a href="clients.php" class="btn btn-sm btn-outline-danger me-2 d-flex align-items-center">
-                    Go Back&nbsp;<span data-feather="x-circle"></span>
-                </a>
-                
-                <!-- <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-primary">Edit record</a> -->
-                <!-- <a href="deleteClient.php?id=<?php echo $client['id']; ?>" 
-                 class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this client?');">Delete Client</a> -->
-                <!-- <a href="clients.php" class="btn btn-sm btn-danger">Back home</a> -->
+
+                <!-- Edit and Delete buttons -->
+                <div class="d-flex">
+                    <a href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
+                        <span data-feather="edit" class="me-1"></span> Edit
+                    </a>
+
+                    <a href="deleteLog.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-danger d-flex align-items-center"
+                        onclick="return confirm('Are you sure you want to delete this record?');">
+                        <span data-feather="trash-2" class="me-1"></span> Delete
+                    </a>
+                </div>
             </div>
+
         </div>
     </div>
 

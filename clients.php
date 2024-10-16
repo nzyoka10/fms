@@ -83,16 +83,8 @@ include './includes/sidebar.php';
                         <td class="text-muted text-uppercase"><?php echo htmlspecialchars($client['full_name']); ?></td>
                         <td class="text-muted"><?php echo htmlspecialchars($client['email']); ?></td>
                         <td>
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Action
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="viewClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-success btn-sm">View</a></li>
-                                    <li><a class="dropdown-item" href="editClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-warning btn-sm">Update</a></li>
-                                    <!-- <li><a class="dropdown-item" href="delete_client.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-danger btn-sm">Delete</a></li> -->
-                                </ul>
-                            </div>
+                            <a class="btn btn-sm btn-outline-secondary" href="viewClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-success btn-sm">View</a>
+                            
                         </td>
                     </tr>
                 <?php endforeach; ?>
