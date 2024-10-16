@@ -80,15 +80,16 @@ include './includes/sidebar.php';
                         <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['service_type']); ?></td>
                         <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['status']); ?></td>
                         <td>
-                            <div class="dropdown">
+                            <a class="btn btn-sm btn-outline-secondary" href="viewBooking.php?id=<?php echo $booking['id']; ?>">View</a>
+                            <!-- <div class="dropdown">
                                 <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="viewBooking.php?id=<?php echo $booking['id']; ?>">View</a></li>
+                                    <li></li>
                                     <li><a class="dropdown-item" href="editBooking.php?id=<?php echo $booking['id']; ?>">Update</a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </td>
                     </tr>
                 <?php endforeach; ?>

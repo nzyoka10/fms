@@ -87,6 +87,8 @@ include './includes/sidebar.php';
             <a href="logistics.php" class="btn btn-sm btn-outline-dark">
                 <span data-feather="arrow-left"></span> Back to List
             </a>
+
+            
             <div>
                 <a href="editLogRecord.php?id=<?php echo $logistic['id']; ?>" class="btn btn-sm btn-outline-primary me-2">
                     <span data-feather="edit"></span> Edit

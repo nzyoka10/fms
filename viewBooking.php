@@ -90,24 +90,29 @@ include './includes/sidebar.php';
             </div>
         </div>
 
-        <div class="card-footer d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-none">
+        <div class="card-footer d-flex justify-content-between align-items-center">
+    <!-- Left section: Edit and Pay buttons -->
+    <div class="d-flex">        
+        <a href="payment.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
+            Pay Service&nbsp;<span data-feather="send"></span>
+        </a>
+        <a href="bookings.php" class="btn btn-sm btn-outline-dark me-2 d-flex align-items-center">
+            Back to List&nbsp;<span data-feather="x-circle"></span>
+        </a>
+    </div>
 
-            <!-- edit button -->
-            <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-primary me-2 d-flex align-items-center">
-                Edit Record&nbsp;<span data-feather="edit-3"></span>
-            </a>
-            <a href="payment.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
-                Pay Service&nbsp;<span data-feather="send"></span>
-            </a>            
-            <a href="bookings.php" class="btn btn-sm btn-outline-secondary me-2 d-flex align-items-center">
-                Back to Bookings&nbsp;<span data-feather="x-circle"></span>
-            </a>
-            <a href="#!" class="btn btn-sm btn-outline-danger me-2 d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this booking record?');">
-                Delete Record&nbsp;<span data-feather="trash-2"></span>
-            </a>
-            <!-- <a  class="btn btn-sm btn-success">Payments</a> -->
-            <!-- <a href="bookings.php" class="btn btn-sm btn-danger">Back home</a> -->
-        </div>
+    <!-- Right section: Back and Delete buttons -->
+    <div class="d-flex">
+        <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-primary me-2 d-flex align-items-center">
+            <span data-feather="edit"></span>&nbsp;Edit
+        </a>
+        
+        <a href="#!" class="btn btn-sm btn-outline-danger d-flex align-items-center" onclick="return confirm('Are you sure you want to delete this booking record?');">
+            <span data-feather="trash-2"></span>&nbsp;Delete
+        </a>
+    </div>
+</div>
+
 
         <!-- <div class="card-footer text-end">
             <a href="bookings.php" class="btn btn-outline-secondary">Back to Bookings</a>

@@ -1030,3 +1030,24 @@ function fetchLogisticsData($conn) {
 
     return $logisticsData; // Return the fetched data
 }
+
+// Fetch inventory data from the database
+function fetchInventoryData($conn) {
+    $inventoryData = [];
+
+    // Prepare and execute the SQL query to fetch inventory
+    $stmt = $conn->prepare("SELECT id, item_name, category, quantity FROM inventory");
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+
+        // Fetch all rows as an associative array
+        while ($row = $result->fetch_assoc()) {
+            $inventoryData[] = $row;
+        }
+    } else {
+        // Handle query error
+        echo "Error fetching inventory data: " . $stmt->error;
+    }
+
+    return $inventoryData;
+}
