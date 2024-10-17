@@ -97,7 +97,7 @@ include './includes/title.php';
 </div>
 
 <!-- Dashboard Statistics -->
-<!-- <div class="row g-4 mt-4">
+<div class="row g-4 mt-4">
     <div class="col-md-4">
         <div class="card bg-primary text-white">
             <div class="card-body p-4">
@@ -112,20 +112,20 @@ include './includes/title.php';
             <div class="card-body p-4">
                 <h4 class="card-title">Completed Services</h4>
                 <p class="card-text"><?php echo $completedServicesCount; ?></p>
-                <small class="text-white-50">Total number of funerals and services completed</small>
+                <small class="text-white-20">Total number of funerals and services completed</small>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card bg-danger text-white">
-            <div class="card-body p-4">
+        <div class="card bg-dark text-white">
+            <div class="card-body p-3">
                 <h4 class="card-title">Pending Tasks</h4>
                 <p class="card-text"><?php echo $pendingTasksCount; ?></p>
-                <small class="text-white-50">Tasks like body pickups, client meetings, and funerals yet to be completed</small>
+                <small class="text-white-20">Tasks like body pickups, client meetings, and funerals yet to be completed</small>
             </div>
         </div>
     </div>
-</div> -->
+</div>
 
 
 
