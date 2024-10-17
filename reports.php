@@ -6,11 +6,11 @@ include './includes/header.php';
 include './includes/sidebar.php';
 require './vendor/autoload.php'; // Fixed missing semicolon
 
-// Import the Dompdf class here, at the top of the file
+// Import the Dompdf class
 use Dompdf\Dompdf;
 
 // Initialize variables
-$logisticsData = fetchLogisticsData($conn); 
+$logisticsData = fetchLogisticsData($conn);
 $error = '';
 $filter = '';
 
@@ -20,15 +20,15 @@ if (isset($_GET['filter'])) {
 
     // Fetch filtered logistics data based on the selected filter
     if ($filter == 'week') {
-        $logisticsData = getLogisticsDataByWeek($conn); // Pass the connection
+        $logisticsData = getLogisticsDataByWeek($conn);
     } elseif ($filter == 'month') {
-        $logisticsData = getLogisticsDataByMonth($conn); // Pass the connection
+        $logisticsData = getLogisticsDataByMonth($conn);
     } elseif ($filter == 'range') {
         $startDate = $_GET['start_date'] ?? '';
         $endDate = $_GET['end_date'] ?? '';
 
         if (!empty($startDate) && !empty($endDate)) {
-            $logisticsData = getLogisticsDataByRange($conn, $startDate, $endDate); // Pass the connection
+            $logisticsData = getLogisticsDataByRange($conn, $startDate, $endDate);
         } else {
             $error = 'Please select a valid date range.';
         }
@@ -40,25 +40,54 @@ if (isset($_GET['filter'])) {
 // Handle Export Requests
 if (isset($_GET['export'])) {
     if ($_GET['export'] == 'pdf') {
-        exportToPDF($logisticsData); // Function to export to PDF
+        exportToPDF($logisticsData);
     } elseif ($_GET['export'] == 'excel') {
-        exportToExcel($logisticsData); // Function to export to Excel
+        exportToExcel($logisticsData);
     }
+}
+
+// Fetch company info for report header
+$query = "SELECT * FROM company_info ORDER BY created_at DESC LIMIT 1";
+$result = mysqli_query($conn, $query);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    $companyData = mysqli_fetch_assoc($result);
+
+    // Store company data in global variables
+    $GLOBALS['companyName'] = $companyData['company_name'];
+    $GLOBALS['companyAddress'] = $companyData['company_address'];
+    $GLOBALS['companyContact'] = $companyData['company_contact'];
+    $GLOBALS['companyEmail'] = $companyData['company_email'];
+    $GLOBALS['reportType'] = $companyData['report_type'];
+} else {
+    echo "No company data found.";
+    exit; // Exit if no data found to avoid undefined variable errors later
 }
 
 // PDF Export Function
 function exportToPDF($logisticsData) {
-
-    // Create an instance of Dompdf
     $dompdf = new Dompdf();
 
-    // Generate the HTML content
-    $html = '<h1>Logistics Report</h1>';
+    // Check if company data exists
+    if (!isset($GLOBALS['companyName'])) {
+        echo "Company information is not set.";
+        return; // Exit if company data is not available
+    }
+
+    // Add the report header in the PDF content
+    $html = '<div style="text-align: center; margin-bottom: 20px;">';
+    $html .= '<h2>' . htmlspecialchars($GLOBALS['companyName']) . '</h2>';
+    $html .= '<p>' . htmlspecialchars($GLOBALS['companyAddress']) . '</p>';
+    $html .= '<p>Contact: ' . htmlspecialchars($GLOBALS['companyContact']) . '</p>';
+    $html .= '<p>Email: ' . htmlspecialchars($GLOBALS['companyEmail']) . '</p>';
+    $html .= '<h4>' . htmlspecialchars($GLOBALS['reportType']) . '</h4>';
+    $html .= '<hr></div>';
+
+    // Add the table content
     $html .= '<table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">';
     $html .= '<thead><tr><th>Sn#</th><th>Client Name</th><th>Pickup Location</th><th>Destination</th><th>Vehicle</th><th>Status</th><th>Pickup Date</th></tr></thead>';
     $html .= '<tbody>';
 
-    // Populate the table with data
     foreach ($logisticsData as $index => $logistic) {
         $html .= '<tr>';
         $html .= '<td>' . ($index + 1) . '</td>';
@@ -73,35 +102,28 @@ function exportToPDF($logisticsData) {
 
     $html .= '</tbody></table>';
 
-    // Load the HTML content into Dompdf
+    // Load HTML to DOMPDF
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'landscape');
 
-    // Render the PDF
     try {
         $dompdf->render();
-        // Output the generated PDF
         $dompdf->stream("logistics_report.pdf", array("Attachment" => true));
     } catch (Exception $e) {
-        // Handle error during PDF generation
-        echo 'Error generating PDF: ' . $e->getMessage();
+        echo "Error generating PDF: " . $e->getMessage();
     }
-
-    exit();
 }
 
 // Excel Export Function
-function exportToExcel($logisticsData) {
+function exportToExcel($logisticsData)
+{
+    // Ensure there is no output before this point
     header('Content-Type: text/csv');
     header('Content-Disposition: attachment; filename="FMS_Report.csv";');
-
-    // Open output stream for CSV
+    
     $output = fopen('php://output', 'w');
+    fputcsv($output, ['Sn#', 'Client Name', 'Pickup Location', 'Destination', 'Vehicle']);
 
-    // Add header row to CSV
-    fputcsv($output, ['Sn#', 'Client Name', 'Pickup Location', 'Destination', 'Vehicle', 'Status', 'Pickup Date']);
-
-    // Populate the CSV with logistics data
     foreach ($logisticsData as $index => $logistic) {
         fputcsv($output, [
             $index + 1,
@@ -109,18 +131,33 @@ function exportToExcel($logisticsData) {
             htmlspecialchars($logistic['pickup_location']),
             htmlspecialchars($logistic['destination']),
             htmlspecialchars($logistic['vehicle']),
-            htmlspecialchars($logistic['status']),
-            htmlspecialchars($logistic['pickup_date'])
+            // Uncomment if needed
+            // htmlspecialchars($logistic['status']),
+            // htmlspecialchars($logistic['pickup_date'])
         ]);
     }
 
-    // Close output stream
     fclose($output);
-    exit();
+    exit(); // Exit to ensure no further output is sent
 }
+
+
 
 ?>
 
+<style>
+        @media print {
+            .print-header {
+                display: block; /* Make it visible in print */
+            }
+        }
+
+        @media screen {
+            .print-header {
+                display: none; /* Hide it on screen */
+            }
+        }
+    </style>
 
 <!-- Main Section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
@@ -133,21 +170,13 @@ function exportToExcel($logisticsData) {
         </li>
     </ol>
 
-
-
-<!-- 
-    <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard</li>
-        <li class="breadcrumb-item">Reports</li>
-    </ol> -->
-
     <!-- Filter Form -->
     <form method="GET" action="reports.php">
         <div class="row mb-3">
             <div class="col-md-4 mb-2">
                 <label for="filter">Filter By:</label>
                 <select name="filter" id="filter" class="form-select sm-select" onchange="toggleDateFields()">
-                    <option value="#!" selected>Filter report by:- </option>
+                    <option value="#!" selected>Filter report by:</option>
                     <option value="week" <?php echo ($filter == 'week') ? 'selected' : ''; ?>>This Week</option>
                     <option value="month" <?php echo ($filter == 'month') ? 'selected' : ''; ?>>This Month</option>
                     <option value="range" <?php echo ($filter == 'range') ? 'selected' : ''; ?>>Custom Range</option>
@@ -170,9 +199,10 @@ function exportToExcel($logisticsData) {
         </div>
     </form>
 
+   
     <!-- Export Buttons -->
     <div class="d-flex justify-content-start mb-3">
-        <a href="#" class="btn btn-sm btn-success me-2" onclick="window.print();">Print</a>
+        <button type="button" class="btn btn-sm btn-success me-2" onclick="printReport();">Print</button>
         <a href="?filter=<?php echo $filter; ?>&export=pdf" class="btn btn-sm btn-outline-dark me-2">PDF</a>
         <a href="?filter=<?php echo $filter; ?>&export=excel" class="btn btn-sm btn-outline-secondary">Excel</a>
     </div>
@@ -185,54 +215,83 @@ function exportToExcel($logisticsData) {
     <?php endif; ?>
 
     <!-- Display Reports Table -->
-    <?php if (!empty($logisticsData)): ?>
-        <table class="table table-striped table-hover mt-3">
-            <thead>
-                <tr>
-                    <th>Sn#</th>
-                    <th>Client Name</th>
-                    <th>Pickup Location</th>
-                    <th>Destination</th>
-                    <th>Vehicle</th>
-                    <th>Status</th>
-                    <th>Pickup Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($logisticsData as $index => $logistic): ?>
+    <div id="printSection">
+        <!-- Hidden on screen but visible in print -->
+        <div class="print-header" style="text-align: center; margin-bottom: 20px;">
+            <h3 class="text-muted"><?php echo $companyName; ?></h3>
+            <p class="text-muted"><?php echo $companyAddress; ?>&nbsp;|&nbsp;<?php echo $companyContact; ?></p>
+            <!-- <p class="text-muted">Contact: </p> -->
+            <p class="text-muted">Email: <?php echo $companyEmail; ?></p>
+            <!-- <h4><?php echo $reportType; ?></h4> -->
+            <hr>
+        </div>
+
+
+        <!-- Report Table -->
+        <?php if (!empty($logisticsData)): ?>
+            <table class="table table-striped table-hover mt-3">
+                <thead>
                     <tr>
-                        <td class="text-muted"><?php echo $index + 1; ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($logistic['status']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
+                        <th>Sn#</th>
+                        <th>Client Name</th>
+                        <th>Pickup Location</th>
+                        <th>Destination</th>
+                        <th>Vehicle</th>
+                        <th>Status</th>
+                        <th>Pickup Date</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <p class="text-center text-danger">
-            No records found for the selected filter.
-        </p>
-    <?php endif; ?>
+                </thead>
+                <tbody>
+                    <?php foreach ($logisticsData as $index => $logistic): ?>
+                        <tr>
+                            <td class="text-muted"><?php echo $index + 1; ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['status']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p class="alert alert-warning">No data found for the selected filter.</p>
+        <?php endif; ?>
+    </div>
+
 </main>
 
-<!-- JavaScript to toggle date fields -->
 <script>
-function toggleDateFields() {
-    const filterSelect = document.getElementById('filter');
-    const startDateDiv = document.getElementById('start_date_div');
-    const endDateDiv = document.getElementById('end_date_div');
-    if (filterSelect.value === 'range') {
-        startDateDiv.style.display = 'block';
-        endDateDiv.style.display = 'block';
-    } else {
-        startDateDiv.style.display = 'none';
-        endDateDiv.style.display = 'none';
+    // Toggle Date Fields Based on Filter Selection
+    function toggleDateFields() {
+        const filter = document.getElementById('filter').value;
+        const startDateDiv = document.getElementById('start_date_div');
+        const endDateDiv = document.getElementById('end_date_div');
+
+        if (filter === 'range') {
+            startDateDiv.style.display = 'block';
+            endDateDiv.style.display = 'block';
+        } else {
+            startDateDiv.style.display = 'none';
+            endDateDiv.style.display = 'none';
+        }
     }
-}
+
+    // Print the report
+    function printReport() {
+        const printContents = document.getElementById('printSection').innerHTML;
+        const originalContents = document.body.innerHTML;
+
+        // Set the body to only include the print section
+        document.body.innerHTML = printContents;
+
+        // Open the print dialog
+        window.print();
+
+        // Restore the original content
+        document.body.innerHTML = originalContents;
+    }
 </script>
 
 <?php include './includes/footer.php'; ?>
