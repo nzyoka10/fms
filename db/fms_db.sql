@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2024 at 04:17 PM
+-- Generation Time: Oct 17, 2024 at 03:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,6 +72,31 @@ CREATE TABLE `client_interactions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `company_info`
+--
+
+CREATE TABLE `company_info` (
+  `id` int(11) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `company_address` varchar(255) NOT NULL,
+  `company_contact` varchar(20) NOT NULL,
+  `company_email` varchar(100) NOT NULL,
+  `report_type` varchar(50) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `company_info`
+--
+
+INSERT INTO `company_info` (`id`, `company_name`, `company_address`, `company_contact`, `company_email`, `report_type`, `created_at`) VALUES
+(1, 'Funeral Management System (FMS)', '123 Avenue, Nairobi, Ke', '+254 700 000 000', 'info@fms.co.ke', 'Weekly Report', '2024-10-16 23:24:27'),
+(2, 'Funeral Management System (FMS)', '123 Avenue, Nairobi, Ke', '+254 700 000 000', 'info@fms.co.ke', 'Monthly Report', '2024-10-16 23:24:27'),
+(3, 'Funeral Management System (FMS)', '123 Avenue, Nairobi, Ke', '+254 700 000 000', 'info@fms.co.ke', 'Custom Report (01-01-2024 to 01-31-2024)', '2024-10-16 23:24:27');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `deceased`
 --
 
@@ -98,6 +123,17 @@ CREATE TABLE `inventory` (
   `quantity` int(11) NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory`
+--
+
+INSERT INTO `inventory` (`id`, `item_name`, `category`, `quantity`, `last_updated`) VALUES
+(1, 'Wooden Coffin', 'coffin', 10, '2024-10-16 14:48:43'),
+(2, 'Marble Urn', 'urn', 5, '2024-10-16 14:48:43'),
+(3, 'Chapel Seating', 'chapel', 20, '2024-10-16 14:48:43'),
+(4, 'Industrial Cremator', 'cremator', 3, '2024-10-16 14:48:43'),
+(5, 'Meeting Room A', 'meeting_room', 15, '2024-10-16 14:48:43');
 
 -- --------------------------------------------------------
 
@@ -214,7 +250,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password_hash`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Tom', 'Ouko', 'admin', 'admin@app.com', '$2y$10$m4ZTmmGEXuiCeVcG0qdLZuZcUGyNlT56UMzo/Xtt5MYKndxrracsa', 'admin', '2024-09-28 12:18:53', '2024-09-28 12:18:53'),
-(5, 'Eric', 'Nzyoka', 'Nzyoka', 'super@app.com', '$2y$10$lRrK1Jqbvks42zOGElGpZOXZ8T4ireE38U5DTNXmlYUl2eQF1TGxm', 'staff', '2024-10-10 13:43:18', '2024-10-10 13:43:18');
+(5, 'Kajanah', 'Malwa Jr', 'user', 'super@app.com', '$2y$10$7ty6LtBpkAMXr9.KAhvVIO7odxoeRkg0G7580Jbq5xciNUy8No3Py', 'staff', '2024-10-10 13:43:18', '2024-10-17 00:56:52');
 
 --
 -- Indexes for dumped tables
@@ -232,6 +268,12 @@ ALTER TABLE `clients`
 ALTER TABLE `client_interactions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `client_id` (`client_id`);
+
+--
+-- Indexes for table `company_info`
+--
+ALTER TABLE `company_info`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `deceased`
@@ -293,6 +335,12 @@ ALTER TABLE `client_interactions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `company_info`
+--
+ALTER TABLE `company_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `deceased`
 --
 ALTER TABLE `deceased`
@@ -302,7 +350,7 @@ ALTER TABLE `deceased`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `logistics`
