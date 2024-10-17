@@ -1,6 +1,4 @@
 <?php
-// Start the session
-session_start();
 
 // Include functions file
 require_once 'includes/functions.php';

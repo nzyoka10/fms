@@ -29,7 +29,7 @@ include './includes/sidebar.php';
     <!-- Table to display account users -->
     <div class="table-responsive">
         <?php if (!empty($users)): ?>
-            <table class="table table-bordered table-hover mt-2">
+            <table class="table table-striped table-hover mt-2">
                 <thead>
                     <tr>
                         <th>Sn#</th>
@@ -37,7 +37,7 @@ include './includes/sidebar.php';
                         <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>                        
-                        <th>Actions</th> <!-- Actions column -->
+                        <!-- <th>Actions</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -48,11 +48,10 @@ include './includes/sidebar.php';
                             <td class="text-capitalize"><?php echo htmlspecialchars($user['username']); ?></td>
                             <td><?php echo htmlspecialchars($user['email']); ?></td>
                             <td class="text-capitalize"><?php echo htmlspecialchars($user['role']); ?></td> 
-                            <td>
-                                <!-- Actions for edit and delete -->
+                            <!-- <td>                                
                                 <a href="editUser.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="deleteUser.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
-                            </td>                                                       
+                            </td>                                                        -->
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -61,6 +60,8 @@ include './includes/sidebar.php';
             <p class="text-center">No account users found.</p>
         <?php endif; ?>
     </div>
+
+
 </main>
 
 <!-- SweetAlert script -->

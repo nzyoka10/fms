@@ -4,6 +4,9 @@
 // database configuration file
 require_once 'config.php';
 
+// start session
+session_start();
+
 // Check if the function doesn't already exist to prevent redeclaration
 if (!function_exists('userExists')) {
 
@@ -1051,3 +1054,23 @@ function fetchInventoryData($conn) {
 
     return $inventoryData;
 }
+
+// function to fecth logged user
+function getLoggedUser($conn) {
+
+    // Check if user_id is set in session
+    if (isset($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+        $query = "SELECT * FROM users WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_assoc();
+        }
+    }
+    return null; 
+}
+
