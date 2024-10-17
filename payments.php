@@ -46,13 +46,13 @@ include './includes/sidebar.php';
                 <tbody>
                     <?php foreach ($processedBookings as $index => $booking): ?>
                         <tr>
-                            <td><?php echo $index + 1; ?></td>                            
-                            <td><?php echo htmlspecialchars($booking['receipt_number']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['client_name']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['payment_date']); ?></td>
-                            <td class="text-capitalize"><?php echo htmlspecialchars($booking['payment_method']); ?></td>
-                            <td><strong class="text-success me-2">Kes.</strong><?php echo number_format($booking['amount'], 2); ?></td>
+                            <td class="text-muted"><?php echo $index + 1; ?></td>                            
+                            <td class="text-muted"><?php echo htmlspecialchars($booking['receipt_number']); ?></td>
+                            <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['client_name']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($booking['payment_date']); ?></td>
+                            <td class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['payment_method']); ?></td>
+                            <td class="text-muted"><strong class="text-success me-2">Kes.</strong><?php echo number_format($booking['amount'], 2); ?></td>
                             <!-- <td>Kes. <?php echo number_format($booking['discount'], 2); ?></td> -->
                             <!-- <td><?php echo htmlspecialchars($booking['payment_date']); ?></td> -->
                         </tr>
