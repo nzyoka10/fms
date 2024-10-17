@@ -52,10 +52,10 @@ include './includes/sidebar.php';
                         <th scope="row">Email</th>
                         <td><?php echo htmlspecialchars($users['email']); ?></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <th scope="row">Password</th>
                         <td><?php echo htmlspecialchars($users['password_hash']); ?></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <th scope="row">User Role</th>
                         <td class="text-capitalize"><?php echo htmlspecialchars($users['role']); ?></td>

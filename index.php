@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!doctype html>
 <html lang="en">
 <head>
-    <title>FMS - Account</title>
+    <title>FMS - Login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -77,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- Forgot Password & Register Link -->
                         <div class="form-group d-md-flex mb-3">
                             <div class="w-100 text-left">
-                                <span>Don't have an account?&nbsp;
-                                    <a href="register.php" class="text-muted">Register</a>
-                                </span>
+                                <!-- <span>Don't have an account?&nbsp; -->
+                                    <!-- <a href="register.php" class="text-muted">Register</a> -->
+                                <!-- </span> -->
                             </div>
                         </div>
 

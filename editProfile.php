@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastName = trim($_POST['last_name']);
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $password = trim($_POST['password_hash']);
     $role = trim($_POST['role']);
 
     // Validate inputs (you can add more validation as needed)
