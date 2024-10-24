@@ -3,23 +3,47 @@
 // Include functions file
 include 'includes/functions.php';
 
-// Handle form submission for adding a client
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $clientName = $_POST['client_name'];
-    $clientEmail = $_POST['client_email'] ?? null;
-    $clientPhone = $_POST['client_phone'] ?? null;
-    $clientAddress = $_POST['client_address'] ?? null;
 
-    // Add the client to the database
-    if (addClient($clientName, $clientEmail, $clientPhone, $clientAddress)) {
-        // Redirect to the same page after successful submission
+// Handle form submission for adding a client
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $clientName = $_POST['client_name'];
+    $clientPhone = $_POST['client_phone'];
+    $clientEmail = $_POST['client_email'];
+    $clientAddress = $_POST['client_address'];
+    
+    $deceasedName = $_POST['deceased_name'];
+    $deceasedAge = $_POST['deceased_age'];
+    $deceasedDateOfDeath = $_POST['deceased_date_of_death'];
+    $deceasedCause = $_POST['deceased_cause'];
+    $deceasedGender = $_POST['deceased_gender'];
+
+    // Call the addClient function
+    if (addClient($clientName, $clientEmail, $clientPhone, $clientAddress, $deceasedName, $deceasedAge, $deceasedDateOfDeath, $deceasedCause, $deceasedGender)) {
+        // echo "Client and deceased person information added successfully!";
         header("Location: clients.php");
         exit();
     } else {
-        // Optionally handle an error case
+        // echo "Failed to add the record!";
         echo "Error adding client. Please try again.";
     }
 }
+
+
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     $clientName = $_POST['client_name'];
+//     $clientEmail = $_POST['client_email'] ?? null;
+//     $clientPhone = $_POST['client_phone'] ?? null;
+//     $clientAddress = $_POST['client_address'] ?? null;
+
+//     // Add the client to the database
+//     if (addClient($clientName, $clientEmail, $clientPhone, $clientAddress)) {
+//         // Redirect to the same page after successful submission
+        
+//     } else {
+//         // Optionally handle an error case
+       
+//     }
+// }
 
 // Fetch all clients
 $clients = getClients();
@@ -93,34 +117,81 @@ include './includes/sidebar.php';
     </table>
 
     <!-- Add Client Modal Form -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Add Client
+                        New Record
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>" class="needs-validation">
-                        <div class="mb-3">
-                            <label for="client_name" class="form-label">Client Name</label>
-                            <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Full Name" required>
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="client_name" class="form-label">Client Name</label>
+                                <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Full Name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="client_phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="client_phone" name="client_phone" placeholder="Phone Number" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="client_email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="client_email" name="client_email" placeholder="Email Address" required>
+
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="client_email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="client_email" name="client_email" placeholder="Email Address" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="client_address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="client_address" name="client_address" placeholder="Address, City, Town" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="client_phone" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="client_phone" name="client_phone" placeholder="Phone Number" required>
+
+                        <div class="row">
+                            <h6 class="text-muted mt-3 mb-3">Deceased Persons</h6>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="deceased_name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="deceased_name" name="deceased_name"required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="deceased_age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="deceased_age" name="deceased_age"required>
+                            </div>                           
                         </div>
-                        <div class="mb-3">
-                            <label for="client_address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="client_address" name="client_address" placeholder="Address, City, Town" required>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-4">
+                                <label for="deceased_date_of_death" class="form-label">Date of Death</label>
+                                <input type="date" class="form-control" id="deceased_date_of_death" name="deceased_date_of_death"required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="deceased_cause" class="form-label">Cause</label>
+                                <select class="form-select" id="deceased_cause" name="deceased_cause"required>
+                                    <option value="">Select Cause</option>
+                                    <option value="natural">Natural</option>
+                                    <option value="sickness">Sickness</option>
+                                    <option value="accident">Accident</option>                                    
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="deceased_gender" class="form-label">Gender</label>
+                                <select class="form-select" id="deceased_gender" name="deceased_gender"required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-sm btn-outline-success px-3">Save Record</button>
+                       
+                        
+                        <button type="submit" class="btn btn-sm btn-outline-dark px-3">Add Record</button>
                     </form>
                 </div>
             </div>

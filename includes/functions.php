@@ -125,28 +125,37 @@ function getClients()
 }
 
 /**
- * Add a new client to the database.
+ * Add a new client and deceased person information to the database.
  *
  * @param string $clientName The name of the client.
  * @param string|null $clientEmail The email of the client (optional).
  * @param string|null $clientPhone The phone number of the client (optional).
  * @param string|null $clientAddress The address of the client (optional).
+ * @param string $deceasedName The name of the deceased person.
+ * @param int $deceasedAge The age of the deceased person.
+ * @param string $deceasedDateOfDeath The date of death of the deceased person.
+ * @param string $deceasedCause The cause of death (natural, sickness, accident, other).
+ * @param string $deceasedGender The gender of the deceased person (male, female, other).
  * @return bool True on success, false on failure.
  */
-function addClient($clientName, $clientEmail = null, $clientPhone = null, $clientAddress = null)
+function addClient($clientName, $clientEmail = null, $clientPhone = null, $clientAddress = null, $deceasedName, $deceasedAge, $deceasedDateOfDeath, $deceasedCause, $deceasedGender)
 {
     global $conn;
 
-    // Prepare the SQL statement to insert a new client
-    $sql = "INSERT INTO clients (full_name, email, phone, address, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())";
+    // Prepare the SQL statement to insert a new client and deceased person details
+    $sql = "INSERT INTO clients (client_name, client_email, client_phone, client_address, deceased_name, deceased_age, deceased_date_of_death, deceased_cause, deceased_gender, created_at, updated_at) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+    
+    // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
 
     // Bind parameters
-    $stmt->bind_param('ssss', $clientName, $clientEmail, $clientPhone, $clientAddress);
+    $stmt->bind_param('sssssiiss', $clientName,$clientEmail, $clientPhone, $clientAddress, $deceasedName, $deceasedAge, $deceasedDateOfDeath, $deceasedCause, $deceasedGender);
 
     // Execute the statement and return the result
     return $stmt->execute();
 }
+
 
 /**
  * Get the total number of registered clients.
