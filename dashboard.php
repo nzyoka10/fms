@@ -27,7 +27,7 @@ include './includes/title.php';
     </div>
 
     <!-- Bookings card -->
-     
+
     <div class="col-md-3">
         <div class="card text-center p-4 shadow-sm">
             <div class="card-body d-flex flex-column align-items-center">

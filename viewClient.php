@@ -33,24 +33,20 @@ include './includes/sidebar.php';
 
     <div class="container-fluid px-4">
         <!-- Page heading -->
-        <h4 class="mt-4">View client</h4>
+        <h4 class="text-muted text-capitalize mt-2">Client Record</h4>
 
         <ol class="breadcrumb mb-2">
-            <li class="breadcrumb-item active">Dashboard</li>
-            <li class="breadcrumb-item mb-3">
-                <a class="text-decoration-none hover-underline" href="./clients.php">Clients</a>
+            <li class="breadcrumb-item active">Clients</li>
+            <li class="breadcrumb-item mb-0">
+                <a class="text-decoration-none hover-underline" href="viewClient.php?id=<?php echo $client['id']; ?>">View</a>
             </li>
         </ol>
 
 
-        <!-- <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard / View Client</li>
-        </ol> -->
-
         <!-- Client Details Card -->
         <div class="card mb-4">
             <div class="card-header d-flex align-items-center">
-                <span data-feather="info" class="me-2"></span>Client Information
+                <span data-feather="info" class="me-2"></span>View client information
             </div>
             <div class="card-body">
 
@@ -61,12 +57,12 @@ include './includes/sidebar.php';
                         <p class="text-muted"><?php echo htmlspecialchars($client['created_at']); ?></p>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <h5 class="fw-bold">Client Names</h5>
-                        <p class="text-muted"><?php echo htmlspecialchars($client['full_name']); ?></p>
+                        <h5 class="fw-bold">Client Name</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['client_name']); ?></p>
                     </div>
                     <div class="col-md-4 mb-3">
                         <h5 class="fw-bold">Email Address</h5>
-                        <p class="text-muted"><?php echo htmlspecialchars($client['email']); ?></p>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['client_email']); ?></p>
                     </div>
                 </div>
 
@@ -74,16 +70,51 @@ include './includes/sidebar.php';
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <h5 class="fw-bold">Mobile Number</h5>
-                        <p class="text-muted"><?php echo htmlspecialchars($client['phone']); ?></p>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['client_phone']); ?></p>
                     </div>
                     <div class="col-md-4 mb-3">
                         <h5 class="fw-bold">Address</h5>
-                        <p class="text-muted"><?php echo htmlspecialchars($client['address']); ?></p>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['client_address']); ?></p>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <!-- <div class="col-md-4 mb-3">
                         <h5 class="fw-bold">Last updated date</h5>
                         <p class="text-muted"><?php echo htmlspecialchars($client['updated_at']); ?></p>
+                    </div> -->
+                </div>
+
+                <!-- third row -->
+                <div class="row">
+                    <h6 class="text-capitalize text-danger p-2">deceased information</h6>
+
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Full Name</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['deceased_name']); ?></p>
                     </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Cause</h5>
+                        <p class="text-muted text-capitalize"><?php echo htmlspecialchars($client['deceased_cause']); ?></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Date of Death</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['deceased_date_of_death']); ?></p>
+                    </div>
+                </div>
+
+                <!-- fourth row -->
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Gender</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['deceased_gender']); ?></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Age</h5>
+                        <p class="text-muted text-capitalize"><?php echo htmlspecialchars($client['deceased_age']); ?></p>
+                    </div>
+                    <!-- <div class="col-md-4 mb-3">
+                        <h5 class="fw-bold">Date of Death</h5>
+                        <p class="text-muted"><?php echo htmlspecialchars($client['deceased_date_of_death']); ?></p>
+                    </div> -->
                 </div>
 
             </div>
@@ -108,6 +139,9 @@ include './includes/sidebar.php';
             </div>
 
         </div>
+
+
+
     </div>
 
 

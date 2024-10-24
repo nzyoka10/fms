@@ -145,12 +145,12 @@ function addClient($clientName, $clientEmail = null, $clientPhone = null, $clien
     // Prepare the SQL statement to insert a new client and deceased person details
     $sql = "INSERT INTO clients (client_name, client_email, client_phone, client_address, deceased_name, deceased_age, deceased_date_of_death, deceased_cause, deceased_gender, created_at, updated_at) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
-    
+
     // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
 
     // Bind parameters
-    $stmt->bind_param('sssssiiss', $clientName,$clientEmail, $clientPhone, $clientAddress, $deceasedName, $deceasedAge, $deceasedDateOfDeath, $deceasedCause, $deceasedGender);
+    $stmt->bind_param('sssssiiss', $clientName, $clientEmail, $clientPhone, $clientAddress, $deceasedName, $deceasedAge, $deceasedDateOfDeath, $deceasedCause, $deceasedGender);
 
     // Execute the statement and return the result
     return $stmt->execute();
@@ -207,26 +207,64 @@ function getClientById($id)
     return $result->fetch_assoc();
 }
 
-// Update client details
 /**
- * Updates the details of a client in the database.
+ * Updates the details of a client and deceased person in the database.
  *
  * @param int $id The ID of the client to update.
  * @param string $name The new name of the client.
  * @param string $email The new email of the client.
  * @param string $phone The new phone number of the client.
  * @param string $address The new address of the client.
+ * @param string $deceasedName The new name of the deceased person.
+ * @param int $deceasedAge The new age of the deceased person.
+ * @param string $deceasedDateOfDeath The new date of death of the deceased person.
+ * @param string $deceasedCause The new cause of death (natural, sickness, accident, other).
+ * @param string $deceasedGender The new gender of the deceased person.
  * @throws Exception If the database update fails.
  */
-function updateClient($id, $name, $email, $phone, $address)
-{
+function updateClient(
+    $id,
+    $name,
+    $email,
+    $phone,
+    $address,
+    $deceasedName,
+    $deceasedAge,
+    $deceasedDateOfDeath,
+    $deceasedCause,
+    $deceasedGender
+) {
     global $conn;
 
-    // Prepare the SQL statement for updating client details
-    $stmt = $conn->prepare("UPDATE clients SET full_name = ?, email = ?, phone = ?, address = ? WHERE id = ?");
+    // Prepare the SQL statement for updating client and deceased person details
+    $stmt = $conn->prepare(
+        "UPDATE clients 
+         SET client_name = ?, 
+             client_email = ?, 
+             client_phone = ?, 
+             client_address = ?, 
+             deceased_name = ?, 
+             deceased_age = ?, 
+             deceased_date_of_death = ?, 
+             deceased_cause = ?, 
+             deceased_gender = ? 
+         WHERE id = ?"
+    );
 
     // Bind the parameters to the SQL statement
-    $stmt->bind_param("ssssi", $name, $email, $phone, $address, $id);
+    $stmt->bind_param(
+        "sssssiissi",
+        $name,
+        $email,
+        $phone,
+        $address,
+        $deceasedName,
+        $deceasedAge,
+        $deceasedDateOfDeath,
+        $deceasedCause,
+        $deceasedGender,
+        $id
+    );
 
     // Execute the prepared statement and check for errors
     if (!$stmt->execute()) {
@@ -236,8 +274,9 @@ function updateClient($id, $name, $email, $phone, $address)
     $stmt->close();
 }
 
+
 /**
- * Search for clients by name, email, or phone.
+ * Search for deceased record by deaceased name
  *
  * @param string $query The search query.
  * @return array The list of matching clients.
@@ -394,15 +433,15 @@ function getBookings()
 
     // Fetch the bookings as an associative array
     // Initialize an empty array for bookings
-    $bookings = []; 
+    $bookings = [];
     while ($row = $result->fetch_assoc()) {
 
         // Append each row to the bookings array
-        $bookings[] = $row; 
+        $bookings[] = $row;
     }
 
     // Return the list of bookings
-    return $bookings; 
+    return $bookings;
 }
 
 
@@ -425,7 +464,7 @@ function countBookingsMade()
         $row = $result->fetch_assoc();
 
         // Return the total count as an integer
-        return (int)$row['total']; 
+        return (int)$row['total'];
     }
 
     // Return 0 if the query fails or no bookings found
@@ -569,9 +608,9 @@ function handlePaymentForm($data, $conn, $bookingId)
     }
 
     // Generate the next receipt number
-    $query = "SELECT COALESCE(MAX(receipt_number), 137280) + 1 AS next_receipt FROM payments"; 
-    $result = $conn->query($query); 
-    $row = $result->fetch_assoc(); 
+    $query = "SELECT COALESCE(MAX(receipt_number), 137280) + 1 AS next_receipt FROM payments";
+    $result = $conn->query($query);
+    $row = $result->fetch_assoc();
     $receipt_number = str_pad($row['next_receipt'], 8, '0', STR_PAD_LEFT);
 
     // Prepare SQL query to insert payment record
@@ -585,7 +624,7 @@ function handlePaymentForm($data, $conn, $bookingId)
     } else {
         $response['error'] = 'Error: Could not process payment. Please try again!';
     }
-    $stmt->close(); 
+    $stmt->close();
 
     return $response;
 }
@@ -613,7 +652,7 @@ function fetchTotalRevenue($conn)
     // Check if the query was successful and fetch the result
     if ($result) {
         $row = $result->fetch_assoc();
-        $totalRevenue = $row['total_revenue'] ?? 0; 
+        $totalRevenue = $row['total_revenue'] ?? 0;
     }
 
     return (float) $totalRevenue;
@@ -697,7 +736,7 @@ function getProcessedBookings($conn)
         }
     }
 
-    return $processedBookings; 
+    return $processedBookings;
 }
 
 /**
@@ -757,7 +796,8 @@ function deleteUserById($conn, $userId)
 }
 
 // Function to get clients with valid bookings
-function getValidBookingsWithClients($conn) {
+function getValidBookingsWithClients($conn)
+{
     // SQL query to fetch client information for clients who have valid bookings.
     // It selects the client ID and client name from the 'clients' table 
     // and joins it with the 'bookings' table on the 'client_id'.
@@ -769,19 +809,19 @@ function getValidBookingsWithClients($conn) {
         FROM schedules
         JOIN clients ON schedules.client_id = clients.id
         WHERE schedules.status = 'scheduled'";  // Adjust the status condition as needed for "valid" bookings
-    
+
     // Prepare the SQL query for execution to prevent SQL injection
     $stmt = $conn->prepare($query);
-    
+
     // Execute the query to fetch results
     $stmt->execute();
-    
+
     // Store the results of the query in a variable
     $result = $stmt->get_result();
-    
+
     // Initialize an empty array to store valid clients
     $validClients = [];
-    
+
     // Fetch each row from the result set and add it to the array
     while ($row = $result->fetch_assoc()) {
         $validClients[] = $row; // Append the client data to the $validClients array
@@ -804,7 +844,8 @@ function getValidBookingsWithClients($conn) {
  * @param string $status - The status of the logistics entry, defaults to 'pending'.
  * @return bool - Returns true if the logistics entry is successfully inserted, otherwise false.
  */
-function scheduleLogistic($conn, $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status = 'pending') {
+function scheduleLogistic($conn, $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status = 'pending')
+{
     // SQL query to insert a new logistics record into the 'logistics' table
     $query = "
         INSERT INTO logistics 
@@ -844,11 +885,12 @@ function scheduleLogistic($conn, $client_id, $vehicle, $driver_name, $pickup_dat
  * @param string $status The status of the logistics.
  * @return bool Returns true if the update was successful, otherwise false.
  */
-function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status) {
+function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status)
+{
     $query = "UPDATE logistics SET client_id = ?, vehicle = ?, driver_name = ?, pickup_date = ?, destination = ?, pickup_location = ?, status = ? WHERE id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('issssssi', $client_id, $vehicle, $driver_name, $pickup_date, $destination, $pickup_location, $status, $id);
-    
+
     return $stmt->execute();
 }
 
@@ -858,7 +900,8 @@ function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_
  * @param mysqli $conn The database connection object.
  * @return array Returns an array of logistics data, including client name.
  */
-function getLogisticsData($conn) {
+function getLogisticsData($conn)
+{
     $logisticsData = [];
 
     // SQL query to get logistics data and client name, including pickup_location
@@ -890,7 +933,8 @@ function getLogisticsData($conn) {
  * @param int $logistic_id The ID of the logistic record.
  * @return array|bool Returns the logistic record as an associative array, or false if not found.
  */
-function getLogisticById($conn, $logistic_id) {
+function getLogisticById($conn, $logistic_id)
+{
     // SQL query to get logistics data by ID
     $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
                      c.full_name AS client_name, l.pickup_location, l.created_at, l.updated_at
@@ -924,7 +968,8 @@ function getLogisticById($conn, $logistic_id) {
  * @param string $status The updated status.
  * @return bool Returns true if the update is successful, otherwise false.
  */
-function updateLogisticRecord($conn, $logistic_id, $vehicle, $driver_name, $pickup_location, $pickup_date, $destination, $status) {
+function updateLogisticRecord($conn, $logistic_id, $vehicle, $driver_name, $pickup_location, $pickup_date, $destination, $status)
+{
     $query = "UPDATE logistics 
               SET vehicle = ?, driver_name = ?, pickup_location = ?, pickup_date = ?, destination = ?, status = ?, updated_at = NOW() 
               WHERE id = ?";
@@ -940,7 +985,8 @@ function updateLogisticRecord($conn, $logistic_id, $vehicle, $driver_name, $pick
  * @param mysqli $conn The database connection object.
  * @return array Returns an array of logistics data.
  */
-function getLogisticsDataByWeek($conn) {
+function getLogisticsDataByWeek($conn)
+{
     $logisticsData = [];
     $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
                      c.full_name AS client_name
@@ -965,7 +1011,8 @@ function getLogisticsDataByWeek($conn) {
  * @param mysqli $conn The database connection object.
  * @return array Returns an array of logistics data.
  */
-function getLogisticsDataByMonth($conn) {
+function getLogisticsDataByMonth($conn)
+{
     $logisticsData = [];
     $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
                      c.full_name AS client_name
@@ -992,7 +1039,8 @@ function getLogisticsDataByMonth($conn) {
  * @param string $endDate The end date of the range.
  * @return array Returns an array of logistics data.
  */
-function getLogisticsDataByRange($conn, $startDate, $endDate) {
+function getLogisticsDataByRange($conn, $startDate, $endDate)
+{
     $logisticsData = [];
     $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
                      c.full_name AS client_name
@@ -1022,7 +1070,8 @@ function getLogisticsDataByRange($conn, $startDate, $endDate) {
  * @param mysqli $conn The database connection object.
  * @return array Returns an array of logistics data.
  */
-function fetchLogisticsData($conn) {
+function fetchLogisticsData($conn)
+{
     $logisticsData = []; // Initialize the array
 
     // SQL query to fetch data
@@ -1044,7 +1093,8 @@ function fetchLogisticsData($conn) {
 }
 
 // Fetch inventory data from the database
-function fetchInventoryData($conn) {
+function fetchInventoryData($conn)
+{
     $inventoryData = [];
 
     // Prepare and execute the SQL query to fetch inventory
@@ -1065,7 +1115,8 @@ function fetchInventoryData($conn) {
 }
 
 // function to fecth logged user
-function getLoggedUser($conn) {
+function getLoggedUser($conn)
+{
 
     // Check if user_id is set in session
     if (isset($_SESSION['user_id'])) {
@@ -1080,6 +1131,5 @@ function getLoggedUser($conn) {
             return $result->fetch_assoc();
         }
     }
-    return null; 
+    return null;
 }
-

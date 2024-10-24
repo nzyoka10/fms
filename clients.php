@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $clientPhone = $_POST['client_phone'];
     $clientEmail = $_POST['client_email'];
     $clientAddress = $_POST['client_address'];
-    
+
     $deceasedName = $_POST['deceased_name'];
     $deceasedAge = $_POST['deceased_age'];
     $deceasedDateOfDeath = $_POST['deceased_date_of_death'];
@@ -28,23 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $clientName = $_POST['client_name'];
-//     $clientEmail = $_POST['client_email'] ?? null;
-//     $clientPhone = $_POST['client_phone'] ?? null;
-//     $clientAddress = $_POST['client_address'] ?? null;
-
-//     // Add the client to the database
-//     if (addClient($clientName, $clientEmail, $clientPhone, $clientAddress)) {
-//         // Redirect to the same page after successful submission
-        
-//     } else {
-//         // Optionally handle an error case
-       
-//     }
-// }
-
 // Fetch all clients
 $clients = getClients();
 
@@ -56,7 +39,7 @@ include './includes/sidebar.php';
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
 
-    <h4 class="text-muted text-uppercase mt-3">clients</h4>
+    <h4 class="text-muted text-capitalize mt-2">all clients</h4>
 
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>
@@ -104,11 +87,11 @@ include './includes/sidebar.php';
                     <tr>
                         <td class="text-muted"><?php echo $index + 1; ?></td>
                         <td class="text-muted"><?php echo htmlspecialchars($client['created_at']); ?></td>
-                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($client['full_name']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($client['email']); ?></td>
+                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($client['client_name']); ?></td>
+                        <td class="text-muted"><?php echo htmlspecialchars($client['client_email']); ?></td>
                         <td>
                             <a class="btn btn-sm btn-outline-secondary" href="viewClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-success btn-sm">View</a>
-                            
+
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -144,7 +127,7 @@ include './includes/sidebar.php';
                                 <label for="client_email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="client_email" name="client_email" placeholder="Email Address" required>
                             </div>
-                            
+
                             <div class="col-md-6 mb-3">
                                 <label for="client_address" class="form-label">Address</label>
                                 <input type="text" class="form-control" id="client_address" name="client_address" placeholder="Address, City, Town" required>
@@ -156,32 +139,32 @@ include './includes/sidebar.php';
 
                             <div class="col-md-6 mb-3">
                                 <label for="deceased_name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="deceased_name" name="deceased_name"required>
+                                <input type="text" class="form-control" id="deceased_name" name="deceased_name" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="deceased_age" class="form-label">Age</label>
-                                <input type="number" class="form-control" id="deceased_age" name="deceased_age"required>
-                            </div>                           
+                                <input type="number" class="form-control" id="deceased_age" name="deceased_age" required>
+                            </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4 mb-4">
                                 <label for="deceased_date_of_death" class="form-label">Date of Death</label>
-                                <input type="date" class="form-control" id="deceased_date_of_death" name="deceased_date_of_death"required>
+                                <input type="date" class="form-control" id="deceased_date_of_death" name="deceased_date_of_death" required>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="deceased_cause" class="form-label">Cause</label>
-                                <select class="form-select" id="deceased_cause" name="deceased_cause"required>
+                                <select class="form-select" id="deceased_cause" name="deceased_cause" required>
                                     <option value="">Select Cause</option>
                                     <option value="natural">Natural</option>
                                     <option value="sickness">Sickness</option>
-                                    <option value="accident">Accident</option>                                    
+                                    <option value="accident">Accident</option>
                                     <option value="other">Other</option>
                                 </select>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="deceased_gender" class="form-label">Gender</label>
-                                <select class="form-select" id="deceased_gender" name="deceased_gender"required>
+                                <select class="form-select" id="deceased_gender" name="deceased_gender" required>
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -189,8 +172,8 @@ include './includes/sidebar.php';
                                 </select>
                             </div>
                         </div>
-                       
-                        
+
+
                         <button type="submit" class="btn btn-sm btn-outline-dark px-3">Add Record</button>
                     </form>
                 </div>
