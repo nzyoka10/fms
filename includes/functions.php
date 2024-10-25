@@ -494,10 +494,10 @@ function updateBooking($bookingId, $client_id, $service_type, $schedule_date, $v
 }
 
 
+
 /** 
  * Payments function
- * 
- */
+* */
 
 /** 
  * Function to handle the payment processing.
