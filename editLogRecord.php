@@ -57,43 +57,51 @@ include './includes/sidebar.php';
     <!-- Form for editing logistic record -->
     <form method="POST" action="">
         <div class="card">
-            <div class="card-header">
+        <div class="card-header d-flex align-items-center">
+                <span data-feather="info" class="me-2"></span>
                 <h5 class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></h5>
             </div>
+            
             <div class="card-body">
                 <?php if (isset($error)): ?>
                     <p class="text-danger"><?php echo $error; ?></p>
                 <?php endif; ?>
 
-                <div class="mb-3">
-                    <label for="vehicle" class="form-label">Vehicle</label>
-                    <input type="text" class="form-control" id="vehicle" name="vehicle" value="<?php echo htmlspecialchars($logistic['vehicle']); ?>" required>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="vehicle_type" class="form-label">Vehicle</label>
+                        <input type="text" class="form-control" id="vehicle_type" name="vehicle_type" value="<?php echo htmlspecialchars($logistic['vehicle_type']); ?>" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="deceased_name" class="form-label">Deceased Person</label>
+                        <input type="text" class="form-control" id="deceased_name" name="deceased_name" value="<?php echo htmlspecialchars($logistic['deceased_name']); ?>" required>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="driver_name" class="form-label">Driver Name</label>
-                    <input type="text" class="form-control" id="driver_name" name="driver_name" value="<?php echo htmlspecialchars($logistic['driver_name']); ?>" required>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="schedule_date" class="form-label">Pickup Date</label>
+                        <input type="date" class="form-control" id="schedule_date" name="schedule_date" value="<?php echo htmlspecialchars($logistic['schedule_date']); ?>" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="request" class="form-label">Request</label>
+                        <input type="text" class="form-control" id="request" name="request" value="<?php echo htmlspecialchars($logistic['request']); ?>" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="Scheduled" <?php echo ($logistic['status'] == 'Scheduled') ? 'selected' : ''; ?>>Scheduled</option>
+                            <option value="In Progress" <?php echo ($logistic['status'] == 'In Progress') ? 'selected' : ''; ?>>In Progress</option>
+                            <option value="Completed" <?php echo ($logistic['status'] == 'Completed') ? 'selected' : ''; ?>>Completed</option>
+                            <option value="Cancelled" <?php echo ($logistic['status'] == 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="pickup_date" class="form-label">Pickup Date</label>
-                    <input type="date" class="form-control" id="pickup_date" name="pickup_date" value="<?php echo htmlspecialchars($logistic['pickup_date']); ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="destination" class="form-label">Destination</label>
-                    <input type="text" class="form-control" id="destination" name="destination" value="<?php echo htmlspecialchars($logistic['destination']); ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select class="form-select" id="status" name="status" required>
-                        <option value="Scheduled" <?php echo ($logistic['status'] == 'Scheduled') ? 'selected' : ''; ?>>Scheduled</option>
-                        <option value="In Progress" <?php echo ($logistic['status'] == 'In Progress') ? 'selected' : ''; ?>>In Progress</option>
-                        <option value="Completed" <?php echo ($logistic['status'] == 'Completed') ? 'selected' : ''; ?>>Completed</option>
-                        <option value="Cancelled" <?php echo ($logistic['status'] == 'Cancelled') ? 'selected' : ''; ?>>Cancelled</option>
-                    </select>
-                </div>
+                
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <a href="logistics.php" class="btn btn-sm btn-outline-dark">

@@ -291,42 +291,6 @@ function updateClient(
 }
 
 
-/**
- * Search for a deceased record by deceased name, client name, email, or phone.
- *
- * @param string $query The search query.
- * @return array The list of matching clients.
- */
-function searchClients($query)
-{
-    global $conn;
-    
-    // Prepare the SQL query to search across client and deceased details
-    $stmt = $conn->prepare("
-        SELECT * FROM clients 
-        WHERE client_name LIKE ? 
-        OR client_email LIKE ? 
-        OR client_phone LIKE ? 
-        OR deceased_name LIKE ?
-    ");
-    
-    // Bind the search query to the parameters
-    $searchParam = '%' . $query . '%';
-    $stmt->bind_param('ssss', $searchParam, $searchParam, $searchParam, $searchParam);
-    
-    // Execute the statement and fetch results
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Store the results in an array
-    $clients = [];
-    while ($row = $result->fetch_assoc()) {
-        $clients[] = $row;
-    }
-
-    return $clients;
-}
-
 
 /** 
  * ********** Bookings Functions ****************
@@ -478,7 +442,7 @@ function getBookingById($bookingId)
 function updateBooking($bookingId, $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn)
 {
     // Prepare the SQL query to update the booking details.
-    $query = "UPDATE schedules SET client_id = ?, service_type = ?, schedule_date = ?, vehicle_type = ?, request = ?, status = ? WHERE id = ?";
+    $query = "UPDATE bookings SET client_id = ?, service_type = ?, schedule_date = ?, vehicle_type = ?, request = ?, status = ? WHERE id = ?";
 
     // Prepare the statement for execution.
     $stmt = $conn->prepare($query);
@@ -600,7 +564,7 @@ function fetchTotalRevenue($conn)
 function getCompletedServicesCount($conn)
 {
     // Query to count the number of completed services
-    $query = "SELECT COUNT(*) AS completed_count FROM schedules WHERE status = 'completed'";
+    $query = "SELECT COUNT(*) AS completed_count FROM bookings WHERE status = 'completed'";
 
     // Execute the query
     $result = $conn->query($query);

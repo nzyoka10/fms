@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_item'])) {
     $stmt->bind_param("ssii", $itemName, $quantity, $category, $itemId);
     
     if ($stmt->execute()) {
-        echo "<div class='alert alert-success'>Item updated successfully!</div>";
+        // echo "<div class='alert alert-success'>Item updated successfully!</div>";
         // Refresh inventory data after updating an item
         $inventoryData = fetchInventoryData($conn);
     } else {
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_item'])) {
                 <th>Item Name</th>
                 <th>Category</th>
                 <th>Quantity</th>            
-                <th>Actions</th>
+                <!-- <th>Actions</th> -->
             </tr>
         </thead>
         <tbody>
@@ -114,49 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_item'])) {
                 <td class="text-muted text-capitalize"><?php echo htmlspecialchars($item['item_name']); ?></td>
                 <td class="text-muted text-capitalize"><?php echo htmlspecialchars($item['category']); ?></td>
                 <td class="text-muted text-capitalize"><?php echo htmlspecialchars($item['quantity']); ?></td>               
-                <td>
+                <!-- <td>
                     <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#editItemModal<?php echo $item['id']; ?>">Edit</button>
-                    <!-- Edit Item Modal -->
-                    <div class="modal fade" id="editItemModal<?php echo $item['id']; ?>" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <form method="POST">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Edit Item</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <input type="hidden" name="item_id" value="<?php echo $item['id']; ?>">
-                                        <div class="form-group">
-                                            <label for="item_name">Item Name</label>
-                                            <input type="text" name="item_name" class="form-control" value="<?php echo htmlspecialchars($item['item_name']); ?>" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="category">Category</label>
-                                            <select name="category" class="form-control" required>
-                                                <option value="coffin" <?php echo $item['category'] === 'coffin' ? 'selected' : ''; ?>>Coffin</option>
-                                                <option value="urn" <?php echo $item['category'] === 'urn' ? 'selected' : ''; ?>>Urn</option>
-                                                <option value="chapel" <?php echo $item['category'] === 'chapel' ? 'selected' : ''; ?>>Chapel</option>
-                                                <option value="cremator" <?php echo $item['category'] === 'cremator' ? 'selected' : ''; ?>>Cremator</option>
-                                                <option value="meeting_room" <?php echo $item['category'] === 'meeting_room' ? 'selected' : ''; ?>>Meeting Room</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="quantity">Quantity</label>
-                                            <input type="number" name="quantity" class="form-control" value="<?php echo htmlspecialchars($item['quantity']); ?>" required>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" name="update_item" class="btn btn-primary">Update Item</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </td>
+                </td> -->
             </tr>
             <?php endforeach; ?>
         </tbody>
