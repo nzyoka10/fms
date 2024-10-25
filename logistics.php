@@ -41,9 +41,9 @@ include './includes/sidebar.php';
                     <tr>
                         <th>Sn#</th>
                         <th>Booked Vehicle</th>
-                        <th>Driver Name</th>
+                        <th>Deceased Person</th>
                         <!-- <th>Client's Name</th> -->
-                        <th>Booked Date</th>
+                        <!-- <th>Booked Date</th> -->
                         <th>Pickup</th>
                         <!-- <th>Destination</th>                         -->
                         <th>Actions</th>
@@ -53,11 +53,11 @@ include './includes/sidebar.php';
                     <?php foreach ($logistics as $index => $logistic): ?>
                         <tr>
                             <td><?php echo $index + 1; ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
-                            <td class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['driver_name']); ?></td>
+                            <td class="text-muted text-capitalize"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
+                            <td class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
                             <!-- <td class=" text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></td> -->
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
+                            <!-- <td class="text-muted"><?php echo htmlspecialchars($logistic['schedule_date']); ?></td> -->
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
                             <!-- <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>                             -->
                             <td>
                                 <a class="btn btn-sm btn-outline-secondary" href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>">View</a>

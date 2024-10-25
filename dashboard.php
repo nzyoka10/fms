@@ -20,7 +20,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="users" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Total Clients</h5>
+                <h5 class="card-title text-muted">Clients</h5>
                 <p class="card-text"><strong><?php echo $totalClients; ?></strong></p>
             </div>
         </div>
@@ -34,7 +34,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="bookmark" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Total Bookings</h5>
+                <h5 class="card-title text-muted">Bookings</h5>
                 <p class="card-text"><strong><?php echo $totalBookings; ?></strong></p>
             </div>
         </div>
@@ -47,7 +47,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="truck" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Scheduled Bookings</h5>
+                <h5 class="card-title text-muted">Pending</h5>
                 <p class="card-text">
                     <strong><?php echo $pendingTasksCount; ?></strong>
                 </p>
@@ -62,7 +62,7 @@ include './includes/title.php';
                 <div class="card-icon mb-3">
                     <span data-feather="dollar-sign" style="width: 20px; height: 20px;"></span>
                 </div>
-                <h5 class="card-title text-muted">Total Revenue</h5>
+                <h5 class="card-title text-muted">Revenue</h5>
                 <p class="card-text">
                     <strong>Kes.&nbsp;</strong><?php echo number_format($totalRevenue, 2); ?>
                 </p>
@@ -96,36 +96,6 @@ include './includes/title.php';
     </div>
 </div>
 
-<!-- Dashboard Statistics -->
-<div class="row g-4 mt-4">
-    <div class="col-md-4">
-        <div class="card bg-primary text-white">
-            <div class="card-body p-4">
-                <h4 class="card-title">Total Revenue</h4>
-                <p class="card-text">Ksh <?php echo number_format($totalRevenue); ?></p>
-                <small class="text-white-50">Revenue generated from completed bookings</small>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-success text-white">
-            <div class="card-body p-4">
-                <h4 class="card-title">Completed Services</h4>
-                <p class="card-text"><?php echo $completedServicesCount; ?></p>
-                <small class="text-white-20">Total number of funerals and services completed</small>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark text-white">
-            <div class="card-body p-3">
-                <h4 class="card-title">Pending Tasks</h4>
-                <p class="card-text"><?php echo $pendingTasksCount; ?></p>
-                <small class="text-white-20">Tasks like body pickups, client meetings, and funerals yet to be completed</small>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 

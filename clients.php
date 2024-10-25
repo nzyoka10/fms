@@ -193,11 +193,13 @@ include './includes/sidebar.php';
         let hasResults = false;
 
         rows.forEach(row => {
-            const clientName = row.cells[2].textContent.toLowerCase();
-            const clientEmail = row.cells[3].textContent.toLowerCase();
+            const clientName = row.cells[2].textContent.toLowerCase(); // Assuming this is full name
+            const clientEmail = row.cells[3].textContent.toLowerCase(); // Assuming this is email
+            const clientPhone = row.cells[4].textContent.toLowerCase(); // Assuming this is phone number
+            const deceasedName = row.cells[5].textContent.toLowerCase(); // Assuming this is deceased name
 
             // Show the row if it matches the search query
-            if (clientName.includes(query) || clientEmail.includes(query)) {
+            if (clientName.includes(query) || clientEmail.includes(query) || clientPhone.includes(query) || deceasedName.includes(query)) {
                 row.style.display = '';
                 hasResults = true; // Set hasResults to true if there are matches
             } else {

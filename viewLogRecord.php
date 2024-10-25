@@ -39,49 +39,45 @@ include './includes/sidebar.php';
     </ol>
 
     <!-- Logistic Record Details -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></h5>
+    <div class="card shadow-sm">
+        <div class="card-header d-flex align-items-center">
+            <span data-feather="info" class="me-2"></span><?php echo htmlspecialchars($logistic['client_name']); ?>
         </div>
         <div class="card-body">
-            <table class="table table-borderless">
-                <tr>
-                    <th>Client Name:</th>
-                    <td><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                </tr>
-                <tr>
-                    <th>Vehicle:</th>
-                    <td><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
-                </tr>
-                <tr>
-                    <th>Driver Name:</th>
-                    <td><?php echo htmlspecialchars($logistic['driver_name']); ?></td>
-                </tr>
-                <tr>
-                    <th>Pickup Location:</th>
-                    <td><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
-                </tr>
-                <tr>
-                    <th>Destination:</th>
-                    <td><?php echo htmlspecialchars($logistic['destination']); ?></td>
-                </tr>
-                <tr>
-                    <th>Pickup Date:</th>
-                    <td><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
-                </tr>
-                <tr>
-                    <th>Status:</th>
-                    <td><?php echo htmlspecialchars($logistic['status']); ?></td>
-                </tr>
-                <tr>
-                    <th>Created At:</th>
-                    <td><?php echo htmlspecialchars($logistic['created_at']); ?></td>
-                </tr>
-                <tr>
-                    <th>Last Updated:</th>
-                    <td><?php echo htmlspecialchars($logistic['updated_at']); ?></td>
-                </tr>
-            </table>
+
+            <div class="row">
+                <!-- Client Name -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold-30">Client</h5>
+                    <p class="text-muted text-uppercase"><?php echo htmlspecialchars($logistic['client_name']); ?></p>
+                </div>
+                <!-- vehicle Type -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold-30">Vehicle</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></p>
+                </div>
+                <!-- Service Type -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold-30">Deceased</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($logistic['deceased_name']); ?></p>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold-30">Service</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($logistic['service_type']); ?></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold-30">Request</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($logistic['request']); ?></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold-30">Booked date</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($logistic['schedule_date']); ?></p>
+                </div>
+            </div>
+          
         </div>
         
         <div class="card-footer d-flex justify-content-between">

@@ -124,6 +124,23 @@ function getClients()
     return $clients;
 }
 
+// function getClients2()
+// {
+//     global $conn;
+
+//     $clients = [];
+//     $sql = "SELECT id, client_name, deceased_name FROM clients";
+//     $result = $conn->query($sql);
+
+//     if ($result->num_rows > 0) {
+//         // Fetch each row and store it in the $clients array
+//         while ($row = $result->fetch_assoc()) {
+//             $clients[] = $row;
+//         }
+//     }
+//     return $clients;
+// }
+
 /**
  * Add a new client and deceased person information to the database.
  *
@@ -180,7 +197,6 @@ function countRegisteredClients()
     return 0;
 }
 
-// Fetch client details by ID
 /**
  * Retrieves client details from the database using the client ID.
  *
@@ -276,7 +292,7 @@ function updateClient(
 
 
 /**
- * Search for deceased record by deaceased name
+ * Search for a deceased record by deceased name, client name, email, or phone.
  *
  * @param string $query The search query.
  * @return array The list of matching clients.
@@ -284,12 +300,25 @@ function updateClient(
 function searchClients($query)
 {
     global $conn;
-    $stmt = $conn->prepare("SELECT * FROM clients WHERE full_name LIKE ? OR email LIKE ? OR phone LIKE ?");
+    
+    // Prepare the SQL query to search across client and deceased details
+    $stmt = $conn->prepare("
+        SELECT * FROM clients 
+        WHERE client_name LIKE ? 
+        OR client_email LIKE ? 
+        OR client_phone LIKE ? 
+        OR deceased_name LIKE ?
+    ");
+    
+    // Bind the search query to the parameters
     $searchParam = '%' . $query . '%';
-    $stmt->bind_param('sss', $searchParam, $searchParam, $searchParam);
+    $stmt->bind_param('ssss', $searchParam, $searchParam, $searchParam, $searchParam);
+    
+    // Execute the statement and fetch results
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // Store the results in an array
     $clients = [];
     while ($row = $result->fetch_assoc()) {
         $clients[] = $row;
@@ -297,6 +326,7 @@ function searchClients($query)
 
     return $clients;
 }
+
 
 /** 
  * ********** Bookings Functions ****************
@@ -315,6 +345,7 @@ function handleBookingForm($data, $conn)
 
     // Get form data with htmlspecialchars to prevent XSS
     $client_id = htmlspecialchars($data['client_id'] ?? '');
+    $deceased_name = htmlspecialchars($data['deceased_name'] ?? ''); // New field
     $service_type = htmlspecialchars($data['service_type'] ?? '');
     $schedule_date = htmlspecialchars($data['schedule_date'] ?? '');
     $vehicle_type = htmlspecialchars($data['vehicle_type'] ?? '');
@@ -322,7 +353,7 @@ function handleBookingForm($data, $conn)
     $status = htmlspecialchars($data['status'] ?? 'scheduled');
 
     // Validate required fields
-    if (empty($client_id) || empty($service_type) || empty($schedule_date) || empty($vehicle_type) || empty($status)) {
+    if (empty($client_id) || empty($deceased_name) || empty($service_type) || empty($schedule_date) || empty($vehicle_type) || empty($status)) {
         $response['error'] = 'Please fill in all required fields!';
     } else {
         // Check if the booking already exists
@@ -330,9 +361,9 @@ function handleBookingForm($data, $conn)
             $response['error'] = 'Booking already exists for this client and date!';
         } else {
             // Attempt to insert the booking
-            $insertResponse = insertBooking($client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn);
+            $insertResponse = insertBooking($client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn);
             if ($insertResponse['success']) {
-                $response['success'] = null;
+                $response['success'] = 'Booking added successfully!'; // Success message
             } else {
                 $response['error'] = 'Error: Could not add booking. Please try again!';
             }
@@ -340,6 +371,31 @@ function handleBookingForm($data, $conn)
     }
 
     return $response;
+}
+
+// Function to insert booking into the database
+function insertBooking($client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn)
+{
+    // Prepare the SQL statement for inserting the booking
+    $stmt = $conn->prepare("INSERT INTO bookings (client_id, deceased_name, service_type, schedule_date, vehicle_type, request, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+    // Check if the statement was prepared successfully
+    if ($stmt === false) {
+        return ['success' => false, 'error' => 'Database error: ' . $conn->error];
+    }
+
+    // Bind parameters to the SQL statement
+    $stmt->bind_param("sssssss", $client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $request, $status);
+
+    // Execute the prepared statement and check for errors
+    if ($stmt->execute()) {
+        $stmt->close(); // Close the statement after execution
+        return ['success' => true];
+    } else {
+        $errorMsg = $stmt->error;
+        $stmt->close(); // Close the statement in case of error
+        return ['success' => false, 'error' => 'Execution error: ' . $errorMsg];
+    }
 }
 
 
@@ -368,45 +424,7 @@ function bookingExists($client_id, $service_type, $schedule_date, $vehicle_type,
 }
 
 /**
- * Function to insert a new booking into the database.
- *
- * @param string $client_id The ID of the client.
- * @param string $service_type The type of service (e.g., Burial/Cremation).
- * @param string $schedule_date The date of the booking.
- * @param string $vehicle_type The type of vehicle for the booking.
- * @param string $request Any additional requests.
- * @param string $status The status of the booking.
- * @param mysqli $conn The database connection.
- * @return array An associative array indicating success or failure.
- */
-function insertBooking($client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn)
-{
-    $response = ['success' => false];
-
-    // Prepare the SQL statement
-    $sql = "INSERT INTO schedules (client_id, service_type, schedule_date, vehicle_type, request, status)
-            VALUES (?, ?, ?, ?, ?, ?)";
-
-    // Prepare the SQL statement
-    if ($stmt = $conn->prepare($sql)) {
-        // Bind the parameters
-        $stmt->bind_param('ssssss', $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status);
-
-        // Execute the SQL statement
-        if ($stmt->execute()) {
-            $response['success'] = true;
-        }
-
-        // Close the statement
-        $stmt->close();
-    }
-
-    return $response;
-}
-
-
-/**
- * Retrieves bookings from the schedules table.
+ * Retrieves bookings from the bookings table.
  *
  * This function fetches all bookings along with the client's full name
  * from the database and returns them as an associative array.
@@ -418,11 +436,10 @@ function getBookings()
     global $conn; // Use the global database connection variable
 
     // Prepare and execute the SQL query to fetch bookings
-    $query = "SELECT s.id, c.full_name, s.service_type, s.schedule_date, s.status 
-              FROM schedules s
-              JOIN clients c ON s.client_id = c.id";
+    $query = "SELECT b.id, c.deceased_name AS client_name, b.service_type, b.schedule_date, b.status 
+              FROM bookings b
+              JOIN clients c ON b.client_id = c.id";
 
-    // $query = "SELECT * FROM schedules";
     $result = $conn->query($query); // Execute the query
 
     // Check if the query executed successfully
@@ -435,7 +452,6 @@ function getBookings()
     // Initialize an empty array for bookings
     $bookings = [];
     while ($row = $result->fetch_assoc()) {
-
         // Append each row to the bookings array
         $bookings[] = $row;
     }
@@ -444,6 +460,34 @@ function getBookings()
     return $bookings;
 }
 
+/**
+ * Function to fetch the deceased name by client ID.
+ *
+ * @param int $clientId The ID of the client.
+ * @param mysqli $conn The database connection.
+ * @return string|null The name of the deceased, or null if not found.
+ */
+function getDeceasedNameByClientId($clientId, $conn)
+{
+    // Prepare the SQL statement
+    $stmt = $conn->prepare("SELECT deceased_name FROM bookings WHERE client_id = ?");
+    $stmt->bind_param("s", $clientId);
+    
+    // Execute the statement
+    $stmt->execute();
+    
+    // Bind the result
+    $stmt->bind_result($deceased_name);
+    
+    // Fetch the result
+    if ($stmt->fetch()) {
+        return $deceased_name; // Return the deceased name
+    } else {
+        return null; // No name found
+    }
+    
+    $stmt->close();
+}
 
 /**
  * Get the total number of bookings made.
@@ -455,7 +499,7 @@ function countBookingsMade()
     global $conn;
 
     // Prepare the SQL query to count bookings made
-    $sql = "SELECT COUNT(*) as total FROM schedules";
+    $sql = "SELECT COUNT(*) as total FROM bookings";
     $result = $conn->query($sql);
 
     // Check if the query execution was successful
@@ -483,8 +527,8 @@ function getBookingById($bookingId)
 
     // Prepare the SQL query to fetch booking details from the schedules table
     $stmt = $conn->prepare("
-        SELECT s.*, c.full_name AS client_name
-        FROM schedules s
+        SELECT s.*, c.deceased_name AS client_name
+        FROM bookings s
         JOIN clients c ON s.client_id = c.id
         WHERE s.id = ?
     ");
@@ -535,34 +579,6 @@ function updateBooking($bookingId, $client_id, $service_type, $schedule_date, $v
     return ['success' => $stmt->affected_rows > 0];
 }
 
-// Function to handle the booking update
-function handleUpdateBookingForm($data, $conn, $bookingId)
-{
-    $response = [];
-
-    // Get form data with htmlspecialchars to prevent XSS
-    $client_id = htmlspecialchars($data['client_id'] ?? '');
-    $service_type = htmlspecialchars($data['service_type'] ?? '');
-    $schedule_date = htmlspecialchars($data['schedule_date'] ?? '');
-    $vehicle_type = htmlspecialchars($data['vehicle_type'] ?? '');
-    $request = htmlspecialchars($data['request'] ?? '');
-    $status = htmlspecialchars($data['status'] ?? 'scheduled');
-
-    // Validate required fields
-    if (empty($client_id) || empty($service_type) || empty($schedule_date) || empty($vehicle_type) || empty($status)) {
-        $response['error'] = 'Please fill in all required fields!';
-    } else {
-        // Attempt to update the booking
-        $updateResponse = updateBooking($bookingId, $client_id, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn);
-        if ($updateResponse['success']) {
-            $response['success'] = 'Booking updated successfully!';
-        } else {
-            $response['error'] = 'Error: Could not update booking. Please try again!';
-        }
-    }
-
-    return $response;
-}
 
 /** 
  * Payments function
@@ -695,7 +711,7 @@ function getCompletedServicesCount($conn)
 function getPendingTasksCount($conn)
 {
     // Query to count the number of pending tasks/services
-    $query = "SELECT COUNT(*) AS pending_count FROM schedules WHERE status = 'scheduled'";
+    $query = "SELECT COUNT(*) AS pending_count FROM bookings WHERE status = 'scheduled'";
 
     // Execute the query
     $result = $conn->query($query);
@@ -720,9 +736,9 @@ function getProcessedBookings($conn)
 
     // SQL query to get booking data from the payments table and client name from clients table
     $query = "SELECT p.booking_id, p.receipt_number, p.payment_method, p.amount, p.tax, p.discount, p.payment_date, 
-                     s.schedule_date, c.full_name AS client_name
+                     s.schedule_date, c.client_name AS client_name
               FROM payments p
-              JOIN schedules s ON p.booking_id = s.id
+              JOIN bookings s ON p.booking_id = s.id
               JOIN clients c ON s.client_id = c.id
               ORDER BY p.payment_date DESC";
 
@@ -805,7 +821,7 @@ function getValidBookingsWithClients($conn)
     $query = "
         SELECT 
             clients.id AS client_id, 
-            clients.full_name AS client_name
+            clients.client_name AS client_name
         FROM schedules
         JOIN clients ON schedules.client_id = clients.id
         WHERE schedules.status = 'scheduled'";  // Adjust the status condition as needed for "valid" bookings
@@ -905,11 +921,11 @@ function getLogisticsData($conn)
     $logisticsData = [];
 
     // SQL query to get logistics data and client name, including pickup_location
-    $query = "SELECT l.id, l.client_id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
-                     l.pickup_location, c.full_name AS client_name, l.created_at, l.updated_at
-              FROM logistics l
-              JOIN clients c ON l.client_id = c.id
-              ORDER BY l.created_at DESC";
+    $query = "SELECT b.id, b.client_id, b.vehicle_type, b.status, b.deceased_name, b.schedule_date,
+                    c.client_name AS client_name, b.created_at, b.updated_at
+              FROM bookings b
+              JOIN clients c ON b.client_id = c.id
+              ORDER BY b.created_at DESC";
 
     // Execute the query
     $result = $conn->query($query);
@@ -936,11 +952,11 @@ function getLogisticsData($conn)
 function getLogisticById($conn, $logistic_id)
 {
     // SQL query to get logistics data by ID
-    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_date, l.destination, l.status, 
-                     c.full_name AS client_name, l.pickup_location, l.created_at, l.updated_at
-              FROM logistics l
-              JOIN clients c ON l.client_id = c.id
-              WHERE l.id = ?";
+    $query = "SELECT b.id, b.vehicle_type, b.deceased_name, b.schedule_date, b.status, b.service_type, b.request,
+                     c.client_name AS client_name, b.created_at, b.updated_at
+              FROM bookings b
+              JOIN clients c ON b.client_id = c.id
+              WHERE b.id = ?";
 
     // Prepare the statement
     $stmt = $conn->prepare($query);

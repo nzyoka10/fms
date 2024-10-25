@@ -46,12 +46,12 @@ include './includes/sidebar.php';
             <div class="row">
                 <!-- Client Name -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Client name</h5>
+                    <h5 class="fw-bold-30">Client Name</h5>
                     <p class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['client_name']); ?></p>
                 </div>
                 <!-- Service Type -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Service</h5>
+                    <h5 class="fw-bold-30">Service</h5>
                     <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></p>
                 </div>
             </div>
@@ -59,12 +59,12 @@ include './includes/sidebar.php';
             <div class="row">
                 <!-- Booking Date -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Booked date</h5>
+                    <h5 class="fw-bold-30">Booked date</h5>
                     <p class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></p>
                 </div>
                 <!-- Location -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Vehicle</h5>
+                    <h5 class="fw-bold-30">Vehicle</h5>
                     <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['vehicle_type']); ?></p>
                 </div>
             </div>
@@ -72,12 +72,12 @@ include './includes/sidebar.php';
             <div class="row">
                 <!-- Google Maps Link -->
                 <div class="col-md-6 mb-3">
-                    <h5 class="fw-bold">Request</h5>
+                    <h5 class="fw-bold-30">Request</h5>
                     <p class="text-muted"><?php echo htmlspecialchars($booking['request']); ?></p>
                 </div>
                 <!-- Status -->
                 <div class="col-md-3 mb-3">
-                    <h5 class="fw-bold">Status</h5>
+                    <h5 class="fw-bold-30">Status</h5>
                     <p class="badge bg-<?php echo ($booking['status'] === 'completed') ? 'success' : 'danger'; ?> p-2">
                         <?php echo htmlspecialchars($booking['status']); ?>
                     </p>
@@ -94,16 +94,16 @@ include './includes/sidebar.php';
     <!-- Left section: Edit and Pay buttons -->
     <div class="d-flex">        
         <a href="payment.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
-            Pay Service&nbsp;<span data-feather="send"></span>
+            Pay&nbsp;<span data-feather="send"></span>
         </a>
         <a href="bookings.php" class="btn btn-sm btn-outline-dark me-2 d-flex align-items-center">
-            Back to List&nbsp;<span data-feather="x-circle"></span>
+            Back&nbsp;<span data-feather="x-circle"></span>
         </a>
     </div>
 
     <!-- Right section: Back and Delete buttons -->
     <div class="d-flex">
-        <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-primary me-2 d-flex align-items-center">
+        <a href="editBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-secondary me-2 d-flex align-items-center">
             <span data-feather="edit"></span>&nbsp;Edit
         </a>
         

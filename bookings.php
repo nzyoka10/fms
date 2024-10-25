@@ -1,7 +1,7 @@
 <?php
 
 // Include functions file
-include 'includes/functions.php';
+require_once "./includes/functions.php";
 
 // Initialize response messages
 $responseMessage = [];
@@ -14,6 +14,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch all bookings from the database
 $bookings = getBookings();
+
+$deceased_name = ''; // Initialize variable
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the selected client ID
+    $client_id = htmlspecialchars($_POST['client_id'] ?? '');
+
+    // Fetch the deceased name for the selected client
+    if (!empty($client_id)) {
+        $deceased_name = getDeceasedNameByClientId($client_id, $conn); // Fetch the deceased name based on client ID
+    }
+
+}
+
 
 // More includes of HTML templates
 include './includes/header.php';
@@ -36,9 +50,112 @@ include './includes/sidebar.php';
     <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom-none">
         <!-- Add Client Button -->
         <button type="button" class="btn btn-sm btn-outline-dark me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            <span data-feather="user-plus"></span>&nbsp;Add booking
+            <span data-feather="user-plus"></span>&nbsp;New booking
         </button>
     </div>
+
+
+    <!-- Bookings Modal Form -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">New Booking</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body mt-4">
+                    <form action="" method="post" class="row g-3">
+                        <div class="row">
+                            <!-- Client client name Field -->
+                            <div class="col-md-4 mb-2">
+                                <label for="client_id" class="form-label">Client Name</label>
+                                <select class="form-control" id="client_id" name="client_id" required onchange="this.form.submit();">
+                                        <option value="">Select Client</option>
+                                        <?php
+                                        // Fetch and display client options from the database
+                                        $clients = getClients($conn); // Implement this function to fetch clients
+                                        foreach ($clients as $client) {
+                                            echo "<option value='" . htmlspecialchars($client['id']) . "'>" . htmlspecialchars($client['client_name']) . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                            </div>
+                            
+                            <!-- Deceased Name Field -->
+                            <div class="col-md-4 mb-2">
+                                <label for="deceased_name" class="form-label">Deceased Name</label>
+                                <select class="form-control" id="client_id" name="client_id" required onchange="this.form.submit();">
+                                        <option value="">Select Client</option>
+                                        <?php
+                                        // Fetch and display client options from the database
+                                        $clients = getClients($conn); // Implement this function to fetch clients
+                                        foreach ($clients as $client) {
+                                            echo "<option value='" . htmlspecialchars($client['id']) . "'>" . htmlspecialchars($client['deceased__name']) . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                            </div>
+
+                            <!-- <div class="col-md-6 mb-2">
+                                <label for="deceased_name" class="form-label">Deceased Name</label>
+                                <input type="text" class="form-control" id="deceased_name" name="deceased_name" required>
+                            </div> -->
+
+                            <!-- Service Type Field -->
+                            <div class="col-md-4 mb-2">
+                                <label for="service_type" class="form-label">Service Type</label>
+                                <select class="form-select" id="service_type" name="service_type" required>
+                                    <option value="burial">Burial</option>
+                                    <option value="cremation">Cremation</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Schedule Date Field -->
+                            <div class="col-md-4 mb-2">
+                                <label for="schedule_date" class="form-label">Schedule Date</label>
+                                <input type="date" class="form-control" id="schedule_date" name="schedule_date" required>
+                            </div>
+
+                            <!-- Vehicle Type Field -->
+                            <div class="col-md-4 mb-2">
+                                <label for="vehicle_type" class="form-label">Vehicle Type</label>
+                                <input type="text" class="form-control" id="vehicle_type" name="vehicle_type">
+                            </div>
+
+                            <!-- Status Field -->
+                            <div class="col-md-4 mb-2">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status" required>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Request Field -->
+                        <div class="col-md-12 mb-2">
+                            <label for="request" class="form-label">Any other request</label>
+                            <textarea class="form-control" id="request" name="request" rows="3"></textarea>
+                        </div>
+
+
+
+                        <!-- Submit Button -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-sm btn-success">Make Booking</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <?php
     // Display success or error messages if they exist
@@ -76,20 +193,12 @@ include './includes/sidebar.php';
                     <tr>
                         <td class="text-muted"><?php echo $index + 1; ?></td>
                         <td class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['full_name']); ?></td>
+                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['client_name']); ?></td> <!-- Updated field name -->
                         <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['service_type']); ?></td>
                         <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['status']); ?></td>
                         <td>
                             <a class="btn btn-sm btn-outline-secondary" href="viewBooking.php?id=<?php echo $booking['id']; ?>">View</a>
-                            <!-- <div class="dropdown">
-                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Action
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li></li>
-                                    <li><a class="dropdown-item" href="editBooking.php?id=<?php echo $booking['id']; ?>">Update</a></li>
-                                </ul>
-                            </div> -->
+                            <!-- <a class="btn btn-sm btn-outline-warning" href="editBooking.php?id=<?php echo $booking['id']; ?>">Update</a> -->
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -97,96 +206,35 @@ include './includes/sidebar.php';
         </tbody>
     </table>
 
-    <!-- bookings modal form -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">New Booking</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- user form -->
-                    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="client_id" class="form-label">Client Name<span class="text-danger">*</span></label>
-                                <select class="form-select" id="client_id" name="client_id" required>
-                                    <option value="" disabled selected>Select client</option>
-                                    <?php
-                                    // Fetch clients from the database and populate options
-                                    $query = "SELECT id, full_name FROM clients";
-                                    $result = $conn->query($query);
-                                    if ($result) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<option value='{$row['id']}'>{$row['full_name']}</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <legend class="col-form-label col-sm-10 pt-2">Service Type<span class="text-danger">*</span></legend>
-                                <div class="col">
-                                    <input class="form-check-input" type="radio" name="service_type" id="burial" value="Burial" required>
-                                    <label class="form-check-label me-2" for="burial">Burial</label>
-
-                                    <input class="form-check-input" type="radio" name="service_type" id="cremation" value="Cremation" required>
-                                    <label class="form-check-label me-2" for="cremation">Cremation</label>
-
-                                    <input class="form-check-input" type="radio" name="service_type" id="other" value="Other" required>
-                                    <label class="form-check-label me-2" for="other">Other</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="schedule_date" class="form-label">Booking Date<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control custom-date" id="schedule_date" name="schedule_date" required>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="vehicle_type" class="form-label">Vehicle Type<span class="text-danger">*</span></label>
-                                <select class="form-select" id="vehicle_type" name="vehicle_type" required>
-                                    <option value="" disabled selected>Select vehicle</option>
-                                    <option value="van">Van - Body + 6 people</option>
-                                    <option value="bus">Bus - Body + 30 people</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-8 mb-3">
-                                <label for="request" class="form-label">Any other request<span class="text-danger">*</span></label>
-                                <textarea class="form-control" placeholder="Leave a comment here" id="request" name="request" style="height: 180px"></textarea>
-                            </div>
-
-                            <div class="col-md-4 d-flex flex-column justify-content-between align-items-center">
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
-                                    <select class="form-select" id="status" name="status" required>
-                                        <option value="scheduled">Scheduled</option>
-                                        <option value="completed">Completed</option>
-                                    </select>
-                                </div>
-
-                                <div class="mt-0">
-                                    <button type="reset" class="btn btn-sm btn-outline-dark w-100 mb-3 d-flex align-items-center">
-                                        <span class="me-2" data-feather="refresh-cw" style="width: 16px; height: 16px;"></span>
-                                        Refresh form
-                                    </button>
-                                    <button type="submit" class="btn btn-sm btn-outline-success w-100 d-flex align-items-center">
-                                        <span class="me-2" data-feather="pocket" style="width: 16px; height: 16px;"></span>
-                                        Save record
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 </main>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const clientSelect = document.getElementById('client_id'); // Assuming this is your client select input
+    const deceasedNameInput = document.getElementById('deceased_name');
+
+    clientSelect.addEventListener('change', function() {
+        const clientId = this.value;
+
+        // Make AJAX request to fetch the deceased name
+        fetch(`fetchDeceasedName.php?client_id=${clientId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    deceasedNameInput.value = data.deceased_name; // Update the input with the deceased name
+                } else {
+                    deceasedNameInput.value = ''; // Clear the input if not found
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching deceased name:', error);
+            });
+    });
+});
+</script>
+
 
 <!-- Footer -->
 <?php include './includes/footer.php'; ?>
