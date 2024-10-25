@@ -137,27 +137,29 @@ include './includes/sidebar.php';
                 <textarea class="form-control" placeholder="Leave a comment here" id="request" name="request" style="height: 180px"><?php echo htmlspecialchars($booking['request']); ?></textarea>
             </div>
 
-            <!-- Status Field and Buttons -->
+           <!-- Status Field and Buttons -->
             <div class="col-md-4 d-flex flex-column justify-content-between align-items-stretch">
-                <div class="mb-2">
-                    <label for="status" class="form-label">Status<span class="text-danger">*</span></label>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
                     <select class="form-select" id="status" name="status" required>
+                        <option value="" disabled>Select status</option>
                         <option value="scheduled" <?php echo ($booking['status'] == 'scheduled') ? 'selected' : ''; ?>>Scheduled</option>
                         <option value="completed" <?php echo ($booking['status'] == 'completed') ? 'selected' : ''; ?>>Completed</option>
                     </select>
                 </div>
 
-                <div class="d-flex flex-row justify-content-start pt-1">
-                    <button type="submit" class="btn btn-sm btn-outline-success mb-3 w-50 d-flex align-items-center justify-content-center">
-                        <span class="me-2" data-feather="pocket" style="width: 16px; height: 16px;"></span>
-                        Save
+                <div class="d-flex flex-column justify-content-between pt-1">
+                    <button type="submit" class="btn btn-sm btn-success mb-3 w-50 d-flex align-items-center justify-content-center">
+                        <span class="me-2" data-feather="check-circle" style="width: 16px; height: 16px;"></span>
+                        Save record
                     </button>
-                    <a class="btn btn-sm btn-outline-secondary w-50 d-flex align-items-center justify-content-center" href="viewBooking.php?id=<?php echo $booking['id']; ?>">
+                    <a class="btn btn-sm btn-dark w-50 d-flex align-items-center justify-content-center" href="viewBooking.php?id=<?php echo $booking['id']; ?>">
                         <span class="me-2" data-feather="x-circle" style="width: 16px; height: 16px;"></span>
-                        Back to Listing
-                    </a>  
+                        View record
+                    </a>
                 </div>
             </div>
+
         </div>
     </form>
 </main>

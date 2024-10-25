@@ -26,8 +26,8 @@ include './includes/sidebar.php';
 
     <!-- Breadcrumbs -->
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard</li>
-        <li class="breadcrumb-item"><a href="./bookings.php" class="text-decoration-none">Bookings</a></li>
+        <li class="breadcrumb-item active">Bookings</li>
+        <li class="breadcrumb-item"><a href="./bookings.php" class="text-decoration-none">View</a></li>
     </ol>
 
     <!-- New Booking Button -->

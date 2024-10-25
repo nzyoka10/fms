@@ -42,9 +42,9 @@ include './includes/sidebar.php';
     <h4 class="text-muted text-capitalize mt-2">all clients</h4>
 
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">Clients</li>
         <li class="breadcrumb-item">
-            <a class="text-decoration-none hover-underline" href="./clients.php">Clients</a>
+            <a class="text-decoration-none hover-underline" href="./clients.php">View</a>
         </li>
     </ol>
 

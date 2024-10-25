@@ -15,9 +15,9 @@ include './includes/sidebar.php';
     <h4 class="text-uppercase mt-4">Transport</h4>
 
     <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">Transport</li>
         <li class="breadcrumb-item">
-            <a class="text-decoration-none hover-underline" href="./logistics.php">Transport</a>
+            <a class="text-decoration-none hover-underline" href="./logistics.php">View</a>
         </li>
     </ol>
 
@@ -27,11 +27,11 @@ include './includes/sidebar.php';
     </ol> -->
 
     <!-- Schedule Logistics Button -->
-    <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2">
+    <!-- <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2">
         <a href="scheduleLogistics.php" class="btn btn-sm btn-outline-dark d-flex align-items-center">
             <span data-feather="truck"></span>&nbsp;Schedule Trip
         </a>
-    </div>
+    </div> -->
 
     <!-- Table to display logistics bookings -->
     <div class="table">
