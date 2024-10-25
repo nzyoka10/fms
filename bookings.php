@@ -66,40 +66,26 @@ include './includes/sidebar.php';
                 <div class="modal-body mt-4">
                     <form action="" method="post" class="row g-3">
                         <div class="row">
-                            <!-- Client client name Field -->
+                             <!-- Client Name Field -->
                             <div class="col-md-4 mb-2">
                                 <label for="client_id" class="form-label">Client Name</label>
-                                <select class="form-control" id="client_id" name="client_id" required onchange="this.form.submit();">
-                                        <option value="">Select Client</option>
-                                        <?php
-                                        // Fetch and display client options from the database
-                                        $clients = getClients($conn); // Implement this function to fetch clients
-                                        foreach ($clients as $client) {
-                                            echo "<option value='" . htmlspecialchars($client['id']) . "'>" . htmlspecialchars($client['client_name']) . "</option>";
-                                        }
-                                        ?>
-                                    </select>
+                                <select class="form-control" id="client_id" name="client_id" required>
+                                    <option value="">Select Client</option>
+                                    <?php
+                                    // Fetch and display client options from the database
+                                    $clients = getClients($conn); // Fetch clients from database
+                                    foreach ($clients as $client) {
+                                        echo "<option value='" . htmlspecialchars($client['id']) . "'>" . htmlspecialchars($client['client_name']) . "</option>";
+                                    }
+                                    ?>
+                                </select>
                             </div>
                             
                             <!-- Deceased Name Field -->
                             <div class="col-md-4 mb-2">
                                 <label for="deceased_name" class="form-label">Deceased Name</label>
-                                <select class="form-control" id="client_id" name="client_id" required onchange="this.form.submit();">
-                                        <option value="">Select Client</option>
-                                        <?php
-                                        // Fetch and display client options from the database
-                                        $clients = getClients($conn); // Implement this function to fetch clients
-                                        foreach ($clients as $client) {
-                                            echo "<option value='" . htmlspecialchars($client['id']) . "'>" . htmlspecialchars($client['deceased__name']) . "</option>";
-                                        }
-                                        ?>
-                                    </select>
+                                <input type="text" class="form-control" id="deceased_name" name="deceased_name" disabled>
                             </div>
-
-                            <!-- <div class="col-md-6 mb-2">
-                                <label for="deceased_name" class="form-label">Deceased Name</label>
-                                <input type="text" class="form-control" id="deceased_name" name="deceased_name" required>
-                            </div> -->
 
                             <!-- Service Type Field -->
                             <div class="col-md-4 mb-2">
@@ -211,28 +197,27 @@ include './includes/sidebar.php';
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const clientSelect = document.getElementById('client_id'); // Assuming this is your client select input
+    document.addEventListener('DOMContentLoaded', function() {
+    const clientSelect = document.getElementById('client_id');
     const deceasedNameInput = document.getElementById('deceased_name');
 
     clientSelect.addEventListener('change', function() {
         const clientId = this.value;
 
-        // Make AJAX request to fetch the deceased name
+        // Make AJAX request to fetch deceased name
         fetch(`fetchDeceasedName.php?client_id=${clientId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    deceasedNameInput.value = data.deceased_name; // Update the input with the deceased name
+                    deceasedNameInput.value = data.deceased_name; // Set deceased name
                 } else {
-                    deceasedNameInput.value = ''; // Clear the input if not found
+                    deceasedNameInput.value = ''; // Clear if no result
                 }
             })
-            .catch(error => {
-                console.error('Error fetching deceased name:', error);
-            });
+            .catch(error => console.error('Error fetching deceased name:', error));
     });
 });
+
 </script>
 
 
