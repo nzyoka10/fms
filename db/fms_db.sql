@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2024 at 02:50 PM
+-- Generation Time: Oct 25, 2024 at 02:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -75,7 +75,7 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `client_name`, `client_phone`, `client_email`, `client_address`, `deceased_name`, `deceased_age`, `deceased_date_of_death`, `deceased_cause`, `deceased_gender`, `created_at`, `updated_at`) VALUES
-(1, 'Charity Mcfadden', '(254) 712-579-1', 'test@user.app', 'Gaza city, Down ', 'Sacha Sawyer', 89, '2022-06-15', 'natural', 'female', '2024-10-24 04:41:03', '2024-10-24 05:50:17'),
+(1, 'Charity Kinango', '(254) 712-579-1', 'test@user.app', 'Gaza city, Down ', 'Sacha Sawyer', 89, '2022-06-15', 'natural', 'female', '2024-10-24 04:41:03', '2024-10-25 12:52:04'),
 (2, 'Sonya Cox', '(254) 728-486-849', 'ximeb@app.com', 'Molestiae', 'ELihaji Lewis', 96, '2024-04-02', 'sickness', 'male', '2024-10-24 05:49:50', '2024-10-24 05:50:10'),
 (3, 'Mike Aguero', '0736348911', 'mike@app.fms', 'Kinnoo, uptown', 'Jane Doe', 90, '2024-10-22', 'natural', 'female', '2024-10-25 04:56:33', '2024-10-25 04:56:56');
 
