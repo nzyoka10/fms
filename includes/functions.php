@@ -339,89 +339,31 @@ function searchClients($query)
  * @param mysqli $conn The database connection.
  * @return array An associative array containing success or error messages.
  */
-function handleBookingForm($data, $conn)
-{
-    $response = [];
+function handleBookingForm($data, $conn) {
+    $client_id = $data['client_id'];
+    $deceased_name = $data['deceased_name'] ?? ''; // Ensure deceased_name has a default value
+    $service_type = $data['service_type'];
+    $schedule_date = $data['schedule_date'];
+    $vehicle_type = $data['vehicle_type'];
+    $status = $data['status'];
+    $request = $data['request'];
 
-    // Get form data with htmlspecialchars to prevent XSS
-    $client_id = htmlspecialchars($data['client_id'] ?? '');
-    $deceased_name = htmlspecialchars($data['deceased_name'] ?? ''); // New field
-    $service_type = htmlspecialchars($data['service_type'] ?? '');
-    $schedule_date = htmlspecialchars($data['schedule_date'] ?? '');
-    $vehicle_type = htmlspecialchars($data['vehicle_type'] ?? '');
-    $request = htmlspecialchars($data['request'] ?? '');
-    $status = htmlspecialchars($data['status'] ?? 'scheduled');
-
-    // Validate required fields
-    if (empty($client_id) || empty($deceased_name) || empty($service_type) || empty($schedule_date) || empty($vehicle_type) || empty($status)) {
-        $response['error'] = 'Please fill in all required fields!';
-    } else {
-        // Check if the booking already exists
-        if (bookingExists($client_id, $service_type, $schedule_date, $vehicle_type, $conn)) {
-            $response['error'] = 'Booking already exists for this client and date!';
-        } else {
-            // Attempt to insert the booking
-            $insertResponse = insertBooking($client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn);
-            if ($insertResponse['success']) {
-                $response['success'] = 'Booking added successfully!'; // Success message
-            } else {
-                $response['error'] = 'Error: Could not add booking. Please try again!';
-            }
-        }
+    // Verify deceased_name before attempting to insert it into the database
+    if (empty($deceased_name)) {
+        return ['error' => 'Deceased name cannot be empty.'];
     }
 
-    return $response;
-}
+    // Prepare and execute the SQL statement
+    $stmt = $conn->prepare("INSERT INTO bookings (client_id, deceased_name, service_type, schedule_date, vehicle_type, status, request) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("issssss", $client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $status, $request);
 
-// Function to insert booking into the database
-function insertBooking($client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $request, $status, $conn)
-{
-    // Prepare the SQL statement for inserting the booking
-    $stmt = $conn->prepare("INSERT INTO bookings (client_id, deceased_name, service_type, schedule_date, vehicle_type, request, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-    // Check if the statement was prepared successfully
-    if ($stmt === false) {
-        return ['success' => false, 'error' => 'Database error: ' . $conn->error];
-    }
-
-    // Bind parameters to the SQL statement
-    $stmt->bind_param("sssssss", $client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $request, $status);
-
-    // Execute the prepared statement and check for errors
     if ($stmt->execute()) {
-        $stmt->close(); // Close the statement after execution
-        return ['success' => true];
+        return ['success' => 'Booking successfully created.'];
     } else {
-        $errorMsg = $stmt->error;
-        $stmt->close(); // Close the statement in case of error
-        return ['success' => false, 'error' => 'Execution error: ' . $errorMsg];
+        return ['error' => 'Failed to create booking.'];
     }
 }
 
-
-
-/**
- * Function to check if a booking already exists.
- *
- * @param string $client_id The ID of the client.
- * @param string $service_type The type of service (e.g., Burial/Cremation).
- * @param string $schedule_date The date of the booking.
- * @param string $vehicle_type The type of vehicle for the booking.
- * @param mysqli $conn The database connection.
- * @return bool True if the booking exists, false otherwise.
- */
-function bookingExists($client_id, $service_type, $schedule_date, $vehicle_type, $conn)
-{
-    $sql = "SELECT COUNT(*) FROM schedules WHERE client_id = ? AND service_type = ? AND schedule_date = ? AND vehicle_type = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssss', $client_id, $service_type, $schedule_date, $vehicle_type);
-    $stmt->execute();
-    $stmt->bind_result($count);
-    $stmt->fetch();
-    $stmt->close();
-
-    return $count > 0; // Return true if count is greater than 0
-}
 
 /**
  * Retrieves bookings from the bookings table.
@@ -460,34 +402,6 @@ function getBookings()
     return $bookings;
 }
 
-/**
- * Function to fetch the deceased name by client ID.
- *
- * @param int $clientId The ID of the client.
- * @param mysqli $conn The database connection.
- * @return string|null The name of the deceased, or null if not found.
- */
-function getDeceasedNameByClientId($clientId, $conn)
-{
-    // Prepare the SQL statement
-    $stmt = $conn->prepare("SELECT deceased_name FROM bookings WHERE client_id = ?");
-    $stmt->bind_param("s", $clientId);
-    
-    // Execute the statement
-    $stmt->execute();
-    
-    // Bind the result
-    $stmt->bind_result($deceased_name);
-    
-    // Fetch the result
-    if ($stmt->fetch()) {
-        return $deceased_name; // Return the deceased name
-    } else {
-        return null; // No name found
-    }
-    
-    $stmt->close();
-}
 
 /**
  * Get the total number of bookings made.

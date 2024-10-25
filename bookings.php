@@ -1,12 +1,12 @@
 <?php
 
-// Include functions file
+// Include database connection and function files
 require_once "./includes/functions.php";
 
-// Initialize response messages
+// Initialize response message
 $responseMessage = [];
 
-// Handle form submission for adding a new booking
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Call the function to handle the booking form submission
     $responseMessage = handleBookingForm($_POST, $conn);
@@ -15,56 +15,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Fetch all bookings from the database
 $bookings = getBookings();
 
-$deceased_name = ''; // Initialize variable
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the selected client ID
-    $client_id = htmlspecialchars($_POST['client_id'] ?? '');
-
-    // Fetch the deceased name for the selected client
-    if (!empty($client_id)) {
-        $deceased_name = getDeceasedNameByClientId($client_id, $conn); // Fetch the deceased name based on client ID
-    }
-
-}
-
-
-// More includes of HTML templates
+// Include HTML templates
 include './includes/header.php';
 include './includes/sidebar.php';
 ?>
 
 <!-- Main section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-
     <h4 class="text-muted text-uppercase mt-3">Bookings</h4>
 
+    <!-- Breadcrumbs -->
     <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item active">Dashboard</li>
-        <li class="breadcrumb-item">
-            <a class="text-decoration-none hover-underline" href="./bookings.php">Bookings</a>
-        </li>
+        <li class="breadcrumb-item"><a href="./bookings.php" class="text-decoration-none">Bookings</a></li>
     </ol>
 
-    <!-- Header buttons -->
+    <!-- New Booking Button -->
     <div class="d-flex justify-content-start flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-2 border-bottom-none">
-        <!-- Add Client Button -->
-        <button type="button" class="btn btn-sm btn-outline-dark me-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            <span data-feather="user-plus"></span>&nbsp;New booking
+        <button type="button" class="btn btn-sm btn-outline-dark me-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <span data-feather="user-plus"></span>&nbsp;New Booking
         </button>
     </div>
 
-
-    <!-- Bookings Modal Form -->
+    <!-- Booking Modal Form -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">New Booking</h1>
+                    <h5 class="modal-title" id="staticBackdropLabel">New Booking</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body mt-4">
-                    <form action="" method="post" class="row g-3">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="row g-3">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="row g-3">
                         <div class="row">
                              <!-- Client Name Field -->
                             <div class="col-md-4 mb-2">
@@ -84,7 +67,7 @@ include './includes/sidebar.php';
                             <!-- Deceased Name Field -->
                             <div class="col-md-4 mb-2">
                                 <label for="deceased_name" class="form-label">Deceased Name</label>
-                                <input type="text" class="form-control" id="deceased_name" name="deceased_name" disabled>
+                                <input type="text" class="form-control" id="deceased_name" name="deceased_name" readonly>
                             </div>
 
                             <!-- Service Type Field -->
@@ -135,25 +118,18 @@ include './includes/sidebar.php';
                         </div>
 
                     </form>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
-    <?php
-    // Display success or error messages if they exist
-    if (!empty($responseMessage)) {
-        if (isset($responseMessage['success'])) {
-            echo "<div class='alert alert-success mt-2'>{$responseMessage['success']}</div>";
-        }
-        if (isset($responseMessage['error'])) {
-            echo "<div class='alert alert-danger mt-2'>{$responseMessage['error']}</div>";
-        }
-    }
-    ?>
+    <!-- Display success or error messages -->
+    <?php if (!empty($responseMessage)): ?>
+        <div class="alert alert-<?php echo isset($responseMessage['success']) ? 'success' : 'danger'; ?> mt-2">
+            <?php echo isset($responseMessage['success']) ? $responseMessage['success'] : $responseMessage['error']; ?>
+        </div>
+    <?php endif; ?>
 
     <!-- Bookings Table -->
     <table class="table table-striped" id="bookingsTable">
@@ -170,56 +146,41 @@ include './includes/sidebar.php';
         <tbody>
             <?php if (empty($bookings)): ?>
                 <tr>
-                    <td colspan="6" class="text-center text-danger">
-                        <strong>Ooop! No bookings found.</strong>
-                    </td>
+                    <td colspan="6" class="text-center text-danger">No bookings found.</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($bookings as $index => $booking): ?>
                     <tr>
-                        <td class="text-muted"><?php echo $index + 1; ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['client_name']); ?></td> <!-- Updated field name -->
-                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['service_type']); ?></td>
-                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['status']); ?></td>
-                        <td>
-                            <a class="btn btn-sm btn-outline-secondary" href="viewBooking.php?id=<?php echo $booking['id']; ?>">View</a>
-                            <!-- <a class="btn btn-sm btn-outline-warning" href="editBooking.php?id=<?php echo $booking['id']; ?>">Update</a> -->
-                        </td>
+                        <td><?php echo $index + 1; ?></td>
+                        <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
+                        <td><?php echo htmlspecialchars($booking['client_name']); ?></td>
+                        <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
+                        <td><?php echo htmlspecialchars($booking['status']); ?></td>
+                        <td><a href="viewBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-secondary">View</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
         </tbody>
     </table>
-
-
 </main>
 
-
+<!-- JavaScript to dynamically fetch deceased name based on client selection -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const clientSelect = document.getElementById('client_id');
-    const deceasedNameInput = document.getElementById('deceased_name');
+        const clientSelect = document.getElementById('client_id');
+        const deceasedNameInput = document.getElementById('deceased_name');
 
-    clientSelect.addEventListener('change', function() {
-        const clientId = this.value;
+        clientSelect.addEventListener('change', function() {
+            const clientId = this.value;
 
-        // Make AJAX request to fetch deceased name
-        fetch(`fetchDeceasedName.php?client_id=${clientId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    deceasedNameInput.value = data.deceased_name; // Set deceased name
-                } else {
-                    deceasedNameInput.value = ''; // Clear if no result
-                }
-            })
-            .catch(error => console.error('Error fetching deceased name:', error));
+            // AJAX request to fetch deceased name
+            fetch(`fetchDeceasedName.php?client_id=${clientId}`)
+                .then(response => response.json())
+                .then(data => deceasedNameInput.value = data.success ? data.deceased_name : '')
+                .catch(error => console.error('Error:', error));
+        });
     });
-});
-
 </script>
 
-
-<!-- Footer -->
 <?php include './includes/footer.php'; ?>
+
