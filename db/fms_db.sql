@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2024 at 03:01 AM
+-- Generation Time: Oct 25, 2024 at 02:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,15 +24,48 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `id` int(11) NOT NULL,
+  `client_id` varchar(100) NOT NULL,
+  `deceased_name` varchar(100) NOT NULL,
+  `service_type` enum('burial','cremation','other') DEFAULT 'burial',
+  `schedule_date` date NOT NULL,
+  `vehicle_type` varchar(150) DEFAULT NULL,
+  `request` varchar(255) DEFAULT NULL,
+  `status` enum('scheduled','completed') DEFAULT 'scheduled',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`id`, `client_id`, `deceased_name`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
+(21, '2', 'ELihaji Lewis', 'burial', '2024-11-02', 'van', 'None..', 'scheduled', '2024-10-24 10:09:51', '2024-10-24 10:09:51'),
+(22, '1', 'Jane Doe', 'burial', '2024-10-31', 'van', 'Boda boda escorst', 'scheduled', '2024-10-25 11:06:55', '2024-10-25 12:33:52'),
+(23, '1', 'Sacha Sawyer', 'cremation', '2024-11-01', 'Bus', 'Music ', 'scheduled', '2024-10-25 11:43:32', '2024-10-25 11:43:32');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `clients`
 --
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
-  `full_name` varchar(100) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `phone` varchar(15) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
+  `client_name` varchar(100) NOT NULL,
+  `client_phone` varchar(20) NOT NULL,
+  `client_email` varchar(100) DEFAULT NULL,
+  `client_address` varchar(255) DEFAULT NULL,
+  `deceased_name` varchar(100) NOT NULL,
+  `deceased_age` int(3) NOT NULL,
+  `deceased_date_of_death` date NOT NULL,
+  `deceased_cause` enum('natural','sickness','accident','other') NOT NULL,
+  `deceased_gender` enum('male','female','other') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,33 +74,10 @@ CREATE TABLE `clients` (
 -- Dumping data for table `clients`
 --
 
-INSERT INTO `clients` (`id`, `full_name`, `email`, `phone`, `address`, `created_at`, `updated_at`) VALUES
-(1, 'Juma Hunderson', 'hunter@app.com', '0789256714', '51 Street, Limuru', '2024-09-28 13:09:02', '2024-10-10 15:47:05'),
-(2, 'Mike Aguero Jr', 'mike@app.fms', '0712671267', '20th, Malawi sub county', '2024-09-28 13:14:52', '2024-10-16 09:59:32'),
-(3, 'Lamar Test', 'exampl@info.com', '0736348911', '23 Street, Nairobi', '2024-09-28 13:22:31', '2024-09-29 05:28:03'),
-(4, 'Limuru Loresho', 'loresho@mail.com', '0789256714', '20 Street, Juja', '2024-09-28 13:29:59', '2024-10-10 15:47:42'),
-(5, 'Jayden Uhuru ', 'jayden@mail.fms', '0736348911', '100 Kijabe, Nairobi', '2024-09-28 15:10:30', '2024-09-28 15:15:50'),
-(6, 'Super Metro', 'super@app.com', '07911782123', '51 Street, Waiyaki', '2024-09-29 05:25:58', '2024-09-29 05:25:58'),
-(7, 'Griffin Kioko', 'kioko@app.com', '0789125826', '87 Street, Kinoo', '2024-09-29 06:24:15', '2024-09-29 06:24:15'),
-(8, 'Juma Ali Noor', 'noor@app.com', '0736348911', '20 Street, Katani', '2024-09-29 11:46:20', '2024-10-10 15:24:46'),
-(9, 'Constance Minoo', 'minoo@app.com', '254789452731', '14 Street, Kalawa', '2024-10-05 17:02:09', '2024-10-10 15:48:48'),
-(10, 'Gage Kamau', 'kamaa@app.com', '254756127812', '20 Street, Limuru', '2024-10-10 15:52:51', '2024-10-10 15:52:51');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `client_interactions`
---
-
-CREATE TABLE `client_interactions` (
-  `id` int(11) NOT NULL,
-  `client_id` int(11) NOT NULL,
-  `interaction_type` varchar(100) DEFAULT NULL,
-  `interaction_date` date NOT NULL,
-  `notes` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `clients` (`id`, `client_name`, `client_phone`, `client_email`, `client_address`, `deceased_name`, `deceased_age`, `deceased_date_of_death`, `deceased_cause`, `deceased_gender`, `created_at`, `updated_at`) VALUES
+(1, 'Charity Mcfadden', '(254) 712-579-1', 'test@user.app', 'Gaza city, Down ', 'Sacha Sawyer', 89, '2022-06-15', 'natural', 'female', '2024-10-24 04:41:03', '2024-10-24 05:50:17'),
+(2, 'Sonya Cox', '(254) 728-486-849', 'ximeb@app.com', 'Molestiae', 'ELihaji Lewis', 96, '2024-04-02', 'sickness', 'male', '2024-10-24 05:49:50', '2024-10-24 05:50:10'),
+(3, 'Mike Aguero', '0736348911', 'mike@app.fms', 'Kinnoo, uptown', 'Jane Doe', 90, '2024-10-22', 'natural', 'female', '2024-10-25 04:56:33', '2024-10-25 04:56:56');
 
 -- --------------------------------------------------------
 
@@ -97,22 +107,6 @@ INSERT INTO `company_info` (`id`, `company_name`, `company_address`, `company_co
 -- --------------------------------------------------------
 
 --
--- Table structure for table `deceased`
---
-
-CREATE TABLE `deceased` (
-  `id` int(11) NOT NULL,
-  `client_id` int(11) NOT NULL,
-  `deceased_name` varchar(100) NOT NULL,
-  `death_date` date NOT NULL,
-  `cause_of_death` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `inventory`
 --
 
@@ -133,7 +127,8 @@ INSERT INTO `inventory` (`id`, `item_name`, `category`, `quantity`, `last_update
 (2, 'Marble Urn', 'urn', 5, '2024-10-16 14:48:43'),
 (3, 'Chapel Seating', 'chapel', 20, '2024-10-16 14:48:43'),
 (4, 'Industrial Cremator', 'cremator', 3, '2024-10-16 14:48:43'),
-(5, 'Meeting Room A', 'meeting_room', 15, '2024-10-16 14:48:43');
+(5, 'Meeting Room A', 'meeting_room', 15, '2024-10-16 14:48:43'),
+(6, 'Test', 'urn', 5, '2024-10-25 12:24:59');
 
 -- --------------------------------------------------------
 
@@ -189,42 +184,7 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `booking_id`, `receipt_number`, `payment_method`, `amount`, `tax`, `discount`, `payment_date`, `created_at`, `updated_at`) VALUES
-(4, 11, 137281, 'cash', 6000.00, 150.00, 0.00, '2024-09-30', '2024-09-30 11:19:28', '2024-09-30 11:19:28'),
-(5, 13, 137282, 'mpesa', 17000.00, 1000.00, 500.00, '2024-09-30', '2024-09-30 11:21:21', '2024-09-30 11:21:21'),
-(6, 14, 137283, 'cash', 3000.00, 0.00, 0.00, '2024-09-30', '2024-09-30 12:46:17', '2024-09-30 12:46:17'),
-(7, 15, 137284, 'mpesa', 21000.00, 0.00, 0.00, '2024-09-30', '2024-09-30 12:49:41', '2024-09-30 12:49:41'),
-(8, 16, 137285, 'cash', 50000.00, 0.00, 0.00, '2024-10-01', '2024-10-01 17:04:36', '2024-10-01 17:04:36'),
-(9, 17, 137286, 'cash', 17800.00, 0.00, 0.00, '2024-10-05', '2024-10-05 17:03:16', '2024-10-05 17:03:16');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `schedules`
---
-
-CREATE TABLE `schedules` (
-  `id` int(11) NOT NULL,
-  `client_id` varchar(100) NOT NULL,
-  `service_type` enum('burial','cremation','other') DEFAULT 'burial',
-  `schedule_date` date NOT NULL,
-  `vehicle_type` varchar(150) DEFAULT NULL,
-  `request` varchar(255) DEFAULT NULL,
-  `status` enum('scheduled','completed') DEFAULT 'scheduled',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `schedules`
---
-
-INSERT INTO `schedules` (`id`, `client_id`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
-(11, '6', 'burial', '2024-10-04', 'van', 'Family requests photographer and Boda boda escort ', 'completed', '2024-09-30 08:43:11', '2024-10-16 09:31:53'),
-(12, '7', 'cremation', '2024-10-05', 'bus', 'The family requests the following:-\r\nDancers, catering team and boda boda escorts.\r\n Photographer and a DJ\r\n', 'completed', '2024-09-30 08:44:42', '2024-10-16 09:42:56'),
-(14, '5', 'burial', '2024-10-16', 'van', 'The family requests a photographer and additional security personnel for a two-day body viewing.', 'completed', '2024-09-30 08:55:35', '2024-10-16 09:37:59'),
-(15, '8', 'cremation', '2024-10-24', 'bus', 'Boda boda escort and catering team.', 'scheduled', '2024-09-30 12:49:07', '2024-10-16 09:43:14'),
-(18, '9', 'cremation', '2024-10-24', 'bus', 'Request mourners for hire, and boda boda escort riders.', 'scheduled', '2024-10-10 15:50:38', '2024-10-10 15:50:38'),
-(19, '10', 'burial', '2024-11-02', 'bus', 'The client requests 1 additional driver, a media team including a DJ and mourners for hire, and a Bodaboda riders escort. ', 'scheduled', '2024-10-16 09:45:58', '2024-10-16 09:45:58');
+(12, 23, 137281, 'cash', 5000.00, 0.00, 0.00, '2024-10-25', '2024-10-25 12:27:15', '2024-10-25 12:27:15');
 
 -- --------------------------------------------------------
 
@@ -250,11 +210,18 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `password_hash`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Tom', 'Ouko', 'admin', 'admin@app.com', '$2y$10$m4ZTmmGEXuiCeVcG0qdLZuZcUGyNlT56UMzo/Xtt5MYKndxrracsa', 'admin', '2024-09-28 12:18:53', '2024-09-28 12:18:53'),
-(5, 'Kajanah', 'Malwa Jr', 'user', 'super@app.com', '$2y$10$7ty6LtBpkAMXr9.KAhvVIO7odxoeRkg0G7580Jbq5xciNUy8No3Py', 'staff', '2024-10-10 13:43:18', '2024-10-17 00:56:52');
+(5, 'Kajanah', 'Malwa Jr', 'user', 'super@app.com', '$2y$10$ZFPeUQSY/hyLbKKOjKM6t.XFIzLiU0CXjVLKI6uEeLlDAhbrdH.YW', 'staff', '2024-10-10 13:43:18', '2024-10-17 05:13:34');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`);
 
 --
 -- Indexes for table `clients`
@@ -263,24 +230,10 @@ ALTER TABLE `clients`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `client_interactions`
---
-ALTER TABLE `client_interactions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `client_id` (`client_id`);
-
---
 -- Indexes for table `company_info`
 --
 ALTER TABLE `company_info`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `deceased`
---
-ALTER TABLE `deceased`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `client_id` (`client_id`);
 
 --
 -- Indexes for table `inventory`
@@ -304,13 +257,6 @@ ALTER TABLE `payments`
   ADD KEY `client_id` (`booking_id`);
 
 --
--- Indexes for table `schedules`
---
-ALTER TABLE `schedules`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `client_id` (`client_id`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -323,16 +269,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `client_interactions`
---
-ALTER TABLE `client_interactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `company_info`
@@ -341,16 +287,10 @@ ALTER TABLE `company_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `deceased`
---
-ALTER TABLE `deceased`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `logistics`
@@ -362,13 +302,7 @@ ALTER TABLE `logistics`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT for table `schedules`
---
-ALTER TABLE `schedules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
