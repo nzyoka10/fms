@@ -76,11 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <!-- Forgot Password & Register Link -->
                         <div class="form-group d-md-flex mb-3">
-                            <div class="w-100 text-left">
-                                <!-- <span>Don't have an account?&nbsp; -->
-                                    <!-- <a href="register.php" class="text-muted">Register</a> -->
-                                <!-- </span> -->
-                            </div>
+                            <!-- <div class="w-100 text-left">
+                                <span>Don't have an account?&nbsp;
+                                    <a href="register.php" class="text-muted">Register</a>
+                                </span>
+                            </div> -->
                         </div>
 
                         <!-- Submit Button -->

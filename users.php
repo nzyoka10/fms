@@ -21,13 +21,15 @@ include './includes/sidebar.php';
         </li>
     </ol>
 
-
-    <!-- <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item active">Dashboard / Users / Admin</li>
-    </ol> -->
+    <div class="w-100 text-left">
+        <span>
+            <!-- Don't have an account?&nbsp; -->
+            <a class="btn btn-sm btn-dark" href="register.php" class="text-muted">New User</a>
+        </span>
+    </div>
 
     <!-- Table to display account users -->
-    <div class="table-responsive">
+    <div class="table table-responsive">
         <?php if (!empty($users)): ?>
             <table class="table table-striped table-hover mt-2">
                 <thead>
@@ -36,7 +38,7 @@ include './includes/sidebar.php';
                         <th>Date Created</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Role</th>                        
+                        <th>Role</th>
                         <!-- <th>Actions</th> -->
                     </tr>
                 </thead>
@@ -47,7 +49,7 @@ include './includes/sidebar.php';
                             <td><?php echo htmlspecialchars($user['created_at']); ?></td>
                             <td class="text-capitalize"><?php echo htmlspecialchars($user['username']); ?></td>
                             <td><?php echo htmlspecialchars($user['email']); ?></td>
-                            <td class="text-capitalize"><?php echo htmlspecialchars($user['role']); ?></td> 
+                            <td class="text-capitalize"><?php echo htmlspecialchars($user['role']); ?></td>
                             <!-- <td>                                
                                 <a href="editUser.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
                                 <a href="deleteUser.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
@@ -68,35 +70,35 @@ include './includes/sidebar.php';
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-// Check if there's a status query parameter in the URL
-const urlParams = new URLSearchParams(window.location.search);
-const status = urlParams.get('status');
+    // Check if there's a status query parameter in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
 
-if (status === 'deleted') {
-    // Show success SweetAlert for user deletion
-    Swal.fire({
-        icon: 'success',
-        title: 'User account deleted!',
-        showConfirmButton: false,
-        timer: 4000
-    });
-} else if (status === 'error') {
-    // Show error SweetAlert for deletion failure
-    Swal.fire({
-        icon: 'error',
-        title: 'Failed to delete user!',
-        text: 'Please try again.',
-        showConfirmButton: true
-    });
-} else if (status === 'invalid') {
-    // Show error SweetAlert for invalid user ID
-    Swal.fire({
-        icon: 'error',
-        title: 'Invalid user ID!',
-        text: 'The specified user could not be found.',
-        showConfirmButton: true
-    });
-}
+    if (status === 'deleted') {
+        // Show success SweetAlert for user deletion
+        Swal.fire({
+            icon: 'success',
+            title: 'User account deleted!',
+            showConfirmButton: false,
+            timer: 4000
+        });
+    } else if (status === 'error') {
+        // Show error SweetAlert for deletion failure
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to delete user!',
+            text: 'Please try again.',
+            showConfirmButton: true
+        });
+    } else if (status === 'invalid') {
+        // Show error SweetAlert for invalid user ID
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid user ID!',
+            text: 'The specified user could not be found.',
+            showConfirmButton: true
+        });
+    }
 </script>
 
 <!-- Footer -->

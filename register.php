@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <h4 class="text-center mb-4">Register Account</h4>
 
-                        <form action="register.php" method="POST" class="login-form">
+                        <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST" class="login-form">
                             <div class="row g-3 mb-3">
                                 <div class="col">
                                     <input type="text" class="form-control" name="first_name" placeholder="First Name" aria-label="First Name" required>
