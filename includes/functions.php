@@ -882,12 +882,12 @@ function updateLogisticRecord($conn, $logistic_id, $vehicle, $driver_name, $pick
 function getLogisticsDataByWeek($conn)
 {
     $logisticsData = [];
-    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
-                     c.full_name AS client_name
-              FROM logistics l
-              JOIN clients c ON l.client_id = c.id
-              WHERE WEEK(l.pickup_date) = WEEK(CURDATE())
-              ORDER BY l.pickup_date DESC";
+    $query = "SELECT b.id, b.vehicle_type, b.deceased_name, b.schedule_date, b.status, 
+                     c.client_name AS client_name
+              FROM bookings b
+              JOIN clients c ON b.client_id = c.id
+              WHERE WEEK(b.schedule_date) = WEEK(CURDATE())
+              ORDER BY b.schedule_date DESC";
 
     $result = $conn->query($query);
     if ($result && $result->num_rows > 0) {
@@ -908,12 +908,12 @@ function getLogisticsDataByWeek($conn)
 function getLogisticsDataByMonth($conn)
 {
     $logisticsData = [];
-    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
-                     c.full_name AS client_name
-              FROM logistics l
-              JOIN clients c ON l.client_id = c.id
-              WHERE MONTH(l.pickup_date) = MONTH(CURDATE())
-              ORDER BY l.pickup_date DESC";
+    $query = "SELECT b.id, b.vehicle_type, b.deceased_name, b.schedule_date, b.status, 
+                     c.client_name AS client_name
+              FROM bookings b
+              JOIN clients c ON b.client_id = c.id
+              WHERE MONTH(b.schedule_date) = MONTH(CURDATE())
+              ORDER BY b.schedule_date DESC";
 
     $result = $conn->query($query);
     if ($result && $result->num_rows > 0) {
@@ -936,12 +936,12 @@ function getLogisticsDataByMonth($conn)
 function getLogisticsDataByRange($conn, $startDate, $endDate)
 {
     $logisticsData = [];
-    $query = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
-                     c.full_name AS client_name
-              FROM logistics l
-              JOIN clients c ON l.client_id = c.id
-              WHERE l.pickup_date BETWEEN ? AND ?
-              ORDER BY l.pickup_date DESC";
+    $query = "SELECT b.id, b.vehicle_type, b.deceased_name, b.schedule_date, b.status, 
+                     c.client_name AS client_name
+              FROM bookings b
+              JOIN clients c ON b.client_id = c.id
+              WHERE b.schedule_date BETWEEN ? AND ?
+              ORDER BY b.schedule_date DESC";
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param('ss', $startDate, $endDate);
@@ -969,10 +969,10 @@ function fetchLogisticsData($conn)
     $logisticsData = []; // Initialize the array
 
     // SQL query to fetch data
-    $sql = "SELECT l.id, l.vehicle, l.driver_name, l.pickup_location, l.pickup_date, l.destination, l.status, 
-                   c.full_name AS client_name
-            FROM logistics l
-            JOIN clients c ON l.client_id = c.id";
+    $sql = "SELECT b.id, b.vehicle_type, b.deceased_name, b.schedule_date, b.status, 
+                   c.client_name AS client_name
+            FROM bookings b
+            JOIN clients c ON b.client_id = c.id";
 
     $result = $conn->query($sql);
 

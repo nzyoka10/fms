@@ -234,11 +234,11 @@ function exportToExcel($logisticsData)
                     <tr>
                         <th>Sn#</th>
                         <th>Client Name</th>
-                        <th>Pickup Location</th>
-                        <th>Destination</th>
+                        <th>Scheduled date</th>
+                        <th>Deceased</th>
                         <th>Vehicle</th>
                         <th>Status</th>
-                        <th>Pickup Date</th>
+                        <!-- <th>Pickup Date</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -246,11 +246,11 @@ function exportToExcel($logisticsData)
                         <tr>
                             <td class="text-muted"><?php echo $index + 1; ?></td>
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_location']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['status']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td>
+                            <!-- <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td> -->
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
