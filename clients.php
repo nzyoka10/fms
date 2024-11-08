@@ -65,39 +65,41 @@ include './includes/sidebar.php';
     </div>
 
     <!-- Clients Table -->
-    <table class="table table-striped" id="clientsTable">
-        <thead>
-            <tr>
-                <th>Sn#</th>
-                <th>Date Created</th>
-                <th>Client Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($clients)): ?>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-lg">
+            <thead class="table-dark">
                 <tr>
-                    <td colspan="5" class="text-center text-danger">
-                        <strong>Ooops! No clients found.</strong>
-                    </td>
+                    <th>Sn#</th>
+                    <th>Date Created</th>
+                    <th>Client Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($clients as $index => $client): ?>
+            </thead>
+            <tbody>
+                <?php if (empty($clients)): ?>
                     <tr>
-                        <td class="text-muted"><?php echo $index + 1; ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($client['created_at']); ?></td>
-                        <td class="text-muted text-uppercase"><?php echo htmlspecialchars($client['client_name']); ?></td>
-                        <td class="text-muted"><?php echo htmlspecialchars($client['client_email']); ?></td>
-                        <td>
-                            <a class="btn btn-sm btn-outline-secondary" href="viewClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-success btn-sm">View</a>
-
+                        <td colspan="5" class="text-center text-danger">
+                            <strong>Ooops! No clients found.</strong>
                         </td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($clients as $index => $client): ?>
+                        <tr>
+                            <td class="text-muted"><?php echo $index + 1; ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($client['created_at']); ?></td>
+                            <td class="text-muted text-uppercase"><?php echo htmlspecialchars($client['client_name']); ?></td>
+                            <td class="text-muted"><?php echo htmlspecialchars($client['client_email']); ?></td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-secondary" href="viewClient.php?id=<?php echo $client['id']; ?>" class="btn btn-sm btn-success btn-sm">View</a>
+
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Add Client Modal Form -->
     <div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -31,8 +31,8 @@ include './includes/sidebar.php';
     <!-- Table to display account users -->
     <div class="table table-responsive">
         <?php if (!empty($users)): ?>
-            <table class="table table-striped table-hover mt-2">
-                <thead>
+            <table class="table table-striped table-hover table-lg mt-2">
+                <thead class="table-dark">
                     <tr>
                         <th>Sn#</th>
                         <th>Date Created</th>

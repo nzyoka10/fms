@@ -10,7 +10,7 @@ require './vendor/autoload.php'; // Fixed missing semicolon
 use Dompdf\Dompdf;
 
 // Initialize variables
-$logisticsData = fetchLogisticsData($conn);
+$logisticsData = []; // Ensure it's an array even if no data is returned
 $error = '';
 $filter = '';
 
@@ -122,7 +122,7 @@ function exportToExcel($logisticsData)
     header('Content-Disposition: attachment; filename="FMS_Report.csv";');
     
     $output = fopen('php://output', 'w');
-    fputcsv($output, ['Sn#', 'Client Name', 'Pickup Location', 'Destination', 'Vehicle']);
+    fputcsv($output, ['Sn#', 'Client Name', 'Pickup Location', 'Destination', 'Vehicle', 'Status', 'Pickup Date']);
 
     foreach ($logisticsData as $index => $logistic) {
         fputcsv($output, [
@@ -131,9 +131,8 @@ function exportToExcel($logisticsData)
             htmlspecialchars($logistic['pickup_location']),
             htmlspecialchars($logistic['destination']),
             htmlspecialchars($logistic['vehicle']),
-            // Uncomment if needed
-            // htmlspecialchars($logistic['status']),
-            // htmlspecialchars($logistic['pickup_date'])
+            htmlspecialchars($logistic['status']),
+            htmlspecialchars($logistic['pickup_date'])
         ]);
     }
 
@@ -141,23 +140,21 @@ function exportToExcel($logisticsData)
     exit(); // Exit to ensure no further output is sent
 }
 
-
-
 ?>
 
 <style>
-        @media print {
-            .print-header {
-                display: block; /* Make it visible in print */
-            }
+    @media print {
+        .print-header {
+            display: block; /* Make it visible in print */
         }
+    }
 
-        @media screen {
-            .print-header {
-                display: none; /* Hide it on screen */
-            }
+    @media screen {
+        .print-header {
+            display: none; /* Hide it on screen */
         }
-    </style>
+    }
+</style>
 
 <!-- Main Section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
@@ -199,99 +196,189 @@ function exportToExcel($logisticsData)
         </div>
     </form>
 
-   
     <!-- Export Buttons -->
     <div class="d-flex justify-content-start mb-3">
         <button type="button" class="btn btn-sm btn-success me-2" onclick="printReport();">Print</button>
-        <a href="?filter=<?php echo $filter; ?>&export=pdf" class="btn btn-sm btn-outline-dark me-2">PDF</a>
-        <a href="?filter=<?php echo $filter; ?>&export=excel" class="btn btn-sm btn-outline-secondary">Excel</a>
+        <a href="?export=pdf" class="btn btn-sm btn-danger me-2">Export to PDF</a>
+        <a href="?export=excel" class="btn btn-sm btn-primary">Export to Excel</a>
     </div>
 
-    <!-- Display error message if any -->
-    <?php if (!empty($error)): ?>
-        <div class="alert alert-danger">
-            <?php echo $error; ?>
-        </div>
-    <?php endif; ?>
+    <!-- Display Error -->
+    <?php if ($error) { echo "<div class='alert alert-danger'>$error</div>"; } ?>
 
-    <!-- Display Reports Table -->
-    <div id="printSection">
-        <!-- Hidden on screen but visible in print -->
-        <div class="print-header" style="text-align: center; margin-bottom: 20px;">
-            <h3 class="text-muted"><?php echo $companyName; ?></h3>
-            <p class="text-muted"><?php echo $companyAddress; ?>&nbsp;|&nbsp;<?php echo $companyContact; ?></p>
-            <!-- <p class="text-muted">Contact: </p> -->
-            <p class="text-muted">Email: <?php echo $companyEmail; ?></p>
-            <!-- <h4><?php echo $reportType; ?></h4> -->
-            <hr>
-        </div>
-
-
-        <!-- Report Table -->
-        <?php if (!empty($logisticsData)): ?>
-            <table class="table table-striped table-hover mt-3">
-                <thead>
+    <!-- Logistics Data Table -->
+     <!-- Logistics Data Table -->
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover table-lg">
+        <thead class="table-dark">
+            <tr>
+                <th>Sn#</th>
+                <th>Client Name</th>
+                <th>Pickup</th>
+                <th>Deceased Person</th>
+                <th>Vehicle</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (empty($logisticsData)) { ?>
+                <tr>
+                    <td colspan="7" class="text-center">No data available for the selected filter.</td>
+                </tr>
+            <?php } else { ?>
+                <?php foreach ($logisticsData as $index => $logistic) { ?>
                     <tr>
-                        <th>Sn#</th>
-                        <th>Client Name</th>
-                        <th>Scheduled date</th>
-                        <th>Deceased</th>
-                        <th>Vehicle</th>
-                        <th>Status</th>
-                        <!-- <th>Pickup Date</th> -->
+                        <td><?php echo ($index + 1); ?></td>
+                        <td><?php echo htmlspecialchars($logistic['client_name']); ?></td>
+                        <td><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
+                        <td><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
+                        <td><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
+                        <td><?php echo htmlspecialchars($logistic['status']); ?></td>
+                        <td>
+                            <!-- View button to trigger modal -->
+                            <button type="button" class="btn btn-sm btn-outline-dark" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#staticBackdrop" 
+                                data-bs-id="<?php echo $booking['id']; ?>">
+                                    View
+                        </button>
+
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($logisticsData as $index => $logistic): ?>
-                        <tr>
-                            <td class="text-muted"><?php echo $index + 1; ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
-                            <td class="text-muted"><?php echo htmlspecialchars($logistic['status']); ?></td>
-                            <!-- <td class="text-muted"><?php echo htmlspecialchars($logistic['pickup_date']); ?></td> -->
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p class="alert alert-warning">No data found for the selected filter.</p>
-        <?php endif; ?>
+                <?php } ?>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal to display individual report and have print button -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Client Details</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="clientDetailsContent">
+        <!-- Dynamic content will be loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-dark" onclick="printClientDetails()">Print</button>
+        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+
+
 
 </main>
 
 <script>
-    // Toggle Date Fields Based on Filter Selection
+    // Toggle date fields based on filter selection
     function toggleDateFields() {
-        const filter = document.getElementById('filter').value;
-        const startDateDiv = document.getElementById('start_date_div');
-        const endDateDiv = document.getElementById('end_date_div');
-
-        if (filter === 'range') {
-            startDateDiv.style.display = 'block';
-            endDateDiv.style.display = 'block';
-        } else {
-            startDateDiv.style.display = 'none';
-            endDateDiv.style.display = 'none';
-        }
+        var filterValue = document.getElementById('filter').value;
+        document.getElementById('start_date_div').style.display = filterValue === 'range' ? 'block' : 'none';
+        document.getElementById('end_date_div').style.display = filterValue === 'range' ? 'block' : 'none';
     }
 
     // Print the report
     function printReport() {
-        const printContents = document.getElementById('printSection').innerHTML;
-        const originalContents = document.body.innerHTML;
-
-        // Set the body to only include the print section
-        document.body.innerHTML = printContents;
-
-        // Open the print dialog
         window.print();
-
-        // Restore the original content
-        document.body.innerHTML = originalContents;
     }
+
+// JavaScript to handle dynamic modal data loading
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener to each "View" button
+    const viewButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const clientId = this.getAttribute('data-bs-id'); // Get the client ID
+            loadClientData(clientId); // Load the data into the modal
+        });
+    });
+});
+
+// Function to load client data via AJAX
+function loadClientData(clientId) {
+    const modalBody = document.getElementById('clientDetailsContent');
+    const loadingText = '<p>Loading client data...</p>';
+    
+    // Show loading message
+    modalBody.innerHTML = loadingText;
+
+    fetch('get_client_data.php', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: clientId }) // Sending client ID as `id`
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Check if data is received and successful
+        if (data.success) {
+            // Generate HTML content for the modal
+            const clientDataHtml = `
+                <table class="table table-bordered">
+                    <tr><th>Client Name</th><td>${data.client_name}</td></tr>
+                    <tr><th>Deceased</th><td>${data.deceased}</td></tr>
+                    <tr><th>Service</th><td>${data.service_type}</td></tr>
+                    <tr><th>Vehicle</th><td>${data.vehicle_type}</td></tr>
+                    <tr><th>Request</th><td>${data.request}</td></tr>
+                    <tr><th>Booked date</th><td>${data.schedule_date}</td></tr>
+                </table>
+            `;
+            modalBody.innerHTML = clientDataHtml; // Insert client data into modal body
+        } else {
+            modalBody.innerHTML = `<p class="text-danger">${data.message}</p>`; // Show error message if no data
+        }
+    })
+    .catch(error => {
+        console.error('Error loading client data:', error);
+        modalBody.innerHTML = '<p class="text-danger">An error occurred while fetching client data. Please try again later.</p>';
+    });
+}
+
+// Function to print client details
+function printClientDetails() {
+    const modalBody = document.getElementById('clientDetailsContent');
+    const printContent = modalBody.innerHTML;
+    
+    // Open a new print window and print the content
+    const printWindow = window.open('', '', 'width=1200,height=800');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Print Client Details</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    h2 { text-align: center; }
+                    .table-bordered { width: 100%; border-collapse: collapse; }
+                    .table-bordered th, .table-bordered td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    .table-bordered th { background-color: #f2f2f2; font-weight: bold; }
+                </style>
+            </head>
+            <body>
+                <h2>Client FMS Report</h2>
+                ${printContent}
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+
+
 </script>
 
+<!-- Footer -->
 <?php include './includes/footer.php'; ?>

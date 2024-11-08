@@ -26,12 +26,12 @@
                             Bookings
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="./logistics.php">
                             <span data-feather="truck"></span>
                             Transport
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="./inventory.php">
                             <span data-feather="database"></span>

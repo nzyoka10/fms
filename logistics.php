@@ -60,8 +60,7 @@ include './includes/sidebar.php';
                             <td class="text-muted"><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
                             <!-- <td class="text-muted"><?php echo htmlspecialchars($logistic['destination']); ?></td>                             -->
                             <td>
-                                <a class="btn btn-sm btn-outline-secondary" href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>">View</a>
-                                                               
+                                <a class="btn btn-sm btn-outline-secondary" href="viewLogRecord.php?id=<?php echo $logistic['id']; ?>">View</a>                 
                             </td>
                         </tr>
                     <?php endforeach; ?>

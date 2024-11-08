@@ -132,36 +132,38 @@ include './includes/sidebar.php';
     <?php endif; ?>
 
     <!-- Bookings Table -->
-    <table class="table table-striped" id="bookingsTable">
-        <thead>
-            <tr>
-                <th>Sn#</th>
-                <th>Booked Date</th>
-                <th>Client Name</th>
-                <th>Service</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($bookings)): ?>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-lg">
+            <thead class="table-dark">
                 <tr>
-                    <td colspan="6" class="text-center text-danger">No bookings found.</td>
+                    <th>Sn#</th>
+                    <th>Booked Date</th>
+                    <th>Client Name</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($bookings as $index => $booking): ?>
+            </thead>
+            <tbody>
+                <?php if (empty($bookings)): ?>
                     <tr>
-                        <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                        <td><?php echo htmlspecialchars($booking['client_name']); ?></td>
-                        <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
-                        <td><?php echo htmlspecialchars($booking['status']); ?></td>
-                        <td><a href="viewBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-secondary">View</a></td>
+                        <td colspan="6" class="text-center text-danger">No bookings found.</td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($bookings as $index => $booking): ?>
+                        <tr>
+                            <td><?php echo $index + 1; ?></td>
+                            <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
+                            <td><?php echo htmlspecialchars($booking['client_name']); ?></td>
+                            <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
+                            <td><?php echo htmlspecialchars($booking['status']); ?></td>
+                            <td><a href="viewBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-secondary">View</a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </main>
 
 <!-- JavaScript to dynamically fetch deceased name based on client selection -->

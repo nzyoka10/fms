@@ -28,8 +28,9 @@ include './includes/sidebar.php';
     <!-- Table to display processed bookings -->
     <div class="table-responsive">
         <?php if (!empty($processedBookings)): ?>
-            <table class="table table-striped mt-2" id="paymentsTable">
-                <thead>
+
+        <table class="table table-striped table-hover table-lg mt-2">
+            <thead class="table-dark">
                     <tr>
                         <th>Sn#</th>                        
                         <th>Receipt</th>

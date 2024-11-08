@@ -789,36 +789,109 @@ function updateLogistic($conn, $id, $client_id, $vehicle, $driver_name, $pickup_
 }
 
 /**
- * Fetch logistics data from the database and return as an array.
+ * Fetch logistics data from the database and return it as an array.
  *
  * @param mysqli $conn The database connection object.
- * @return array Returns an array of logistics data, including client name.
+ * @return array Returns an array of logistics data, including client name, deceased name, transport details, etc.
  */
 function getLogisticsData($conn)
 {
     $logisticsData = [];
 
-    // SQL query to get logistics data and client name, including pickup_location
-    $query = "SELECT b.id, b.client_id, b.vehicle_type, b.status, b.deceased_name, b.schedule_date,
-                    c.client_name AS client_name, b.created_at, b.updated_at
-              FROM bookings b
-              JOIN clients c ON b.client_id = c.id
-              ORDER BY b.created_at DESC";
+    // SQL query to get logistics data, including client details, deceased person info, and transport info
+    $query = "
+        SELECT b.id AS booking_id, 
+               b.client_id, 
+               b.vehicle_type, 
+               b.status, 
+               b.deceased_name, 
+               b.schedule_date,
+               c.client_name AS client_name, 
+               l.destination, 
+               l.pickup_location, 
+               b.vehicle_type, 
+               l.pickup_date,
+               b.created_at, 
+               b.updated_at
+        FROM bookings b
+        JOIN clients c ON b.client_id = c.id
+        LEFT JOIN logistics l ON b.id = l.booking_id  
+        ORDER BY b.created_at DESC
+    ";
 
-    // Execute the query
-    $result = $conn->query($query);
-
-    // Check if the query returns rows
-    if ($result && $result->num_rows > 0) {
-        // Fetch each row as an associative array and store in $logisticsData
-        while ($row = $result->fetch_assoc()) {
-            $logisticsData[] = $row;
+    // Execute the query and handle potential errors
+    if ($result = $conn->query($query)) {
+        // Check if the query returns rows
+        if ($result->num_rows > 0) {
+            // Fetch each row as an associative array and store in $logisticsData
+            while ($row = $result->fetch_assoc()) {
+                $logisticsData[] = $row;
+            }
         }
+        // Free result set
+        $result->free();
+    } else {
+        // Log or handle error - in production, consider logging the error message
+        error_log("Query Error: " . $conn->error);
     }
 
-    // Return the logistics data
+    // Return the logistics data or an empty array if none found
     return $logisticsData;
 }
+
+
+/**
+ * Fetch individual client data based on client_id.
+ *
+ * @param mysqli $conn The database connection object.
+ * @param int $clientId The ID of the client.
+ * @return array|null Returns an associative array with client data or null if not found.
+ */
+function getClientData($conn, $clientId) {
+    // Prepare the query to fetch the client data
+    $query = "SELECT client_name, deceased_name, service_type, schedule_date, vehicle_type, request 
+              FROM bookings WHERE id = ?";
+    $stmt = $conn->prepare($query);
+
+    // Check if the statement was prepared correctly
+    if ($stmt === false) {
+        // Log error for debugging
+        error_log("Statement preparation failed: " . $conn->error);
+        return null; // Indicate failure
+    }
+
+    // Bind the client ID to the statement
+    $stmt->bind_param("i", $clientId);
+
+    // Execute the query
+    if (!$stmt->execute()) {
+        // Log error if execution fails
+        error_log("Query execution failed: " . $stmt->error);
+        $stmt->close(); // Close statement
+        return null; // Indicate failure
+    }
+
+    // Get the result and fetch it as an associative array
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        // Fetch and return the client data
+        $clientData = $result->fetch_assoc();
+    } else {
+        // Log that no data was found for this ID
+        error_log("No client data found for client ID: $clientId");
+        $clientData = null; // Indicate no data
+    }
+
+    // Free result and close the statement
+    $result->free();
+    $stmt->close();
+
+    // Return the client data or null
+    return $clientData;
+}
+
+
 
 /**
  * Fetch the logistics record by ID from the database.
