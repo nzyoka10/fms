@@ -329,7 +329,7 @@ function loadClientData(clientId) {
             const clientDataHtml = `
                 <table class="table table-bordered">
                     <tr><th>Client Name</th><td>${data.client_name}</td></tr>
-                    <tr><th>Deceased</th><td>${data.deceased}</td></tr>
+                    <tr><th>Deceased</th><td>${data.deceased_name}</td></tr>
                     <tr><th>Service</th><td>${data.service_type}</td></tr>
                     <tr><th>Vehicle</th><td>${data.vehicle_type}</td></tr>
                     <tr><th>Request</th><td>${data.request}</td></tr>
