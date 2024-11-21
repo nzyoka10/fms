@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2024 at 03:53 PM
+-- Generation Time: Nov 21, 2024 at 10:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -49,6 +49,31 @@ INSERT INTO `bookings` (`id`, `client_id`, `deceased_name`, `service_type`, `sch
 (23, '1', 'Sacha Sawyer', 'cremation', '2024-11-01', 'van', 'Music ', 'completed', '2024-10-25 11:43:32', '2024-11-05 19:30:13'),
 (24, '1', 'Demetrius Garcia', 'cremation', '2024-11-22', 'bus', 'Golden coffin, PA system', 'scheduled', '2024-11-08 11:23:40', '2024-11-08 11:24:47'),
 (25, '8', 'Megan Obrien', 'cremation', '2024-11-15', 'Bus', 'Uran', 'scheduled', '2024-11-08 11:24:06', '2024-11-08 11:24:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking_services`
+--
+
+CREATE TABLE `booking_services` (
+  `id` int(11) NOT NULL,
+  `booking_id` int(11) NOT NULL,
+  `service_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `total_price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking_services`
+--
+
+INSERT INTO `booking_services` (`id`, `booking_id`, `service_id`, `quantity`, `total_price`, `created_at`) VALUES
+(1, 21, 1, 1, 15000.00, '2024-11-21 09:38:06'),
+(2, 23, 2, 1, 10000.00, '2024-11-21 09:38:06'),
+(3, 24, 4, 1, 3000.00, '2024-11-21 09:38:06'),
+(4, 25, 3, 2, 10000.00, '2024-11-21 09:38:06');
 
 -- --------------------------------------------------------
 
@@ -190,7 +215,32 @@ CREATE TABLE `payments` (
 INSERT INTO `payments` (`id`, `booking_id`, `receipt_number`, `payment_method`, `amount`, `tax`, `discount`, `payment_date`, `created_at`, `updated_at`) VALUES
 (12, 23, 137281, 'cash', 5000.00, 0.00, 0.00, '2024-10-25', '2024-10-25 12:27:15', '2024-10-25 12:27:15'),
 (13, 24, 137282, 'cash', 8000.00, 70.00, 0.00, '2024-11-08', '2024-11-08 11:25:52', '2024-11-08 11:25:52'),
-(14, 25, 137283, 'mpesa', 12000.00, 0.00, 0.00, '2024-11-08', '2024-11-08 11:28:56', '2024-11-08 11:28:56');
+(14, 25, 137283, 'mpesa', 12000.00, 0.00, 0.00, '2024-11-08', '2024-11-08 11:28:56', '2024-11-08 11:28:56'),
+(15, 23, 137284, 'cash', 400.00, 0.00, 0.00, '2024-11-14', '2024-11-14 10:17:26', '2024-11-14 10:17:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `services`
+--
+
+CREATE TABLE `services` (
+  `id` int(11) NOT NULL,
+  `service_name` varchar(150) NOT NULL,
+  `description` text DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `services`
+--
+
+INSERT INTO `services` (`id`, `service_name`, `description`, `price`, `created_at`) VALUES
+(1, 'Burial Arrangement', 'Complete burial arrangement services including coffin, grave digging, and floral decor.', 15000.00, '2024-11-21 09:36:56'),
+(2, 'Cremation', 'Cremation services with options for urns.', 10000.00, '2024-11-21 09:36:56'),
+(3, 'Transportation', 'Vehicle services for transportation of the deceased.', 5000.00, '2024-11-21 09:36:56'),
+(4, 'Special Music Request', 'Musical arrangements during the ceremony.', 3000.00, '2024-11-21 09:36:56');
 
 -- --------------------------------------------------------
 
@@ -230,6 +280,14 @@ ALTER TABLE `bookings`
   ADD KEY `client_id` (`client_id`);
 
 --
+-- Indexes for table `booking_services`
+--
+ALTER TABLE `booking_services`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `booking_id` (`booking_id`),
+  ADD KEY `service_id` (`service_id`);
+
+--
 -- Indexes for table `clients`
 --
 ALTER TABLE `clients`
@@ -263,6 +321,12 @@ ALTER TABLE `payments`
   ADD KEY `client_id` (`booking_id`);
 
 --
+-- Indexes for table `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -279,6 +343,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `bookings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `booking_services`
+--
+ALTER TABLE `booking_services`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -308,13 +378,30 @@ ALTER TABLE `logistics`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `services`
+--
+ALTER TABLE `services`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `booking_services`
+--
+ALTER TABLE `booking_services`
+  ADD CONSTRAINT `booking_services_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_services_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
