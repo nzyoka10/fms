@@ -4,21 +4,39 @@
 include 'includes/functions.php';
 include './includes/header.php';
 include './includes/sidebar.php';
-require './vendor/autoload.php'; // Fixed missing semicolon
+require './vendor/autoload.php'; // Autoload for Dompdf
 
 // Import the Dompdf class
 use Dompdf\Dompdf;
 
 // Initialize variables
-$logisticsData = []; // Ensure it's an array even if no data is returned
-$error = '';
-$filter = '';
+$logisticsData = []; // Array to store logistics data
+$error = ''; // Error message
+$filter = ''; // Selected filter
 
-// Check if the form is submitted
+// Fetch company info for report header
+$query = "SELECT * FROM company_info ORDER BY created_at DESC LIMIT 1";
+$result = mysqli_query($conn, $query);
+
+if ($result && mysqli_num_rows($result) > 0) {
+    $companyData = mysqli_fetch_assoc($result);
+
+    // Store company data in global variables
+    $GLOBALS['companyName'] = $companyData['company_name'];
+    $GLOBALS['companyAddress'] = $companyData['company_address'];
+    $GLOBALS['companyContact'] = $companyData['company_contact'];
+    $GLOBALS['companyEmail'] = $companyData['company_email'];
+    $GLOBALS['reportType'] = $companyData['report_type'];
+} else {
+    echo "No company data found.";
+    exit; // Exit if no company data is found
+}
+
+// Handle filter form submission
 if (isset($_GET['filter'])) {
     $filter = $_GET['filter'];
 
-    // Fetch filtered logistics data based on the selected filter
+    // Fetch logistics data based on the selected filter
     if ($filter == 'week') {
         $logisticsData = getLogisticsDataByWeek($conn);
     } elseif ($filter == 'month') {
@@ -37,7 +55,7 @@ if (isset($_GET['filter'])) {
     }
 }
 
-// Handle Export Requests
+// Handle export requests
 if (isset($_GET['export'])) {
     if ($_GET['export'] == 'pdf') {
         exportToPDF($logisticsData);
@@ -46,35 +64,17 @@ if (isset($_GET['export'])) {
     }
 }
 
-// Fetch company info for report header
-$query = "SELECT * FROM company_info ORDER BY created_at DESC LIMIT 1";
-$result = mysqli_query($conn, $query);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    $companyData = mysqli_fetch_assoc($result);
-
-    // Store company data in global variables
-    $GLOBALS['companyName'] = $companyData['company_name'];
-    $GLOBALS['companyAddress'] = $companyData['company_address'];
-    $GLOBALS['companyContact'] = $companyData['company_contact'];
-    $GLOBALS['companyEmail'] = $companyData['company_email'];
-    $GLOBALS['reportType'] = $companyData['report_type'];
-} else {
-    echo "No company data found.";
-    exit; // Exit if no data found to avoid undefined variable errors later
-}
-
-// PDF Export Function
+// Function to export logistics data to PDF
 function exportToPDF($logisticsData) {
     $dompdf = new Dompdf();
 
     // Check if company data exists
     if (!isset($GLOBALS['companyName'])) {
         echo "Company information is not set.";
-        return; // Exit if company data is not available
+        return;
     }
 
-    // Add the report header in the PDF content
+    // Add report header in PDF content
     $html = '<div style="text-align: center; margin-bottom: 20px;">';
     $html .= '<h2>' . htmlspecialchars($GLOBALS['companyName']) . '</h2>';
     $html .= '<p>' . htmlspecialchars($GLOBALS['companyAddress']) . '</p>';
@@ -83,7 +83,7 @@ function exportToPDF($logisticsData) {
     $html .= '<h4>' . htmlspecialchars($GLOBALS['reportType']) . '</h4>';
     $html .= '<hr></div>';
 
-    // Add the table content
+    // Add table content
     $html .= '<table border="1" cellpadding="5" cellspacing="0" style="width: 100%;">';
     $html .= '<thead><tr><th>Sn#</th><th>Client Name</th><th>Pickup Location</th><th>Destination</th><th>Vehicle</th><th>Status</th><th>Pickup Date</th></tr></thead>';
     $html .= '<tbody>';
@@ -102,25 +102,18 @@ function exportToPDF($logisticsData) {
 
     $html .= '</tbody></table>';
 
-    // Load HTML to DOMPDF
+    // Generate PDF
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'landscape');
-
-    try {
-        $dompdf->render();
-        $dompdf->stream("logistics_report.pdf", array("Attachment" => true));
-    } catch (Exception $e) {
-        echo "Error generating PDF: " . $e->getMessage();
-    }
+    $dompdf->render();
+    $dompdf->stream("logistics_report.pdf", array("Attachment" => true));
 }
 
-// Excel Export Function
-function exportToExcel($logisticsData)
-{
-    // Ensure there is no output before this point
+// Function to export logistics data to Excel
+function exportToExcel($logisticsData) {
     header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="FMS_Report.csv";');
-    
+    header('Content-Disposition: attachment; filename="logistics_report.csv";');
+
     $output = fopen('php://output', 'w');
     fputcsv($output, ['Sn#', 'Client Name', 'Pickup Location', 'Destination', 'Vehicle', 'Status', 'Pickup Date']);
 
@@ -132,15 +125,15 @@ function exportToExcel($logisticsData)
             htmlspecialchars($logistic['destination']),
             htmlspecialchars($logistic['vehicle']),
             htmlspecialchars($logistic['status']),
-            htmlspecialchars($logistic['pickup_date'])
+            htmlspecialchars($logistic['pickup_date']),
         ]);
     }
 
     fclose($output);
-    exit(); // Exit to ensure no further output is sent
+    exit();
 }
-
 ?>
+
 
 <style>
     @media print {
@@ -156,6 +149,11 @@ function exportToExcel($logisticsData)
     }
 </style>
 
+
+
+
+
+
 <!-- Main Section -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
     <h4 class="text-muted mt-2">Generate Reports</h4>
@@ -168,7 +166,7 @@ function exportToExcel($logisticsData)
     </ol>
 
     <!-- Filter Form -->
-    <form method="GET" action="reports.php">
+    <form method="GET" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <div class="row mb-3">
             <div class="col-md-4 mb-2">
                 <label for="filter">Filter By:</label>
@@ -213,9 +211,10 @@ function exportToExcel($logisticsData)
         <thead class="table-dark">
             <tr>
                 <th>Sn#</th>
-                <th>Client Name</th>
-                <th>Pickup</th>
                 <th>Deceased Person</th>
+                <!-- <th>Client Name</th> -->
+                <th>Pickup</th>
+                
                 <th>Vehicle</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -230,10 +229,11 @@ function exportToExcel($logisticsData)
                 <?php foreach ($logisticsData as $index => $logistic) { ?>
                     <tr>
                         <td><?php echo ($index + 1); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['client_name']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
                         <td><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
+                        <!-- <td><?php echo htmlspecialchars($logistic['client_name']); ?></td> -->
+                        <td><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
+                        
+                        <td class="text-capitalize"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
                         <td><?php echo htmlspecialchars($logistic['status']); ?></td>
                         <td>
                             <!-- View button to trigger modal -->
@@ -276,12 +276,18 @@ function exportToExcel($logisticsData)
 
 </main>
 
+
+
+
+
+
+
 <script>
     // Toggle date fields based on filter selection
     function toggleDateFields() {
-        var filterValue = document.getElementById('filter').value;
-        document.getElementById('start_date_div').style.display = filterValue === 'range' ? 'block' : 'none';
-        document.getElementById('end_date_div').style.display = filterValue === 'range' ? 'block' : 'none';
+        const filter = document.getElementById('filter').value;
+        document.getElementById('start_date_div').style.display = filter === 'range' ? 'block' : 'none';
+        document.getElementById('end_date_div').style.display = filter === 'range' ? 'block' : 'none';
     }
 
     // Print the report
