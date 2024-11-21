@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2024 at 02:52 PM
+-- Generation Time: Nov 08, 2024 at 03:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,8 +46,9 @@ CREATE TABLE `bookings` (
 
 INSERT INTO `bookings` (`id`, `client_id`, `deceased_name`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
 (21, '2', 'ELihaji Lewis', 'burial', '2024-11-02', 'van', 'None..', 'scheduled', '2024-10-24 10:09:51', '2024-10-24 10:09:51'),
-(22, '1', 'Jane Doe', 'burial', '2024-10-31', 'van', 'Boda boda escorst', 'scheduled', '2024-10-25 11:06:55', '2024-10-25 12:33:52'),
-(23, '1', 'Sacha Sawyer', 'cremation', '2024-11-01', 'Bus', 'Music ', 'scheduled', '2024-10-25 11:43:32', '2024-10-25 11:43:32');
+(23, '1', 'Sacha Sawyer', 'cremation', '2024-11-01', 'van', 'Music ', 'completed', '2024-10-25 11:43:32', '2024-11-05 19:30:13'),
+(24, '1', 'Demetrius Garcia', 'cremation', '2024-11-22', 'bus', 'Golden coffin, PA system', 'scheduled', '2024-11-08 11:23:40', '2024-11-08 11:24:47'),
+(25, '8', 'Megan Obrien', 'cremation', '2024-11-15', 'Bus', 'Uran', 'scheduled', '2024-11-08 11:24:06', '2024-11-08 11:24:06');
 
 -- --------------------------------------------------------
 
@@ -76,8 +77,11 @@ CREATE TABLE `clients` (
 
 INSERT INTO `clients` (`id`, `client_name`, `client_phone`, `client_email`, `client_address`, `deceased_name`, `deceased_age`, `deceased_date_of_death`, `deceased_cause`, `deceased_gender`, `created_at`, `updated_at`) VALUES
 (1, 'Charity Kinango', '(254) 712-579-1', 'test@user.app', 'Gaza city, Down ', 'Sacha Sawyer', 89, '2022-06-15', 'natural', 'female', '2024-10-24 04:41:03', '2024-10-25 12:52:04'),
-(2, 'Sonya Cox', '(254) 728-486-849', 'ximeb@app.com', 'Molestiae', 'ELihaji Lewis', 96, '2024-04-02', 'sickness', 'male', '2024-10-24 05:49:50', '2024-10-24 05:50:10'),
-(3, 'Mike Aguero', '0736348911', 'mike@app.fms', 'Kinnoo, uptown', 'Jane Doe', 90, '2024-10-22', 'natural', 'female', '2024-10-25 04:56:33', '2024-10-25 04:56:56');
+(3, 'Mike Aguero', '0736348911', 'mike@app.fms', 'Kinnoo, uptown', 'Jane Doe', 90, '2024-10-22', 'natural', 'female', '2024-10-25 04:56:33', '2024-10-25 04:56:56'),
+(4, 'Sebastian Gilliam', '+1 (553) 916-3606', 'nacokukyp@mailinator.com', 'Numquam labore labor', 'Demetrius Garcia', 20, '0000-00-00', 'sickness', 'male', '2024-10-28 05:18:17', '2024-10-28 05:18:17'),
+(5, 'Kim Goff', '+1 (387) 943-3018', 'jibaru@mailinator.com', 'Temporibus magnam nu', 'Meghan Thomas', 13, '0000-00-00', 'other', 'male', '2024-10-28 05:18:29', '2024-10-28 05:18:29'),
+(7, 'Candace Velasquez', '+1 (464) 219-5548', 'tupoxijy@mailinator.com', 'Officia tempore atq', 'Florence Knowles', 52, '0000-00-00', 'sickness', 'male', '2024-10-28 05:19:09', '2024-10-28 05:19:09'),
+(8, 'Stuart Branch', '+1 (758) 366-8151', 'cuxig@mailinator.com', 'Voluptatem Atque no', 'Megan Obrien', 83, '0000-00-00', 'accident', 'male', '2024-10-28 05:19:17', '2024-10-28 05:19:17');
 
 -- --------------------------------------------------------
 
@@ -184,7 +188,9 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `booking_id`, `receipt_number`, `payment_method`, `amount`, `tax`, `discount`, `payment_date`, `created_at`, `updated_at`) VALUES
-(12, 23, 137281, 'cash', 5000.00, 0.00, 0.00, '2024-10-25', '2024-10-25 12:27:15', '2024-10-25 12:27:15');
+(12, 23, 137281, 'cash', 5000.00, 0.00, 0.00, '2024-10-25', '2024-10-25 12:27:15', '2024-10-25 12:27:15'),
+(13, 24, 137282, 'cash', 8000.00, 70.00, 0.00, '2024-11-08', '2024-11-08 11:25:52', '2024-11-08 11:25:52'),
+(14, 25, 137283, 'mpesa', 12000.00, 0.00, 0.00, '2024-11-08', '2024-11-08 11:28:56', '2024-11-08 11:28:56');
 
 -- --------------------------------------------------------
 
@@ -272,13 +278,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `company_info`
@@ -302,7 +308,7 @@ ALTER TABLE `logistics`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
