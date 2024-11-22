@@ -238,11 +238,10 @@ function exportToExcel($logisticsData) {
                         <td>
                             <!-- View button to trigger modal -->
                             <button type="button" class="btn btn-sm btn-outline-dark" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#staticBackdrop" 
-                                data-bs-id="<?php echo $booking['id']; ?>">
-                                    View
-                        </button>
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop" 
+                                    data-bs-id="<?php echo $logistic['id']; ?>">
+                                View
+                            </button>
 
                         </td>
                     </tr>
@@ -253,7 +252,8 @@ function exportToExcel($logisticsData) {
 </div>
 
 
-<!-- Modal to display individual report and have print button -->
+
+<!-- Modal to display the data -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -265,12 +265,13 @@ function exportToExcel($logisticsData) {
         <!-- Dynamic content will be loaded here -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-dark" onclick="printClientDetails()">Print</button>
-        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="printClientDetails()">Print</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
 
 
 
@@ -295,7 +296,7 @@ function exportToExcel($logisticsData) {
         window.print();
     }
 
-// JavaScript to handle dynamic modal data loading
+    // JavaScript to handle dynamic modal data loading
 document.addEventListener('DOMContentLoaded', function() {
     // Add event listener to each "View" button
     const viewButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
@@ -310,77 +311,98 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to load client data via AJAX
 function loadClientData(clientId) {
     const modalBody = document.getElementById('clientDetailsContent');
-    const loadingText = '<p>Loading client data...</p>';
     
-    // Show loading message
-    modalBody.innerHTML = loadingText;
-
-    fetch('get_client_data.php', { 
+    fetch('get_client_data.php', { // Assuming you have this PHP file for the AJAX request
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: clientId }) // Sending client ID as `id`
+        body: JSON.stringify({ client_id: clientId })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
-        // Check if data is received and successful
+        // Check if data is received
         if (data.success) {
             // Generate HTML content for the modal
-            const clientDataHtml = `
+            let clientDataHtml = `
                 <table class="table table-bordered">
                     <tr><th>Client Name</th><td>${data.client_name}</td></tr>
-                    <tr><th>Deceased</th><td>${data.deceased_name}</td></tr>
-                    <tr><th>Service</th><td>${data.service_type}</td></tr>
-                    <tr><th>Vehicle</th><td>${data.vehicle_type}</td></tr>
-                    <tr><th>Request</th><td>${data.request}</td></tr>
-                    <tr><th>Booked date</th><td>${data.schedule_date}</td></tr>
+                    <tr><th>Pickup Location</th><td>${data.pickup_location}</td></tr>
+                    <tr><th>Destination</th><td>${data.destination}</td></tr>
+                    <tr><th>Vehicle</th><td>${data.vehicle}</td></tr>
+                    <tr><th>Status</th><td>${data.status}</td></tr>
+                    <tr><th>Pickup Date</th><td>${data.pickup_date}</td></tr>
                 </table>
             `;
             modalBody.innerHTML = clientDataHtml; // Insert client data into modal body
         } else {
-            modalBody.innerHTML = `<p class="text-danger">${data.message}</p>`; // Show error message if no data
+            modalBody.innerHTML = `<p class="text-danger">${data.message}</p>`;
         }
     })
     .catch(error => {
         console.error('Error loading client data:', error);
-        modalBody.innerHTML = '<p class="text-danger">An error occurred while fetching client data. Please try again later.</p>';
     });
 }
 
-// Function to print client details
+// Function to handle the print functionality
 function printClientDetails() {
-    const modalBody = document.getElementById('clientDetailsContent');
-    const printContent = modalBody.innerHTML;
-    
-    // Open a new print window and print the content
-    const printWindow = window.open('', '', 'width=1200,height=800');
-    printWindow.document.write(`
-        <html>
-            <head>
-                <title>Print Client Details</title>
-                <style>
-                    body { font-family: Arial, sans-serif; padding: 20px; }
-                    h2 { text-align: center; }
-                    .table-bordered { width: 100%; border-collapse: collapse; }
-                    .table-bordered th, .table-bordered td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                    .table-bordered th { background-color: #f2f2f2; font-weight: bold; }
-                </style>
-            </head>
-            <body>
-                <h2>Client FMS Report</h2>
-                ${printContent}
-            </body>
-        </html>
-    `);
+    const modalContent = document.getElementById('clientDetailsContent').innerHTML;
+    const printWindow = window.open('', '', 'width=600,height=600');
+    printWindow.document.write('<html><head><title>Client Details</title></head><body>');
+    printWindow.document.write(modalContent); // Write the modal content to print
+    printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.print();
 }
+
+
+// Function to load client data via AJAX
+$(document).on('click', '.view-client-btn', function() {
+    const clientId = $(this).data('id');
+
+    $.ajax({
+        url: 'get_client_data.php',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ id: clientId }),
+        success: function(response) {
+            if (response.success) {
+                const client = response.client;
+                const related = response.related;
+
+                // Populate client details
+                $('#clientName').text(client.client_name);
+                $('#deceasedName').text(client.deceased);
+                $('#serviceType').text(client.service_type);
+                $('#scheduleDate').text(client.schedule_date);
+                $('#vehicleType').text(client.vehicle_type);
+                $('#clientRequest').text(client.request);
+
+                // Populate related data (e.g., inventory items)
+                const relatedContainer = $('#relatedData');
+                relatedContainer.empty(); // Clear previous data
+                related.forEach(item => {
+                    relatedContainer.append(`
+                        <tr>
+                            <td>${item.inventory_item}</td>
+                            <td>${item.quantity}</td>
+                            <td>${item.description}</td>
+                        </tr>
+                    `);
+                });
+
+                // Show modal
+                $('#viewClientModal').modal('show');
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function() {
+            alert('An error occurred while fetching client data.');
+        }
+    });
+});
+
 
 
 

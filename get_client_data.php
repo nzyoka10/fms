@@ -1,58 +1,66 @@
 <?php
 // get_client_data.php
 header('Content-Type: application/json');
-include 'includes/functions.php';
+include 'includes/functions.php'; 
 
-// Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Get the raw POST data
+    // Decode the incoming JSON request
     $data = json_decode(file_get_contents('php://input'), true);
 
-    // Check if JSON was successfully decoded
+    // Check for JSON decoding errors
     if (json_last_error() !== JSON_ERROR_NONE) {
         echo json_encode(['success' => false, 'message' => 'Invalid JSON format']);
         exit;
     }
 
-    // Ensure the client ID is provided and is not empty
+    // Validate the client ID
     if (isset($data['id']) && !empty($data['id'])) {
-        $clientId = $data['id'];
+        $clientId = intval($data['id']);
 
-        // Check if database connection is established
-        if (!$conn) {
-            echo json_encode(['success' => false, 'message' => 'Database connection error. Please try again later.']);
-            exit;
-        }
+        // Main client query
+        $query = "SELECT client_name, deceased_name, service_type, schedule_date, vehicle_type, request 
+                  FROM clients 
+                  WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $clientId);
 
-        // Fetch client data
-        $clientData = getClientData($conn, $clientId);
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
 
-        if ($clientData) {
-            // Respond with the client data
-            echo json_encode([
-                'success' => true,
-                'client_name' => $clientData['client_name'],
-                'deceased' => $clientData['deceased_name'],
-                'service_type' => $clientData['service_type'],
-                'schedule_date' => $clientData['schedule_date'],
-                'vehicle_type' => $clientData['vehicle_type'],
-                'request' => $clientData['request']
-            ]);
+            if ($result->num_rows > 0) {
+                $clientData = $result->fetch_assoc();
+
+                // Fetch related data (e.g., inventory)
+                $relatedQuery = "SELECT inventory_item, quantity, description 
+                                 FROM orders 
+                                 WHERE client_id = ?";
+                $relatedStmt = $conn->prepare($relatedQuery);
+                $relatedStmt->bind_param("i", $clientId);
+                $relatedStmt->execute();
+                $relatedResult = $relatedStmt->get_result();
+
+                $relatedData = [];
+                while ($row = $relatedResult->fetch_assoc()) {
+                    $relatedData[] = $row; // Collect related data
+                }
+
+                echo json_encode([
+                    'success' => true,
+                    'client' => $clientData,
+                    'related' => $relatedData
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Client not found']);
+            }
         } else {
-            // Client not found
-            echo json_encode(['success' => false, 'message' => 'Client not found']);
+            echo json_encode(['success' => false, 'message' => 'Query execution failed']);
         }
     } else {
-        // Invalid or missing client ID
-        echo json_encode(['success' => false, 'message' => 'Invalid client ID']);
+        echo json_encode(['success' => false, 'message' => 'Invalid or missing client ID']);
     }
 
-    // Close the database connection (recommended for cleanup)
-    if ($conn) {
-        $conn->close();
-    }
+    $conn->close(); // Close the database connection
 } else {
-    // Invalid request method
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
 ?>
