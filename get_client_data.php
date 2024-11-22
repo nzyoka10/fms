@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($result->num_rows > 0) {
                 $clientData = $result->fetch_assoc();
 
-                // Fetch related data (e.g., inventory)
-                $relatedQuery = "SELECT inventory_item, quantity, description 
-                                 FROM orders 
+                // Fetch related data from bookings table
+                $relatedQuery = "SELECT *
+                                 FROM bookings 
                                  WHERE client_id = ?";
                 $relatedStmt = $conn->prepare($relatedQuery);
                 $relatedStmt->bind_param("i", $clientId);

@@ -299,32 +299,65 @@ function updateClient(
 /**
  * Function to handle the booking form submission.
  *
+ ** Function to handle the form submission and insert a new booking with vehicle type
  * @param array $data The form data from the POST request.
  * @param mysqli $conn The database connection.
  * @return array An associative array containing success or error messages.
  */
-function handleBookingForm($data, $conn) {
-    $client_id = $data['client_id'];
-    $deceased_name = $data['deceased_name'] ?? ''; // Ensure deceased_name has a default value
-    $service_type = $data['service_type'];
-    $schedule_date = $data['schedule_date'];
-    $vehicle_type = $data['vehicle_type'];
-    $status = $data['status'];
-    $request = $data['request'];
 
-    // Verify deceased_name before attempting to insert it into the database
-    if (empty($deceased_name)) {
-        return ['error' => 'Deceased name cannot be empty.'];
+
+function handleBookingForm($postData, $conn) {
+    // Validate the incoming POST data
+    $clientId = isset($postData['client_id']) ? (int)$postData['client_id'] : 0;
+    $deceasedName = isset($postData['deceased_name']) ? htmlspecialchars($postData['deceased_name']) : '';
+    $serviceType = isset($postData['service_type']) ? htmlspecialchars($postData['service_type']) : '';
+    $scheduleDate = isset($postData['schedule_date']) ? htmlspecialchars($postData['schedule_date']) : '';
+    $vehicleType = isset($postData['vehicle_type']) ? (int)$postData['vehicle_type'] : 0;
+    $status = isset($postData['status']) ? htmlspecialchars($postData['status']) : 'scheduled';
+    $request = isset($postData['request']) ? htmlspecialchars($postData['request']) : '';
+
+    // Ensure that all required fields are present
+    if (empty($clientId) || empty($serviceType) || empty($scheduleDate) || empty($deceasedName) || empty($vehicleType)) {
+        return ['error' => 'All required fields must be filled in.'];
     }
 
-    // Prepare and execute the SQL statement
-    $stmt = $conn->prepare("INSERT INTO bookings (client_id, deceased_name, service_type, schedule_date, vehicle_type, status, request) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("issssss", $client_id, $deceased_name, $service_type, $schedule_date, $vehicle_type, $status, $request);
+    try {
+        // Prepare the SQL query to insert a new booking
+        $sql = "INSERT INTO bookings (client_id, deceased_name, service_type, schedule_date, vehicle_type, status, request)
+                VALUES (:client_id, :deceased_name, :service_type, :schedule_date, :vehicle_type, :status, :request)";
 
-    if ($stmt->execute()) {
-        return ['success' => 'Booking successfully created.'];
-    } else {
-        return ['error' => 'Failed to create booking.'];
+        // Prepare the statement
+        $stmt = $conn->prepare($sql);
+
+        // Bind the parameters to the SQL query
+        $stmt->bindParam(':client_id', $clientId);
+        $stmt->bindParam(':deceased_name', $deceasedName);
+        $stmt->bindParam(':service_type', $serviceType);
+        $stmt->bindParam(':schedule_date', $scheduleDate);
+        $stmt->bindParam(':vehicle_type', $vehicleType);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':request', $request);
+
+        // Execute the query to insert the new booking
+        $stmt->execute();
+
+        // Return success message if insertion is successful
+        return ['success' => 'Booking has been successfully created.'];
+    } catch (PDOException $e) {
+        // Catch and display any errors during the insertion
+        return ['error' => 'Error inserting booking: ' . $e->getMessage()];
+    }
+}
+
+// Function to fetch all vehicle types from the database
+function getVehicleTypes($conn) {
+    try {
+        $sql = "SELECT id, vehicle_type_name FROM vehicle_types ORDER BY vehicle_type_name ASC";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return ['error' => 'Error fetching vehicle types: ' . $e->getMessage()];
     }
 }
 
@@ -1100,3 +1133,7 @@ function getLoggedUser($conn)
     }
     return null;
 }
+
+
+
+

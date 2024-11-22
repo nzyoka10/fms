@@ -51,7 +51,11 @@ include './includes/sidebar.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body mt-4">
+
+
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="row g-3">
+                    
+                
                     <div class="row">
                         <!-- Client Name Field -->
                         <div class="col-md-4 mb-2">
@@ -119,6 +123,8 @@ include './includes/sidebar.php';
                         <button type="submit" class="btn btn-sm btn-success">Make Booking</button>
                     </div>
                 </form>
+
+
             </div>
         </div>
     </div>
