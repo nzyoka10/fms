@@ -357,52 +357,63 @@ function printClientDetails() {
 
 
 // Function to load client data via AJAX
-$(document).on('click', '.view-client-btn', function() {
+$(document).on('click', '.view-client-btn', function () {
     const clientId = $(this).data('id');
+
+    // Validate clientId before making the AJAX request
+    if (!clientId) {
+        alert('Invalid client ID. Please try again.');
+        return;
+    }
 
     $.ajax({
         url: 'get_client_data.php',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ id: clientId }),
-        success: function(response) {
+        success: function (response) {
             if (response.success) {
                 const client = response.client;
                 const related = response.related;
 
                 // Populate client details
-                $('#clientName').text(client.client_name);
-                $('#deceasedName').text(client.deceased);
-                $('#serviceType').text(client.service_type);
-                $('#scheduleDate').text(client.schedule_date);
-                $('#vehicleType').text(client.vehicle_type);
-                $('#clientRequest').text(client.request);
+                $('#clientName').text(client.client_name || 'N/A');
+                $('#deceasedName').text(client.deceased || 'N/A');
+                $('#serviceType').text(client.service_type || 'N/A');
+                $('#scheduleDate').text(client.schedule_date || 'N/A');
+                $('#vehicleType').text(client.vehicle_type || 'N/A');
+                $('#clientRequest').text(client.request || 'N/A');
 
                 // Populate related data (e.g., inventory items)
                 const relatedContainer = $('#relatedData');
                 relatedContainer.empty(); // Clear previous data
-                related.forEach(item => {
-                    relatedContainer.append(`
-                        <tr>
-                            <td>${item.inventory_item}</td>
-                            <td>${item.quantity}</td>
-                            <td>${item.description}</td>
-                        </tr>
-                    `);
-                });
+
+                if (Array.isArray(related) && related.length > 0) {
+                    related.forEach(item => {
+                        relatedContainer.append(`
+                            <tr>
+                                <td>${item.inventory_item || 'N/A'}</td>
+                                <td>${item.quantity || 'N/A'}</td>
+                                <td>${item.description || 'N/A'}</td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    relatedContainer.append('<tr><td colspan="3">No related data available</td></tr>');
+                }
 
                 // Show modal
                 $('#viewClientModal').modal('show');
             } else {
-                alert(response.message);
+                alert(response.message || 'Failed to load client data.');
             }
         },
-        error: function() {
-            alert('An error occurred while fetching client data.');
+        error: function (xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            alert('An error occurred while fetching client data. Please try again.');
         }
     });
 });
-
 
 
 
