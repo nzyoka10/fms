@@ -96,6 +96,8 @@ include './includes/sidebar.php';
                             <input type="date" class="form-control" id="schedule_date" name="schedule_date" required>
                         </div>
 
+
+                        
                         <!-- Vehicle Type Field -->
                         <div class="col-md-4 mb-2">
                             <label for="vehicle_type" class="form-label">Vehicle Type</label>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2024 at 10:41 AM
+-- Generation Time: Nov 22, 2024 at 04:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,6 @@ CREATE TABLE `bookings` (
 
 INSERT INTO `bookings` (`id`, `client_id`, `deceased_name`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
 (21, '2', 'ELihaji Lewis', 'burial', '2024-11-02', 'van', 'None..', 'scheduled', '2024-10-24 10:09:51', '2024-10-24 10:09:51'),
-(23, '1', 'Sacha Sawyer', 'cremation', '2024-11-01', 'van', 'Music ', 'completed', '2024-10-25 11:43:32', '2024-11-05 19:30:13'),
 (24, '1', 'Demetrius Garcia', 'cremation', '2024-11-22', 'bus', 'Golden coffin, PA system', 'scheduled', '2024-11-08 11:23:40', '2024-11-08 11:24:47'),
 (25, '8', 'Megan Obrien', 'cremation', '2024-11-15', 'Bus', 'Uran', 'scheduled', '2024-11-08 11:24:06', '2024-11-08 11:24:06');
 
@@ -71,7 +70,6 @@ CREATE TABLE `booking_services` (
 
 INSERT INTO `booking_services` (`id`, `booking_id`, `service_id`, `quantity`, `total_price`, `created_at`) VALUES
 (1, 21, 1, 1, 15000.00, '2024-11-21 09:38:06'),
-(2, 23, 2, 1, 10000.00, '2024-11-21 09:38:06'),
 (3, 24, 4, 1, 3000.00, '2024-11-21 09:38:06'),
 (4, 25, 3, 2, 10000.00, '2024-11-21 09:38:06');
 
@@ -268,6 +266,30 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `username`, `email`, `pass
 (1, 'Tom', 'Ouko', 'admin', 'admin@app.com', '$2y$10$m4ZTmmGEXuiCeVcG0qdLZuZcUGyNlT56UMzo/Xtt5MYKndxrracsa', 'admin', '2024-09-28 12:18:53', '2024-09-28 12:18:53'),
 (5, 'Kajanah', 'Malwa Jr', 'user', 'super@app.com', '$2y$10$ZFPeUQSY/hyLbKKOjKM6t.XFIzLiU0CXjVLKI6uEeLlDAhbrdH.YW', 'staff', '2024-10-10 13:43:18', '2024-10-17 05:13:34');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vehicle_types`
+--
+
+CREATE TABLE `vehicle_types` (
+  `id` int(11) NOT NULL,
+  `vehicle_type_name` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vehicle_types`
+--
+
+INSERT INTO `vehicle_types` (`id`, `vehicle_type_name`, `created_at`, `updated_at`) VALUES
+(1, 'Hearse + Body (KDJ-225-F)', '2024-11-22 12:47:22', '2024-11-22 12:47:22'),
+(2, 'Van + Body (KBL-205-C)', '2024-11-22 12:47:22', '2024-11-22 12:47:22'),
+(3, 'Bus - (KCJ-004-I)', '2024-11-22 12:47:22', '2024-11-22 12:47:22'),
+(4, 'SUV - (KDJ-215-J)', '2024-11-22 12:47:22', '2024-11-22 12:47:22'),
+(5, 'Limousine + Body (KDA-005-A)', '2024-11-22 12:47:22', '2024-11-22 12:47:22');
+
 --
 -- Indexes for dumped tables
 --
@@ -335,6 +357,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `vehicle_types`
+--
+ALTER TABLE `vehicle_types`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -342,7 +370,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `booking_services`
@@ -390,6 +418,12 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `vehicle_types`
+--
+ALTER TABLE `vehicle_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
