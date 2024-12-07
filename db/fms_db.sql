@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2024 at 04:03 PM
+-- Generation Time: Dec 07, 2024 at 01:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,8 +46,8 @@ CREATE TABLE `bookings` (
 
 INSERT INTO `bookings` (`id`, `client_id`, `deceased_name`, `service_type`, `schedule_date`, `vehicle_type`, `request`, `status`, `created_at`, `updated_at`) VALUES
 (21, '2', 'ELihaji Lewis', 'burial', '2024-11-02', 'van', 'None..', 'scheduled', '2024-10-24 10:09:51', '2024-10-24 10:09:51'),
-(24, '1', 'Demetrius Garcia', 'cremation', '2024-11-22', 'bus', 'Golden coffin, PA system', 'scheduled', '2024-11-08 11:23:40', '2024-11-08 11:24:47'),
-(25, '8', 'Megan Obrien', 'cremation', '2024-11-15', 'Bus', 'Uran', 'scheduled', '2024-11-08 11:24:06', '2024-11-08 11:24:06');
+(24, '1', 'Demetrius Garcia', 'cremation', '2024-12-13', 'van', 'Golden coffin, PA system', 'scheduled', '2024-11-08 11:23:40', '2024-12-07 09:55:34'),
+(25, '8', 'Megan Obrien', 'cremation', '2024-12-14', 'Bus', 'Uran', 'scheduled', '2024-11-08 11:24:06', '2024-12-07 09:54:40');
 
 -- --------------------------------------------------------
 
@@ -109,6 +109,19 @@ INSERT INTO `clients` (`id`, `client_name`, `client_phone`, `client_email`, `cli
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `client_logs`
+--
+
+CREATE TABLE `client_logs` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `log_data` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `company_info`
 --
 
@@ -130,6 +143,29 @@ INSERT INTO `company_info` (`id`, `company_name`, `company_address`, `company_co
 (1, 'Funeral Management System (FMS)', '123 Avenue, Nairobi, Ke', '+254 700 000 000', 'info@fms.co.ke', 'Weekly Report', '2024-10-16 23:24:27'),
 (2, 'Funeral Management System (FMS)', '123 Avenue, Nairobi, Ke', '+254 700 000 000', 'info@fms.co.ke', 'Monthly Report', '2024-10-16 23:24:27'),
 (3, 'Funeral Management System (FMS)', '123 Avenue, Nairobi, Ke', '+254 700 000 000', 'info@fms.co.ke', 'Custom Report (01-01-2024 to 01-31-2024)', '2024-10-16 23:24:27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_logs`
+--
+
+CREATE TABLE `error_logs` (
+  `id` int(11) NOT NULL,
+  `error_message` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `error_logs`
+--
+
+INSERT INTO `error_logs` (`id`, `error_message`, `created_at`) VALUES
+(1, 'Client not found.', '2024-12-07 13:27:13'),
+(2, 'Client not found.', '2024-12-07 13:28:37'),
+(3, 'Client not found.', '2024-12-07 13:30:38'),
+(4, 'Client not found.', '2024-12-07 13:33:46'),
+(5, 'Client not found.', '2024-12-07 13:45:21');
 
 -- --------------------------------------------------------
 
@@ -316,9 +352,21 @@ ALTER TABLE `clients`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `client_logs`
+--
+ALTER TABLE `client_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `company_info`
 --
 ALTER TABLE `company_info`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `error_logs`
+--
+ALTER TABLE `error_logs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -385,10 +433,22 @@ ALTER TABLE `clients`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT for table `client_logs`
+--
+ALTER TABLE `client_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `company_info`
 --
 ALTER TABLE `company_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `error_logs`
+--
+ALTER TABLE `error_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `inventory`

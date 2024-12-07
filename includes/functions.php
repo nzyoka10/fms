@@ -1070,7 +1070,7 @@ function getLogisticsDataByRange($conn, $startDate, $endDate)
  * @param mysqli $conn The database connection object.
  * @return array Returns an array of logistics data.
  */
-function fetchLogisticsData($conn)
+function fetchLogisticData($conn)
 {
     $logisticsData = []; // Initialize the array
 
@@ -1135,5 +1135,155 @@ function getLoggedUser($conn)
 }
 
 
+function getClientDetails($conn, $clientId) {
+    $query = "SELECT * FROM clients WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $clientId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        throw new Exception("Client not found.");
+    }
+
+    return $result->fetch_assoc();
+}
+
+function getClientBookings($conn, $clientId) {
+    $query = "SELECT * FROM bookings WHERE client_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $clientId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getClientPayments($conn, $clientId) {
+    $query = "SELECT * FROM payments WHERE client_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $clientId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getClientServices($conn, $clientId) {
+    $query = "SELECT s.* FROM services s
+              JOIN bookings b ON s.booking_id = b.id
+              WHERE b.client_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $clientId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
 
 
+
+/**
+ * Log client data retrieval details to the database.
+ *
+ * @param mysqli $conn Database connection object.
+ * @param int $clientId Client ID.
+ * @param array $client Client details.
+ * @param array $bookings Client bookings.
+ * @param array $payments Client payments.
+ * @param array $services Client services.
+ * @return void
+ */
+function logClientDataRetrieval($conn, $clientId, $client, $bookings, $payments, $services) {
+    $logMessage = [
+        'client' => $client,
+        'bookings' => $bookings,
+        'payments' => $payments,
+        'services' => $services,
+    ];
+
+    // Serialize data for storage
+    $serializedData = serialize($logMessage);
+
+    // Prepare the SQL query to insert the log
+    $query = "INSERT INTO client_logs (client_id, log_data, created_at) VALUES (?, ?, NOW())";
+
+    // Use prepared statements to prevent SQL injection
+    if ($stmt = $conn->prepare($query)) {
+        $stmt->bind_param('is', $clientId, $serializedData);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        // Log error if query preparation fails
+        logError($conn, "Failed to prepare logClientDataRetrieval query: " . $conn->error);
+    }
+}
+
+// error logs if query preparation
+function logError($conn, $errorMessage) {
+    $query = "INSERT INTO error_logs (error_message, created_at) VALUES (?, NOW())";
+    if ($stmt = $conn->prepare($query)) {
+        $stmt->bind_param('s', $errorMessage);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        error_log("Failed to log error: " . $conn->error);
+    }
+}
+
+
+// Function to fetch client details, bookings, and services
+function fetchClientData($conn, $clientId) {
+    try {
+        // Query to fetch client details
+        $clientQuery = "SELECT * FROM clients WHERE id = ?";
+        $stmt = $conn->prepare($clientQuery);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $clientResult = $stmt->get_result();
+        $client = $clientResult->fetch_assoc();
+        
+        if (!$client) {
+            throw new Exception("Client not found.");
+        }
+
+        // Query to fetch bookings related to the client
+        $bookingsQuery = "SELECT * FROM bookings WHERE client_id = ?";
+        $stmt = $conn->prepare($bookingsQuery);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $bookingsResult = $stmt->get_result();
+        $bookings = $bookingsResult->fetch_all(MYSQLI_ASSOC);
+
+        // Query to fetch services for each booking
+        $servicesQuery = "SELECT bs.*, s.service_name 
+                          FROM booking_services bs
+                          JOIN services s ON bs.service_id = s.id
+                          WHERE bs.booking_id IN (SELECT id FROM bookings WHERE client_id = ?)";
+        $stmt = $conn->prepare($servicesQuery);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $servicesResult = $stmt->get_result();
+        $services = $servicesResult->fetch_all(MYSQLI_ASSOC);
+
+        return [
+            'client' => $client,
+            'bookings' => $bookings,
+            'services' => $services
+        ];
+    } catch (Exception $e) {
+        // Log error if something goes wrong
+        logError($conn, $e->getMessage());
+        return false;  // Return false to indicate failure
+    }
+}
+
+// // Example usage:
+// $clientId = 1;  // The client ID you want to fetch data for
+// $clientData = getClientData($conn, $clientId);
+
+// if ($clientData) {
+//     $client = $clientData['client'];
+//     $bookings = $clientData['bookings'];
+//     $services = $clientData['services'];
+//     // Process and display the data here
+// } else {
+//     echo "Error fetching client data.";
+// }

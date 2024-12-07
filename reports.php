@@ -207,70 +207,45 @@ function exportToExcel($logisticsData) {
     <!-- Logistics Data Table -->
      <!-- Logistics Data Table -->
 <div class="table-responsive">
-    <table class="table table-striped table-bordered table-hover table-lg">
-        <thead class="table-dark">
+
+<table class="table table-striped table-bordered table-hover table-lg">
+    <thead class="table-dark">
+        <tr>
+            <th>Sn#</th>
+            <th>Deceased Person</th>
+            <th>Pickup</th>
+            <th>Vehicle</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (empty($logisticsData)) { ?>
             <tr>
-                <th>Sn#</th>
-                <th>Deceased Person</th>
-                <!-- <th>Client Name</th> -->
-                <th>Pickup</th>
-                
-                <th>Vehicle</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <td colspan="6" class="text-center">No data available for the selected filter.</td>
             </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($logisticsData)) { ?>
+        <?php } else { ?>
+            <?php foreach ($logisticsData as $index => $logistic) { ?>
                 <tr>
-                    <td colspan="7" class="text-center">No data available for the selected filter.</td>
+                    <td><?php echo ($index + 1); ?></td>
+                    <td><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
+                    <td><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
+                    <td class="text-capitalize"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
+                    <td><?php echo htmlspecialchars($logistic['status']); ?></td>
+                    <td>
+                        <a href="viewClientReport.php?id=<?php echo htmlspecialchars($logistic['id']); ?>" class="btn btn-sm btn-outline-secondary">
+                            View
+                        </a>
+                    </td>
                 </tr>
-            <?php } else { ?>
-                <?php foreach ($logisticsData as $index => $logistic) { ?>
-                    <tr>
-                        <td><?php echo ($index + 1); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['deceased_name']); ?></td>
-                        <!-- <td><?php echo htmlspecialchars($logistic['client_name']); ?></td> -->
-                        <td><?php echo htmlspecialchars($logistic['schedule_date']); ?></td>
-                        
-                        <td class="text-capitalize"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
-                        <td><?php echo htmlspecialchars($logistic['status']); ?></td>
-                        <td>
-                            <!-- View button to trigger modal -->
-                            <button type="button" class="btn btn-sm btn-outline-dark" 
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop" 
-                                    data-bs-id="<?php echo $logistic['id']; ?>">
-                                View
-                            </button>
-
-                        </td>
-                    </tr>
-                <?php } ?>
             <?php } ?>
-        </tbody>
-    </table>
+        <?php } ?>
+    </tbody>
+</table>
+
+
 </div>
 
-
-
-<!-- Modal to display the data -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Client Details</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="clientDetailsContent">
-        <!-- Dynamic content will be loaded here -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-primary" onclick="printClientDetails()">Print</button>
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
@@ -305,113 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const clientId = this.getAttribute('data-bs-id'); // Get the client ID
             loadClientData(clientId); // Load the data into the modal
         });
-    });
-});
-
-// Function to load client data via AJAX
-function loadClientData(clientId) {
-    const modalBody = document.getElementById('clientDetailsContent');
-    
-    fetch('get_client_data.php', { // Assuming you have this PHP file for the AJAX request
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ client_id: clientId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Check if data is received
-        if (data.success) {
-            // Generate HTML content for the modal
-            let clientDataHtml = `
-                <table class="table table-bordered">
-                    <tr><th>Client Name</th><td>${data.client_name}</td></tr>
-                    <tr><th>Pickup Location</th><td>${data.pickup_location}</td></tr>
-                    <tr><th>Destination</th><td>${data.destination}</td></tr>
-                    <tr><th>Vehicle</th><td>${data.vehicle}</td></tr>
-                    <tr><th>Status</th><td>${data.status}</td></tr>
-                    <tr><th>Pickup Date</th><td>${data.pickup_date}</td></tr>
-                </table>
-            `;
-            modalBody.innerHTML = clientDataHtml; // Insert client data into modal body
-        } else {
-            modalBody.innerHTML = `<p class="text-danger">${data.message}</p>`;
-        }
-    })
-    .catch(error => {
-        console.error('Error loading client data:', error);
-    });
-}
-
-// Function to handle the print functionality
-function printClientDetails() {
-    const modalContent = document.getElementById('clientDetailsContent').innerHTML;
-    const printWindow = window.open('', '', 'width=600,height=600');
-    printWindow.document.write('<html><head><title>Client Details</title></head><body>');
-    printWindow.document.write(modalContent); // Write the modal content to print
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.print();
-}
-
-
-// Function to load client data via AJAX
-$(document).on('click', '.view-client-btn', function () {
-    const clientId = $(this).data('id');
-
-    // Validate clientId before making the AJAX request
-    if (!clientId) {
-        alert('Invalid client ID. Please try again.');
-        return;
-    }
-
-    $.ajax({
-        url: 'get_client_data.php',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ id: clientId }),
-        success: function (response) {
-            if (response.success) {
-                const client = response.client;
-                const related = response.related;
-
-                // Populate client details
-                $('#clientName').text(client.client_name || 'N/A');
-                $('#deceasedName').text(client.deceased || 'N/A');
-                $('#serviceType').text(client.service_type || 'N/A');
-                $('#scheduleDate').text(client.schedule_date || 'N/A');
-                $('#vehicleType').text(client.vehicle_type || 'N/A');
-                $('#clientRequest').text(client.request || 'N/A');
-
-                // Populate related data (e.g., inventory items)
-                const relatedContainer = $('#relatedData');
-                relatedContainer.empty(); // Clear previous data
-
-                if (Array.isArray(related) && related.length > 0) {
-                    related.forEach(item => {
-                        relatedContainer.append(`
-                            <tr>
-                                <td>${item.inventory_item || 'N/A'}</td>
-                                <td>${item.quantity || 'N/A'}</td>
-                                <td>${item.description || 'N/A'}</td>
-                            </tr>
-                        `);
-                    });
-                } else {
-                    relatedContainer.append('<tr><td colspan="3">No related data available</td></tr>');
-                }
-
-                // Show modal
-                $('#viewClientModal').modal('show');
-            } else {
-                alert(response.message || 'Failed to load client data.');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('AJAX Error:', status, error);
-            alert('An error occurred while fetching client data. Please try again.');
-        }
     });
 });
 
