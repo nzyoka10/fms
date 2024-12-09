@@ -1,92 +1,141 @@
 # Funeral Management System (FMS)
 
-#### `Overview`
-
-The **Funeral Management System (FMS)** is a web-based platform designed to streamline the operations of a funeral service provider. 
-- It allows **admins** and **staff** to efficiently manage logistics, inventory, scheduling, payments, client information, and user accounts. 
-- The system is built using **PHP** and **MySQL** for backend logic and storage, with a frontend powered by **HTML**, **CSS**, and **Bootstrap**.
+### Overview
+The **Funeral Management System (FMS)** is a web-based platform designed to streamline operations for funeral service providers. It helps manage logistics, inventory, scheduling, payments, client information, and user accounts efficiently.
 
 ---
-
-
 
 ## Features
 
-### 1. **Logistics Management**
-- Tracks the pickup and transportation of the deceased.
-- Records transportation details such as vehicle used, driver, pickup date, and destination.
-- Provides status updates (`pending` or `completed`) for each transport request.
-- Generates reports based on transport data over a given date range.
+### 1. Logistics Management
+- Tracks body pickup and transportation.
+- Records vehicle details, driver info, and destinations.
+- Updates transport status (`pending` or `completed`).
+- Generates reports by date range.
 
-### 2. **Inventory Management**
-- Tracks coffins, urns, caskets, chapels, cremators, and meeting rooms.
-- Allows real-time updates on stock levels.
-- Generates detailed inventory reports for specified date ranges (daily, weekly, monthly).
+### 2. Inventory Management
+- Manages stock of coffins, urns, caskets, chapels, etc.
+- Updates inventory levels in real-time.
+- Generates inventory reports for specific date ranges.
 
-### 3. **Scheduling and Records**
-- Manages scheduling for services like funerals, cremations, and memorials.
-- Integrates **Google Maps** for easy location management.
-- Ensures compliance with local regulations for scheduling.
-- Provides basic reporting functionalities for scheduled events.
+### 3. Scheduling and Records
+- Schedules funerals, cremations, and memorials.
+- Includes **Google Maps** for location tracking.
+- Ensures compliance with local regulations.
+- Provides event reports.
 
-### 4. **Financial Management**
-- Processes payments, invoices, and receipts for services rendered.
+### 4. Financial Management
+- Handles payments, invoices, and receipts.
 - Calculates totals, taxes, discounts, and fees.
-- Generates detailed financial reports based on payment data, invoices, and accounts.
-- Allows filtering and report generation over specific date ranges.
+- Generates financial reports by date range.
 
-### 5. **Client Information**
-- Stores and manages basic information about clients (e.g., family representatives) and deceased individuals.
-- Records agreements and payment information.
-- Tracks client interactions and service requests.
-- Generates individual client reports.
+### 5. Client Information
+- Stores client and deceased details.
+- Records agreements and service requests.
+- Tracks interactions and generates client reports.
 
-### 6. **User Accounts**
-- Supports two user roles: **admin** and **staff**.
-- Administers user roles, permissions, and access controls.
-- Implements secure authentication with password encryption.
+### 6. User Accounts
+- Supports **Admin** and **Others** users roles.
+- Manages user roles, permissions, and access.
+- Implements secure authentication.
 
 ---
 
+
+## Screenshots
+
+### 1. Dashboard
+![Dashboard](img/dashboard.png)
+
+### 2. Booking Form
+![Booking Form](img/bookings.png)
+
+### 3. Inventory Management
+![Inventory Management](img/inventory.png)
+
+### 4. Client Records
+![Client Records](img/clients.png)
+
+### 5. Records
+![Server Records](img/reports.png)
+
+### 6. Payments
+![Payments](img/payment.png)
+
+### 7. Client Report
+![Client Report](img/client-report.png)
+
+
+---
+## Screenshots
+
+### 1. Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### 2. Booking Form
+![Booking Form](screenshots/booking_form.png)
+
+### 3. Inventory Management
+![Inventory Management](screenshots/inventory_management.png)
+
+### 4. Client Records
+![Client Records](screenshots/client_records.png)
+
+---
+
+
 ## Technologies Used
 
-### **Frontend**
-- **HTML5**: Structure of the web pages.
-- **CSS3**: Styling and layout of the web pages.
-- **Bootstrap**: Responsive design and prebuilt UI components.
+### Frontend
+- **HTML5**: Structure
+- **CSS3**: Styling
+- **Bootstrap**: Responsive design and UI components
 
-### **Backend**
-- **PHP**: Server-side scripting for handling logic and data.
-- **MySQL**: Database for storing and managing system data.
+### Backend
+- **PHP**: Server-side scripting
+- **MySQL**: Database management
 
 ---
 
 ## Database Structure
-
-The database consists of the following tables:
-1. **users**: Stores user credentials and roles (admin, staff).
-2. **clients**: Manages client information (family representatives).
-3. **deceased**: Records details about deceased individuals.
-4. **logistics**: Tracks transportation and body pickup details.
-5. **inventory**: Manages stock levels of coffins, urns, chapels, etc.
-6. **schedules**: Handles service scheduling (funerals, cremations).
-7. **payments**: Manages payments, invoices, and financial transactions.
-8. **client_interactions**: Tracks client interactions and service requests.
-9. **reports**: Stores generated reports for logistics, inventory, finance, and clients.
+| Table Name         | Description                                     |
+|--------------------|-------------------------------------------------|
+| `users`            | User credentials and roles (admin, staff).      |
+| `clients`          | Family representative information.              |
+| `deceased`         | Details of deceased individuals.               |
+| `logistics`        | Tracks transportation details.                 |
+| `inventory`        | Stock management (coffins, urns, etc.).         |
+| `schedules`        | Funeral and cremation scheduling.               |
+| `payments`         | Payment and financial transaction records.      |
+| `client_interactions` | Tracks client interactions and requests.    |
+| `reports`          | Stores generated reports.                      |
 
 ---
 
 ## Installation and Setup
 
 ### Prerequisites
-- A web server like **XAMPP** for running PHP and MySQL.
-- A browser to access the frontend interface.
-- Basic knowledge of PHP and MySQL.
+- **XAMPP** or any PHP and MySQL-compatible server.
+- A browser to access the web interface.
+
+### Steps
+1. Clone or download the repository.
+2. Place the project folder in your web server's root directory (e.g., `htdocs` for XAMPP).
+3. Import the provided `fms.sql` file into your MySQL database.
+4. Update the database configuration in `config.php`.
+5. Access the application via your browser (`http://localhost/fms`).
+
+---
 
 ## Usage
-1. **Admin**
-    - Admin users have full access to manage logistics, inventory, scheduling, financials, client information, and user accounts.
-2. **Staff**
-    - Staff users can manage logistics, inventory, scheduling, and client information but have restricted access to certain admin-only features.
+
+### Admin
+- Full control over logistics, inventory, scheduling, financials, and user accounts.
+
+### Staff
+- Limited access to manage logistics, inventory, scheduling, and client information.
+
+---
+
 
 
