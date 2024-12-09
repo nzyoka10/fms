@@ -147,7 +147,7 @@ include './includes/sidebar.php';
                 <tr>
                     <th>Sn#</th>
                     <th>Booked Date</th>
-                    <th>Client Name</th>
+                    <th>Deacesed Person</th>
                     <th>Service</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -164,7 +164,7 @@ include './includes/sidebar.php';
                             <td><?php echo $index + 1; ?></td>
                             <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
                             <td><?php echo htmlspecialchars($booking['client_name']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
+                            <td class="text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></td>
                             <td><?php echo htmlspecialchars($booking['status']); ?></td>
                             <td><a href="viewBooking.php?id=<?php echo $booking['id']; ?>" class="btn btn-sm btn-outline-secondary">View</a></td>
                         </tr>

@@ -1,0 +1,287 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.2.17)  8 NOV 2024 18:49
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**c:/Users/TSI/Downloads/Tom-Spu/documentation/BSCNRB480122-Proposal/BSCNRB480122.tex
+(c:/Users/TSI/Downloads/Tom-Spu/documentation/BSCNRB480122-Proposal/BSCNRB480122.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-13>
+(C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/base\report.cls
+Document Class: report 2023/05/17 v1.4n Standard LaTeX document class
+(C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
+File: size12.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count188
+\c@chapter=\count189
+\c@section=\count190
+\c@subsection=\count191
+\c@subsubsection=\count192
+\c@paragraph=\count193
+\c@subparagraph=\count194
+\c@figure=\count195
+\c@table=\count196
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+) (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+) (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen141
+\Gin@req@width=\dimen142
+) (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count197
+\Gm@cntv=\count198
+\c@Gm@tempcnt=\count199
+\Gm@bindingoffset=\dimen143
+\Gm@wd@mp=\dimen144
+\Gm@odd@mp=\dimen145
+\Gm@even@mp=\dimen146
+\Gm@layoutwidth=\dimen147
+\Gm@layoutheight=\dimen148
+\Gm@layouthoffset=\dimen149
+\Gm@layoutvoffset=\dimen150
+\Gm@dimlist=\toks18
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count266
+\l__pdf_internal_box=\box51
+)
+No file BSCNRB480122.aux.
+\openout1 = `BSCNRB480122.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+(C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count267
+\scratchdimen=\dimen151
+\scratchbox=\box52
+\nofMPsegments=\count268
+\nofMParguments=\count269
+\everyMPshowfont=\toks19
+\MPscratchCnt=\count270
+\MPscratchDim=\dimen152
+\MPnumerator=\count271
+\makeMPintoPDFobject=\count272
+\everyMPtoPDFconversion=\toks20
+) (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\TSI\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(108.405pt, 416.83289pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=416.83289pt
+* \textheight=700.50687pt
+* \oddsidemargin=36.13501pt
+* \evensidemargin=36.13501pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+<../img/logo.png, id=1, 203.76125pt x 249.93375pt>
+File: ../img/logo.png Graphic file (type png)
+<use ../img/logo.png>
+Package pdftex.def Info: ../img/logo.png  used on input line 21.
+(pdftex.def)             Requested size: 125.05113pt x 153.3899pt.
+[1
+
+{C:/Users/TSI/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <../img/logo.png>]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 75.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 75.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 75.
+ [1] [2]
+Chapter 1.
+[3
+
+]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[4] [5]
+Chapter 2.
+
+Overfull \hbox (27.77328pt too wide) in paragraph at lines 234--234
+[]\OT1/cmr/bx/n/14.4 System 1: Fu-neral Home Man-age-ment Soft-ware (FHMS) 
+ []
+
+[6
+
+] [7]
+Overfull \hbox (15.08289pt too wide) in paragraph at lines 264--264
+[]\OT1/cmr/bx/n/17.28 How the Pro-posed So-lu-tion Will Han-dle These
+ []
+
+[8] [9]
+Chapter 3.
+[10
+
+] [11] [12] [13] [14]
+Chapter 4.
+<../img/flow-chart.png, id=55, 474.573pt x 503.481pt>
+File: ../img/flow-chart.png Graphic file (type png)
+<use ../img/flow-chart.png>
+Package pdftex.def Info: ../img/flow-chart.png  used on input line 483.
+(pdftex.def)             Requested size: 291.78174pt x 309.5583pt.
+<../img/activity.png, id=57, 573.342pt x 501.072pt>
+File: ../img/activity.png Graphic file (type png)
+<use ../img/activity.png>
+Package pdftex.def Info: ../img/activity.png  used on input line 493.
+(pdftex.def)             Requested size: 333.46758pt x 291.44771pt.
+[15
+
+]
+File: ../img/activity.png Graphic file (type png)
+<use ../img/activity.png>
+Package pdftex.def Info: ../img/activity.png  used on input line 515.
+(pdftex.def)             Requested size: 333.46758pt x 291.44771pt.
+ [16 <../img/flow-chart.png>] [17 <../img/activity.png>] [18]
+Overfull \hbox (153.0037pt too wide) in paragraph at lines 557--558
+[]\OT1/cmr/m/n/12 Software Ad-vice. (n.d.). \OT1/cmr/m/it/12 Fu-neral home soft-ware\OT1/cmr/m/n/12 . Re-trieved from https://www.softwareadvice.com/funeral-
+ []
+
+c:/Users/TSI/Downloads/Tom-Spu/documentation/BSCNRB480122-Proposal/BSCNRB480122.tex:563: Missing $ inserted.
+<inserted text> 
+                $
+l.563 ...t}. Retrieved from https://www.ey.com/en_
+                                                  us/strategy-transactions/t...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+c:/Users/TSI/Downloads/Tom-Spu/documentation/BSCNRB480122-Proposal/BSCNRB480122.tex:564: Missing $ inserted.
+<inserted text> 
+                $
+l.564 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+c:/Users/TSI/Downloads/Tom-Spu/documentation/BSCNRB480122-Proposal/BSCNRB480122.tex:564: Missing } inserted.
+<inserted text> 
+                }
+l.564 
+      
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+c:/Users/TSI/Downloads/Tom-Spu/documentation/BSCNRB480122-Proposal/BSCNRB480122.tex:564: Extra }, or forgotten \endgroup.
+\par ...m \@noitemerr {\@@par }\fi \else {\@@par }
+                                                  \fi 
+l.564 
+      
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+Overfull \hbox (63.78983pt too wide) in paragraph at lines 567--568
+[]\OT1/cmr/m/n/12 Miro. (n.d.). \OT1/cmr/m/it/12 What is a UML di-a-gram?\OT1/cmr/m/n/12 . Re-trieved from https://miro.com/diagramming/what-
+ []
+
+
+Overfull \hbox (104.78593pt too wide) in paragraph at lines 569--570
+[]\OT1/cmr/m/n/12 APM. (n.d.). \OT1/cmr/m/it/12 What is project man-age-ment?\OT1/cmr/m/n/12 . Re-trieved from https://www.apm.org.uk/resources/what-
+ []
+
+
+Overfull \hbox (170.6158pt too wide) in paragraph at lines 573--574
+[]\OT1/cmr/m/n/12 InterviewBit. (2022, Oc-to-ber 17). \OT1/cmr/m/it/12 Sys-tem ar-chi-tec-ture\OT1/cmr/m/n/12 . Re-trieved from https://www.interviewbit.com/blog/system-
+ []
+
+
+Overfull \hbox (26.66545pt too wide) in paragraph at lines 575--576
+\OT1/cmr/m/it/12 im-prove-ment phases\OT1/cmr/m/n/12 . Re-trieved from https://www.globallegalpost.com/news/planning-
+ []
+
+[19
+
+] (BSCNRB480122.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-13>
+ ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1921 strings out of 474462
+ 31912 string characters out of 5743827
+ 1939998 words of memory out of 5000000
+ 24255 multiletter control sequences out of 15000+600000
+ 564219 words of font info for 56 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 57i,9n,65p,808b,238s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\TSI\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/TSI/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on BSCNRB480122.pdf (20 pages, 349761 bytes).
+PDF statistics:
+ 115 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+

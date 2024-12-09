@@ -1,144 +1,117 @@
 <?php
-// Include necessary files
-include 'includes/functions.php';  // Assuming the function is inside this file
-include './includes/header.php';
-include './includes/sidebar.php';
+// Include necessary files (database connection, functions, etc.)
+include 'includes/functions.php';
 
-// Assuming you already have a database connection $conn
-// Replace this with your actual database connection
-// $conn = new mysqli('host', 'username', 'password', 'database');
+// Check if the 'id' parameter is set in the URL
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $bookingId = (int)$_GET['id']; // Get the booking ID and cast to an integer
 
-// Get the client ID from the query string (e.g., viewClientReport.php?clientId=1)
-$clientId = isset($_GET['clientId']) ? (int)$_GET['clientId'] : 0;
+    // Fetch the booking details using a function
+    $booking = getBookingById($bookingId);
 
-if ($clientId > 0) {
-    // Fetch client data using the function
-    $clientData = fetchClientData($conn, $clientId);
-
-    if ($clientData) {
-        // Extract data from the returned array
-        $client = $clientData['client'];
-        $bookings = $clientData['bookings'];
-        $services = $clientData['services'];
-    } else {
-        // Handle error if data fetching fails
-        echo "<p class='text-danger'>Error fetching client data.</p>";
-        exit;
+    // Check if a valid booking was found
+    if (!$booking) {
+        echo "<p class='text-danger'>Booking not found.</p>";
+        exit(); // Stop further execution if the booking isn't found
     }
 } else {
-    // Handle invalid client ID
-    echo "<p class='text-danger'>Invalid client ID.</p>";
-    exit;
+    echo "<p class='text-danger'>Invalid booking ID.</p>";
+    exit(); // Stop execution if no valid ID is provided
 }
+
+// More includes of HTML templates
+include './includes/header.php';
+include './includes/sidebar.php';
 ?>
 
-<!-- Main section -->
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-2">
-    <h4 class="text-muted mt-2">Client Report</h4>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <!-- Page heading -->
+    <h4 class="mt-4">View Report</h4>
 
-    <ol class="breadcrumb mb-2">
+    <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Dashboard</li>
         <li class="breadcrumb-item">
             <a class="text-decoration-none hover-underline" href="./reports.php">Reports</a>
         </li>
     </ol>
 
-    <!-- Display specific client's fetched data record here -->
-    <div class="client-details">
-        <h5>Client Details</h5>
-        <table class="table table-bordered">
-            <tr>
-                <th>Name</th>
-                <td><?php echo htmlspecialchars($client['client_name']); ?></td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td><?php echo htmlspecialchars($client['client_email']); ?></td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td><?php echo htmlspecialchars($client['client_phone']); ?></td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td><?php echo htmlspecialchars($client['client_address']); ?></td>
-            </tr>
-            <tr>
-                <th>Deceased Name</th>
-                <td><?php echo htmlspecialchars($client['deceased_name']); ?></td>
-            </tr>
-            <tr>
-                <th>Deceased Age</th>
-                <td><?php echo htmlspecialchars($client['deceased_age']); ?></td>
-            </tr>
-            <tr>
-                <th>Deceased Cause</th>
-                <td><?php echo htmlspecialchars($client['deceased_cause']); ?></td>
-            </tr>
-            <tr>
-                <th>Deceased Gender</th>
-                <td><?php echo htmlspecialchars($client['deceased_gender']); ?></td>
-            </tr>
-        </table>
+    <div class="card shadow-sm">
+        <div class="card-header d-flex align-items-center">
+            <span data-feather="info" class="me-2"></span>Reports
+        </div>
+        <!-- <div class="card-header">
+            <h3 class="card-title">Client: <?php echo htmlspecialchars($booking['client_id']); ?></h3>
+        </div> -->
+        <div class="card-body">
+            <div class="row">
+                <!-- Client Name -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold-30">Client Name</h5>
+                    <p class="text-muted text-uppercase"><?php echo htmlspecialchars($booking['client_name']); ?></p>
+                </div>
+                <!-- Service Type -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold-30">Service</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['service_type']); ?></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Booking Date -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold-30">Booked date</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></p>
+                </div>
+                <!-- Location -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold-30">Vehicle</h5>
+                    <p class="text-muted text-capitalize"><?php echo htmlspecialchars($booking['vehicle_type']); ?></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Request Link -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold-30">Request</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($booking['request']); ?></p>
+                </div>
+                <!-- Status -->
+                <div class="col-md-3 mb-3">
+                    <h5 class="fw-bold-30">Status</h5>
+                    <p class="badge bg-<?php echo ($booking['status'] === 'completed') ? 'success' : 'danger'; ?> p-2">
+                        <?php echo htmlspecialchars($booking['status']); ?>
+                    </p>
+                </div>
+
+                <!-- Booked date -->
+                <div class="col-md-3 mb-3">
+                    <h5 class="fw-bold text-muted h6">Date</h5>
+                    <p class="text-muted"><?php echo htmlspecialchars($booking['schedule_date']); ?></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+    <!-- Left section: Edit and Pay buttons -->
+    <div class="d-flex">        
+        <a href="" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center">
+            Print&nbsp;<span data-feather="print"></span>
+        </a>
+        <a href="reports.php" class="btn btn-sm btn-outline-danger me-2 d-flex align-items-center">
+            Back&nbsp;<span data-feather="x-circle2"></span>
+        </a>
     </div>
 
-    <div class="client-bookings mt-4">
-        <h5>Client's Bookings</h5>
-        <?php if (!empty($bookings)): ?>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>Service Type</th>
-                        <th>Schedule Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($bookings as $booking): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($booking['id']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['service_type']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['schedule_date']); ?></td>
-                            <td><?php echo htmlspecialchars($booking['status']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>No bookings found for this client.</p>
-        <?php endif; ?>
+   
+</div>
+
+
+        <!-- <div class="card-footer text-end">
+            <a href="bookings.php" class="btn btn-outline-secondary">Back to Bookings</a>
+        </div> -->
     </div>
 
-    <div class="client-services mt-4">
-        <h5>Booking Services</h5>
-        <?php if (!empty($services)): ?>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Service ID</th>
-                        <th>Service Name</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($services as $service): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($service['service_id']); ?></td>
-                            <td><?php echo htmlspecialchars($service['service_name']); ?></td>
-                            <td><?php echo htmlspecialchars($service['quantity']); ?></td>
-                            <td><?php echo htmlspecialchars($service['total_price']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>No services found for this client.</p>
-        <?php endif; ?>
-    </div>
 
 </main>
 
-<!-- Footer -->
-<?php include './includes/footer.php' ?>
+<?php include './includes/footer.php'; ?>

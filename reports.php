@@ -233,9 +233,12 @@ function exportToExcel($logisticsData) {
                     <td class="text-capitalize"><?php echo htmlspecialchars($logistic['vehicle_type']); ?></td>
                     <td><?php echo htmlspecialchars($logistic['status']); ?></td>
                     <td>
-                        <a href="viewClientReport.php?id=<?php echo htmlspecialchars($logistic['id']); ?>" class="btn btn-sm btn-outline-secondary">
+                        <a href="viewClientReport.php?id=<?php echo htmlspecialchars($logistic['id']); ?>" class="btn btn-sm btn-link">
                             View
                         </a>
+                        <!-- <a href="#!" class="btn btn-sm btn-link">
+                            Print
+                        </a> -->
                     </td>
                 </tr>
             <?php } ?>
