@@ -7,37 +7,12 @@ The **Funeral Management System (FMS)** is a web-based platform designed to stre
 
 ## Features
 
-### 1. Logistics Management
-- Tracks body pickup and transportation.
-- Records vehicle details, driver info, and destinations.
-- Updates transport status (`pending` or `completed`).
-- Generates reports by date range.
-
-### 2. Inventory Management
-- Manages stock of coffins, urns, caskets, chapels, etc.
-- Updates inventory levels in real-time.
-- Generates inventory reports for specific date ranges.
-
-### 3. Scheduling and Records
-- Schedules funerals, cremations, and memorials.
-- Includes **Google Maps** for location tracking.
-- Ensures compliance with local regulations.
-- Provides event reports.
-
-### 4. Financial Management
-- Handles payments, invoices, and receipts.
-- Calculates totals, taxes, discounts, and fees.
-- Generates financial reports by date range.
-
-### 5. Client Information
-- Stores client and deceased details.
-- Records agreements and service requests.
-- Tracks interactions and generates client reports.
-
-### 6. User Accounts
-- Supports **Admin** and **Others** users roles.
-- Manages user roles, permissions, and access.
-- Implements secure authentication.
+- Logistics Management
+- Inventory Management
+- Scheduling and Records
+- Financial Management
+- Client Information
+- User Accounts
 
 ---
 
