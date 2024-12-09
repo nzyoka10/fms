@@ -85,16 +85,3 @@ The **Funeral Management System (FMS)** is a web-based platform designed to stre
 5. Access the application via your browser (`http://localhost/fms`).
 
 ---
-
-## Usage
-
-### Admin
-- Full control over logistics, inventory, scheduling, financials, and user accounts.
-
-### Staff
-- Limited access to manage logistics, inventory, scheduling, and client information.
-
----
-
-
-
