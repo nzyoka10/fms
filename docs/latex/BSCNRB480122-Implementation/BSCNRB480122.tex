@@ -613,49 +613,66 @@ address & TEXT & Client’s Address \\ \hline
 This schema will be applied to all entities in the system to ensure consistency and proper data management.
 
 \section{User Interface Design}
-The user interface (UI) of the Funeral Management System is designed to be intuitive and easy to use. It incorporates responsive design principles to ensure that the system is usable on both desktop and mobile devices. The UI is built using HTML, CSS (Bootstrap), and JavaScript, with a focus on simplicity and functionality.
+The user interface (UI) of the Funeral Management System is designed to be intuitive and user-friendly. It incorporates responsive design principles to ensure usability across both desktop and mobile devices. The UI leverages HTML, CSS (Bootstrap), and JavaScript, emphasizing simplicity and functionality.
 
 \subsection{UI Components}
-The system contains several key UI components:
+The system includes several key UI components:
 
 \begin{itemize}
+    % Login Page
     \item \textbf{Login Page}: A secure login page for both staff and clients, featuring username and password fields.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/Login.png}
+        \caption{Login Page}
+        \label{fig:login_ui}
+    \end{figure}
+
+    % Dashboard Page
     \item \textbf{Dashboard}: Displays key information such as upcoming services, inventory status, and payment history.
-    \item \textbf{Service Booking Form}: Allows clients to book funeral services and select service preferences.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/dashboard.png}
+        \caption{Dashboard Page}
+        \label{fig:dashboard_ui}
+    \end{figure}
+
+    % Service Booking Page
+    \item \textbf{Service Booking}: Allows clients to book funeral services and select service preferences.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/bookings.png}
+        \caption{Booking Page}
+        \label{fig:booking_ui}
+    \end{figure}
+
+    % Inventory Management Page
     \item \textbf{Inventory Management}: Displays inventory data and enables funeral home staff to manage inventory items.
-    \item \textbf{Client Management}: A page that allows staff to view and manage client details and service history.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/inventory.png}
+        \caption{Inventory Management Page}
+        \label{fig:inventory_ui}
+    \end{figure}
+    
+    % Client Management Page
+    \item \textbf{Client Management}: Provides staff with the ability to view and manage client details and service history.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/clients.png}
+        \caption{Client Management Page}
+        \label{fig:client_ui}
+    \end{figure}
+
+    % Payment Page
     \item \textbf{Payment Page}: Enables tracking of client payments and the issuance of invoices.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/payment.png}
+        \caption{Payment Page}
+        \label{fig:payment_ui}
+    \end{figure}
 \end{itemize}
-
-\subsection{Responsive Design with Bootstrap}
-Bootstrap ensures that the UI is responsive and adapts seamlessly to different screen sizes. The UI components adjust dynamically to fit the screen size, making the system accessible across a variety of devices, from desktop computers to mobile phones.
-
-\subsection{User Interface Example}
-Below is an example of the UI for the dashboard page. It displays an overview of the system’s current status, such as upcoming funeral services and inventory levels.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.8\textwidth]{../img/dashboard.png}
-\caption{Dashboard User Interface}
-\label{fig:dashboard_ui}
-\end{figure}
-
-
-% Reports
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../img/resports.png}
-    \caption{Reports User Interface}
-    \label{fig:reports_ui}
-\end{figure}
-
-% Login
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../img/login.png}
-    \caption{Login User Interface}
-    \label{fig:login_ui}
-\end{figure}
 
 % UI
 \subsection{User Experience (UX) Considerations}
